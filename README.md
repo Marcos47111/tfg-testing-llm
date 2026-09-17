@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.5-tfg`
+**Versión experimental de referencia:** `v1.0.6-tfg`
 
 ---
 
@@ -85,7 +85,7 @@ TFG/
 ├── src/                                    # Código fuente y herramientas en Python
 │   ├── evaluador/                          # Motor de ejecución de pruebas contra Ollama API
 │   ├── analisis/                           # Módulos de cálculo métrico, agregación y Kappa
-│   ├── utils/                              # Loader de casos, exportadores y generador de datos
+│   ├── utils/                              # Loader de casos y exportadores de tablas
 │   └── visualizacion/                      # Generador de gráficos de radar y barras comparativas
 │
 └── results/                                # Resultados consolidados para la memoria
