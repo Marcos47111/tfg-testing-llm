@@ -2477,7 +2477,7 @@
 			delito contra la propiedad intelectual \textit{(arts. 270 y sgts. del Código Penal)}. \\[4\myex]
 			DERECHOS RESERVADOS \\
 			{\copyright} {\@copyrightdate} por UNIVERSIDAD AUTÓNOMA DE MADRID \\
-			Francisco Tomás y Valiente, n$^o$ 1 \\
+			Francisco Tomás y Valiente, n$^o$ 11 \\
 			Madrid, 28049 \\
 			Spain
 		}
@@ -2504,7 +2504,7 @@
 			delito contra la propiedad intelectual \textit{(arts. 270 y sgts. del Código Penal)}. \\[4\myex]
 			DERECHOS RESERVADOS \\
 			{\copyright} {\@copyrightdate} por UNIVERSIDAD AUTÓNOMA DE MADRID \\
-			Francisco Tomás y Valiente, nº 1 \\
+			Francisco Tomás y Valiente, nº 11 \\
 			Madrid, 28049 \\
 			Spain
 			\end{minipage}
@@ -2520,7 +2520,7 @@
 			(except for brief quotation in critical articles or reviews), \\
 			may be made without written authorization from the publisher. \\[4\myex]
 			{\copyright} {\@copyrightdate} by UNIVERSIDAD AUTÓNOMA DE MADRID \\
-			Francisco Tom\'as y Valiente, n$^o$ 1 \\
+			Francisco Tom\'as y Valiente, n$^o$ 11 \\
 			Madrid, 28049 \\
 			Spain
 		}
@@ -2542,7 +2542,7 @@
 			\end{itemize}
 			RIGHTS RESERVED \\
 			{\copyright} {\@copyrightdate} por UNIVERSIDAD AUTÓNOMA DE MADRID \\
-			Francisco Tomás y Valiente, nº 1 \\
+			Francisco Tomás y Valiente, nº 11 \\
 			Madrid, 28049 \\
 			Spain
 			\end{minipage}

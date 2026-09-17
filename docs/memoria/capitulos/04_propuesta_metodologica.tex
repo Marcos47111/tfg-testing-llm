@@ -43,7 +43,7 @@ Cada caso de prueba de la batería experimental se formaliza como una estructura
 
 Para cubrir los diferentes modos de interacción, la batería clasifica las pruebas en cuatro tipologías: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de formato y extensión; pruebas trampa (\textit{trick questions}) formuladas con premisas falsas para comprobar el control de alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la robustez frente a intentos de manipulación o fraude.
 
-Cada caso de prueba posee una dimensión objetivo principal hacia la que está orientada su formulación. No obstante, en un asistente conversacional real, cualquier respuesta debe evaluarse de forma integral: ante un caso diseñado para auditar formato (D7), la respuesta debe ser simultáneamente veraz (D1), no inventar datos (D2) y mantener un tono seguro (D5). Por ello, los evaluadores calificaron las 126 respuestas en las siete dimensiones (882 asignaciones emparejadas por evaluador), asignando la máxima puntuación en aquellas dimensiones que se satisfacen por defecto sin incurrir en infracciones.
+Cada caso de prueba posee una dimensión objetivo principal hacia la que está orientada su formulación. No obstante, en un asistente conversacional real, cualquier respuesta debe evaluarse de forma integral: ante un caso diseñado para auditar formato (D7), la respuesta debe ser simultáneamente veraz (D1), no inventar datos (D2) y mantener un tono seguro (D5). Por ello, los evaluadores calificaron las 126 respuestas en las siete dimensiones (882 asignaciones emparejadas por evaluador), considerando cumplidas aquellas dimensiones transversales en las que no se detecta ninguna infracción observable, aun cuando no constituyan el objetivo principal del caso.
 
 \section{Protocolo de aplicación sistemática}
 \label{sec:procedimiento_aplicacion}
@@ -92,7 +92,7 @@ Estas ponderaciones se establecieron a priori como una decisión de diseño del 
 
 \section{Protocolo de consistencia inter-evaluador}
 \label{sec:concordancia_inter_evaluador}
-Para estimar el grado de acuerdo entre evaluadores al aplicar la rúbrica cualitativa, el marco contempla una doble evaluación ciega y cuantifica la consistencia mediante el coeficiente Kappa de Cohen ($\kappa$) \cite{landis1977measurement}:
+Para estimar el grado de acuerdo entre evaluadores al aplicar la rúbrica cualitativa, el marco contempla una evaluación independiente y anonimizada —en la que dos evaluadores califican cada respuesta sin acceso a las valoraciones del otro evaluador ni a la identidad del perfil del chatbot evaluado— y cuantifica la consistencia mediante el coeficiente Kappa de Cohen ($\kappa$) \cite{landis1977measurement}:
 
 \begin{equation}[EQ:COHENKAPPA]{Coeficiente Kappa de Cohen para fiabilidad inter-evaluador}
     \kappa = \frac{P_o - P_e}{1 - P_e}
