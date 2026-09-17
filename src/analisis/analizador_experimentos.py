@@ -20,17 +20,22 @@ INFORMES_DIR = RESULTS_DIR / "informes"
 TABLAS_DIR = RESULTS_DIR / "tablas"
 
 
+PERFILES_CHATBOT = ["asistente_base", "tutor_directo", "tutor_socratico"]
+
+
 def analizar_todos_los_experimentos() -> Dict[str, Any]:
-    """Genera el análisis comparativo global de todos los perfiles evaluados."""
+    """Genera el análisis comparativo global de los 3 perfiles de chatbot evaluados."""
     INFORMES_DIR.mkdir(parents=True, exist_ok=True)
     TABLAS_DIR.mkdir(parents=True, exist_ok=True)
     
-    archivos_eval = sorted(EVALUACIONES_DIR.glob("evaluacion_*.json"))
     resumen_global = {}
     filas_tabla_comparativa = []
     
-    for ar in archivos_eval:
-        perfil = ar.stem.replace("evaluacion_", "")
+    for perfil in PERFILES_CHATBOT:
+        ar = EVALUACIONES_DIR / f"evaluacion_{perfil}.json"
+        if not ar.exists():
+            print(f"⚠️ Archivo no encontrado: {ar.name}")
+            continue
         with open(ar, "r", encoding="utf-8") as f:
             evaluaciones = json.load(f)
             
