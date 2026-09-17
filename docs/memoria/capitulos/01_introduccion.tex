@@ -1,54 +1,51 @@
 \section{Contexto y motivación}
 \label{sec:contexto_motivacion}
-En los últimos años, la Inteligencia Artificial Generativa (IAG) y, en particular, los Modelos de Lenguaje de Gran Tamaño (\textit{Large Language Models}, LLMs) han experimentado una evolución sin precedentes \cite{vaswani2017attention, achiam2023gpt4}. Su capacidad para procesar, sintetizar y generar lenguaje natural con una fluidez notable ha propiciado su rápida adopción en múltiples sectores socioeconómicos, destacando con especial fuerza en el ámbito de la educación y el aprendizaje asistido \cite{kasneci2023chatgpt}.
+Durante las últimas décadas, la verificación y validación de sistemas de software se ha apoyado en principios deterministas bien establecidos: a partir de una especificación funcional concreta, los ingenieros definen casos de prueba con entradas conocidas y salidas unívocamente esperadas. Sin embargo, la irrupción y rápida popularización de los Modelos de Lenguaje de Gran Tamaño (\textit{Large Language Models}, LLMs) y de la Inteligencia Artificial Generativa \cite{vaswani2017attention, achiam2023gpt4} ha alterado este paradigma de forma sustancial. Su capacidad para interpretar consultas complejas, sintetizar información multidisciplinar y generar explicaciones en lenguaje natural con notable fluidez ha impulsado su adopción directa en entornos académicos como tutores virtuales y asistentes de estudio \cite{kasneci2023chatgpt}.
 
-Los asistentes conversacionales basados en LLMs ofrecen oportunidades formativas extraordinarias: tutoría personalizada disponible las 24 horas, adaptación del ritmo de estudio a las necesidades individuales del alumnado, resolución interactiva de dudas y generación instantánea de explicaciones pedagógicas multimodales. Sin embargo, su despliegue masivo en las aulas plantea profundos desafíos técnicos, pedagógicos y éticos que exigen respuestas rigurosas desde la Ingeniería del Software.
+El atractivo de estos sistemas en el ámbito formativo radica en su disponibilidad continua, su potencial para adaptar explicaciones a distintos ritmos de aprendizaje y su versatilidad para descomponer problemas conceptuales. No obstante, su integración en las aulas conlleva riesgos críticos desde la perspectiva de la calidad del software. Al operar sobre distribuciones de probabilidad y secuencias de tokens muestreadas estocásticamente, los LLMs no garantizan la veracidad fáctica de sus respuestas ni respetan de forma intrínseca los objetivos pedagógicos de una interacción formativa. Esto exige replantear los mecanismos de auditoría y aseguramiento de calidad antes de confiar en su uso docente autónomo.
 
 \section{Planteamiento del problema}
 \label{sec:planteamiento_problema}
-A diferencia del software informático clásico, donde el comportamiento del sistema está gobernado por algoritmos deterministas con reglas lógicas explícitas, los LLMs operan como modelos estadísticos de muestreo de distribuciones probabilísticas sobre secuencias de tokens. Esta naturaleza intrínsecamente estocástica y generativa genera problemas críticos:
+A diferencia de los programas informáticos tradicionales, donde un fallo suele asociarse a un defecto lógico en el código o a una condición de frontera no contemplada, los sistemas conversacionales basados en LLMs introducen modos de fallo de naturaleza estadística y semántica que resultan difíciles de aislar mediante pruebas unitarias convencionales.
 
-\begin{enumerate}
-    \item \textbf{Generación de alucinaciones y desinformación:} Los modelos tienden a generar afirmaciones falsas, fórmulas incorrectas o fuentes bibliográficas ficticias presentadas con un elevado tono de seguridad (\textit{syndromic overconfidence}) \cite{ji2023survey, lin2022truthfulqa}.
-    \item \textbf{Inadecuación pedagógica y descarga cognitiva:} Un chatbot que se limite a entregar soluciones resueltas directamente fomenta la pasividad y la dependencia cognitiva (\textit{cognitive offloading}), anulando el pensamiento crítico del estudiante.
-    \item \textbf{Vulnerabilidades de seguridad e integridad académica:} La susceptibilidad ante inyecciones de instrucciones (\textit{prompt injection}) o técnicas de evasión (\textit{jailbreaks}) compromete la integridad académica y la seguridad del alumnado \cite{wei2023jailbroken, unesco2023guidance}.
-    \item \textbf{El Problema del Oráculo en el Testing:} En la disciplina de verificación y validación tradicional, el \textit{Problema del Oráculo} (\textit{The Oracle Problem}) \cite{barr2015oracle} impide validar las salidas de los LLMs mediante aserciones binarias exactas (\texttt{assert output == expected}), requiriendo nuevos marcos de evaluación multidimensional.
-\end{enumerate}
+Uno de los principales problemas reside en la propensión a generar alucinaciones factuales, es decir, aserciones incorrectas, fórmulas inventadas o referencias bibliográficas inexistentes expresadas con un tono de absoluta certeza (\textit{syndromic overconfidence}) \cite{ji2023survey, lin2022truthfulqa}. En un contexto educativo, donde el alumno carece con frecuencia del criterio necesario para contrastar la veracidad de la explicación recibida, un error conceptual presentado con autoridad puede consolidar esquemas erróneos difíciles de desaprender.
+
+A este riesgo factual se suma una limitación didáctica fundamental: el solucionismo pasivo. Si el asistente conversacional se limita a entregar directamente el código resuelto o la respuesta de un ejercicio escolar, fomenta la descarga cognitiva (\textit{cognitive offloading}) y anula el razonamiento autónomo del estudiante, en lugar de orientarlo mediante preguntas guía. Asimismo, la susceptibilidad de estos modelos ante inyecciones de instrucciones adversarias (\textit{prompt injection} y \textit{jailbreaks}) abre la puerta a la resolución deshonesta de pruebas evaluables y a la evasión de los límites éticos establecidos en el aula \cite{wei2023jailbroken, unesco2023guidance}.
+
+Desde el punto de vista de la ingeniería del software, todas estas deficiencias se enmarcan en el denominado \textit{Problema del Oráculo} (\textit{The Oracle Problem}) \cite{barr2015oracle}: dado que para una misma consulta educativa existen infinitas respuestas válidas en lenguaje natural con estructuras sintácticas y léxicas dispares, resulta inviable aplicar aserciones booleanas deterministas de igualdad.
 
 \section{Justificación del trabajo}
 \label{sec:justificacion_trabajo}
-Resulta imperativo dotar a la comunidad académica, docente e ingenieril de una metodología de testing estructurada, reproducible y científicamente fundamentada que permita evaluar de forma sistemática y holística la calidad, fiabilidad, seguridad y valor didáctico de los chatbots educativos antes y durante su despliegue formativo.
+Frente a la proliferación de asistentes conversacionales comerciales y de código abierto desplegados sin una auditoría sistemática, resulta imprescindible dotar a la disciplina de una metodología de testing estructurada, reproducible y empíricamente contrastada. Este marco debe permitir evaluar de manera rigurosa si un chatbot no solo responde de forma correcta desde el punto de vista enciclopédico, sino si lo hace con el andamiaje pedagógico, la seguridad y la adaptación al nivel que requiere una interacción educativa real.
 
-Este Trabajo de Fin de Grado aborda esta necesidad desarrollando un marco metodológico integral, fundamentado en los estándares internacionales de calidad del software (ISO/IEC 25010) \cite{iso25010}, las teorías pedagógicas consolidadas (Zona de Desarrollo Próximo de Vygotsky \cite{vygotsky1978mind} y modelos de feedback formativo \cite{hattie2007power}) y los avances punteros en evaluación de modelos generativos \cite{zheng2023judging}.
+El presente Trabajo de Fin de Grado aborda esta necesidad articulando un marco de evaluación multidimensional que integra los estándares internacionales de calidad de software (ISO/IEC 25010) \cite{iso25010} con principios pedagógicos de referencia, en particular la Teoría de la Zona de Desarrollo Próximo de Vygotsky \cite{vygotsky1978mind} y los modelos de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}, junto con los avances recientes en evaluación analítica de modelos generativos \cite{zheng2023judging}.
 
 \section{Objetivos del trabajo}
 \label{sec:objetivos}
+El objetivo general de este proyecto consiste en diseñar, formalizar y validar experimentalmente una metodología sistemática de testing para sistemas conversacionales basados en LLMs en contextos de asistencia al aprendizaje, orientada a medir su corrección factual, control de alucinaciones, claridad didáctica, utilidad formativa, robustez de seguridad y adaptación al nivel discente.
 
-\subsection{Objetivo general}
-Diseñar, formalizar y validar experimentalmente una metodología sistemática de testing para evaluar sistemas conversacionales basados en LLMs en contextos educativos o de asistencia al aprendizaje, orientada a medir su corrección conceptual, control de alucinaciones, claridad didáctica, utilidad formativa, robustez de seguridad y adaptación al nivel del discente.
-
-\subsection{Objetivos específicos}
+Para alcanzar esta meta global, se establecen los siguientes objetivos específicos:
 \begin{enumerate}
-    \item Analizar las diferencias epistemológicas y operacionales entre el testing de software tradicional y la evaluación de sistemas basados en LLMs.
-    \item Formalizar un conjunto ortogonal de 7 dimensiones de calidad educativa alineadas con el estándar ISO/IEC 25010 y la literatura de AIED.
-    \item Diseñar una matriz de rúbricas de evaluación cualitativa en escala forzada (0 a 3) que mitigue el sesgo de tendencia central y estandarice la evaluación humana y automática.
-    \item Definir un conjunto de métricas cuantitativas y un Índice Global de Calidad Educativa ($IQE$) basado en el principio \textit{Safety-First}.
-    \item Construir una batería calibrada de casos de prueba estructurados y aplicarla experimentalmente sobre diferentes configuraciones de chatbot para validar la aplicabilidad del marco.
+    \item Analizar las diferencias metodológicas y operacionales entre el testing de software determinista y la evaluación de modelos de lenguaje generativos, formalizando el impacto del problema del oráculo.
+    \item Definir un conjunto ortogonal de dimensiones de calidad de software educativo alineadas con el estándar ISO/IEC 25010 y la literatura pedagógica.
+    \item Diseñar una matriz de rúbricas analíticas en escala discreta par de cuatro niveles ($0$ a $3$) para mitigar el sesgo de tendencia central y estandarizar la evaluación.
+    \item Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$) basado en el principio de seguridad prioritaria (\textit{Safety-First}).
+    \item Construir una batería estructurada de casos de prueba calibrados y aplicarla experimentalmente sobre tres perfiles de chatbot para contrastar la sensibilidad y validez del marco.
 \end{enumerate}
 
 \section{Preguntas de investigación}
 \label{sec:preguntas_investigacion}
-El desarrollo del trabajo se articula en torno a las siguientes preguntas de investigación:
+El diseño de la metodología y la experimentación posterior se orientan a dar respuesta a tres preguntas de investigación fundamentales:
 \begin{itemize}
-    \item \textbf{PI1:} ¿Cómo se puede estructurar una metodología de testing para LLMs que evalúe simultáneamente el rigor factual y la calidad pedagógica?
-    \item \textbf{PI2:} ¿En qué medida el diseño del \textit{system prompt} (expositivo vs socrático) condiciona la seguridad y el andamiaje del chatbot educativo?
-    \item \textbf{PI3:} ¿Es posible mitigar el impacto del problema del oráculo mediante rúbricas analíticas normalizadas?
+    \item \textbf{PI1:} ¿De qué manera es posible estructurar un protocolo de testing para LLMs que evalúe simultáneamente el rigor conceptual y la calidad del andamiaje pedagógico sin incurrir en la subjetividad no estructurada?
+    \item \textbf{PI2:} ¿Hasta qué punto la configuración explícita del \textit{System Prompt} (instrucción expositiva directa frente a directrices socráticas) condiciona la seguridad, la prevención de alucinaciones y la eficacia formativa del asistente?
+    \item \textbf{PI3:} ¿Permite una matriz de rúbricas analíticas con escala forzada mitigar el problema del oráculo y asegurar una alta concordancia inter-evaluador ($\kappa \ge 0.70$) en respuestas abiertas de lenguaje natural?
 \end{itemize}
 
 \section{Alcance y limitaciones iniciales}
 \label{sec:alcance_limitaciones}
-El trabajo se acota a la evaluación externa del comportamiento conversacional (caja negra) en texto en lengua española e inglesa en dominios académicos multidisciplinares (ciencias exactas, ciencias sociales y humanidades). Queda fuera del alcance el entrenamiento o ajuste fino de pesos internos de modelos desde cero.
+El estudio se acota a la evaluación externa de caja negra del comportamiento conversacional en texto sobre dominios académicos multidisciplinares (ciencias experimentales, matemáticas, informática y humanidades), considerando consultas en lengua española con extensiones bilingües controladas. Queda deliberadamente fuera del alcance del proyecto el reentrenamiento o ajuste fino de pesos internos de las redes neuronales, así como el análisis de interfaces multimodales con reconocimiento de audio o imagen.
 
 \section{Estructura del documento}
 \label{sec:estructura_documento}
-La memoria se organiza como sigue: el Capítulo \ref{CAP:ESTADODELARTE} presenta el estado del arte de la IAG y LLMs; el Capítulo \ref{CAP:TESTINGLLMS} analiza el estado del arte del testing en IA; el Capítulo \ref{CAP:METODOLOGIA} formaliza la metodología propuesta; el Capítulo \ref{CAP:EXPERIMENTACION} detalla la experimentación y resultados; el Capítulo \ref{CAP:DISCUSION} analiza implicaciones y limitaciones; y el Capítulo \ref{CAP:CONCLUSIONES} resume las aportaciones y líneas futuras.
+La memoria se estructura en siete capítulos principales y un anexo técnico. El Capítulo \ref{CAP:ESTADODELARTE} revisa el estado del arte de los modelos de lenguaje, sus arquitecturas y sus implicaciones didácticas. El Capítulo \ref{CAP:TESTINGLLMS} analiza los fundamentos del testing tradicional frente a los retos propios de los LLMs y los benchmarks existentes. El Capítulo \ref{CAP:METODOLOGIA} formaliza la propuesta metodológica, sus dimensiones, rúbricas, métricas y protocolo psicométrico. El Capítulo \ref{CAP:EXPERIMENTACION} expone el entorno experimental, la batería de pruebas y los resultados comparativos obtenidos. El Capítulo \ref{CAP:DISCUSION} profundiza en la interpretación de los hallazgos, fortalezas del marco y amenazas a la validez. Por último, el Capítulo \ref{CAP:CONCLUSIONES} resume las aportaciones del trabajo y sugiere líneas de investigación futura.

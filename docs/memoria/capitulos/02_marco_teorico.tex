@@ -1,44 +1,43 @@
-\section{Inteligencia artificial generativa}
+\section{Inteligencia artificial generativa y fundamentos}
 \label{sec:ia_generativa}
-La Inteligencia Artificial Generativa representa un cambio de paradigma respecto a los modelos discriminativos tradicionales. En lugar de predecir una etiqueta o clasificar una entrada existente, los modelos generativos aprenden la distribución de probabilidad subyacente $P(X)$ sobre un corpus masivo de datos para generar nuevas muestras representativas e inéditas.
+El aprendizaje automático tradicional en procesamiento del lenguaje natural se centró mayoritariamente en tareas discriminativas, tales como la clasificación de texto, el análisis de sentimiento o el reconocimiento de entidades nombradas, donde el objetivo principal es estimar una probabilidad condicional $P(Y \mid X)$ sobre un conjunto finito de etiquetas prefijadas. En contraste, la Inteligencia Artificial Generativa adopta un enfoque probabilístico que modela la distribución conjunta o la probabilidad autoregresiva $P(X)$ sobre secuencias textuales masivas, lo que capacita al sistema para muestrear y generar contenido inédito y coherente a partir de un contexto inicial.
 
-El hito fundacional de la era moderna del Procesamiento del Lenguaje Natural (PLN) lo constituye la arquitectura \textit{Transformer}, introducida por Vaswani et al. en 2017 \cite{vaswani2017attention}. Mediante el mecanismo de \textit{auto-atención} (\textit{Self-Attention}), el modelo es capaz de ponderar dinámicamente la relevancia relativa de cada token en una secuencia respecto a todos los demás, superando las limitaciones de desvanecimiento del gradiente y el procesamiento estrictamente secuencial de las redes neuronales recurrentes (RNNs y LSTMs).
+El punto de inflexión en este campo surge con la introducción de la arquitectura \textit{Transformer} por parte de Vaswani et al. en 2017 \cite{vaswani2017attention}. A diferencia de las redes neuronales recurrentes (RNN) y las unidades de memoria a largo plazo (LSTM), cuya dependencia del procesamiento secuencial paso a paso provocaba cuellos de botella computacionales y problemas de desvanecimiento del gradiente en secuencias extensas, el Transformer se apoya íntegramente en mecanismos de auto-atención (\textit{Self-Attention}). Mediante este mecanismo, el modelo calcula simultáneamente relaciones ponderadas entre todas las posiciones de una secuencia mediante matrices de consulta (\textit{Query}), clave (\textit{Key}) y valor (\textit{Value}):
 
-\section{Modelos de lenguaje de gran tamaño (LLMs)}
+\begin{equation}[EQ:SELFATTENTION]{Mecanismo de atención escalada por producto escalar}
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+
+Esta formulación permite capturar dependencias semánticas de largo alcance de forma paralelizable durante el entrenamiento, sentando las bases arquitectónicas de los modelos de lenguaje contemporáneos.
+
+\section{Modelos de lenguaje de gran tamaño y proceso de alineamiento}
 \label{sec:llms}
-Los Modelos de Lenguaje de Gran Tamaño (LLMs) son redes neuronales basadas en Transformers con decenas o cientos de miles de millones de parámetros. Su ciclo de vida comprende tres fases críticas:
+Los Modelos de Lenguaje de Gran Tamaño (\textit{LLMs}) son redes neuronales basadas en la arquitectura Transformer que escalan a decenas o cientos de miles de millones de parámetros. Su desarrollo suele estructurarse en tres fases metodológicas sucesivas que transforman progresivamente un modelo predictivo base en un asistente conversacional alineado:
 
-\begin{enumerate}
-    \item \textbf{Preentrenamiento no supervisado (\textit{Pre-training}):} El modelo predice el siguiente token (\textit{next-token prediction}) sobre billones de palabras, adquiriendo capacidades lingüísticas generales y una amplia base de conocimiento enciclopédico.
-    \item \textbf{Ajuste fino de instrucciones (\textit{Supervised Fine-Tuning - SFT}):} El modelo se refina con pares de instrucción-respuesta humana para aprender a seguir órdenes de forma conversacional.
-    \item \textbf{Alineamiento por refuerzo (\textit{Reinforcement Learning from Human Feedback - RLHF}):} Se optimizan las respuestas mediante modelos de recompensa para maximizar su utilidad (\textit{helpfulness}), veracidad (\textit{honesty}) y seguridad (\textit{harmlessness}) \cite{achiam2023gpt4}.
-\end{enumerate}
+En la etapa de preentrenamiento no supervisado (\textit{Pre-training}), el modelo procesa billones de tokens de texto sin etiquetar optimizando la función de pérdida de máxima verosimilitud para la predicción del siguiente token (\textit{next-token prediction}). Durante esta fase, la red adquiere una comprensión sintáctica profunda del lenguaje y una vasta base de conocimiento enciclopédico factual. Sin embargo, un modelo que únicamente ha completado el preentrenamiento tiende a comportarse como un completador de texto asociativo y no como un agente conversacional capaz de seguir instrucciones precisas.
 
-\section{Chatbots basados en LLMs: arquitectura y componentes}
+Para resolver esta limitación, se aplica el ajuste fino supervisado (\textit{Supervised Fine-Tuning}, SFT), donde el modelo se reentrena sobre conjuntos cuidadosamente curados de pares instrucción-respuesta generados o revisados por humanos. Mediante el SFT, el modelo aprende el formato conversacional, aprende a reconocer roles de usuario y adquiere la habilidad de acatar directrices complejas de estilo y formato.
+
+Finalmente, para mitigar respuestas dañinas y calibrar la adecuación social del sistema, se introduce el alineamiento por refuerzo a partir de retroalimentación humana (\textit{Reinforcement Learning from Human Feedback}, RLHF) o técnicas directas de optimización de preferencias como DPO \cite{achiam2023gpt4}. Este proceso utiliza un modelo de recompensa entrenado sobre comparaciones humanas para premiar respuestas útiles, veraces e inofensivas (\textit{helpfulness, honesty, harmlessness}), castigando comportamientos evasivos, sesgados o peligrosos.
+
+\section{Arquitectura y componentes de un chatbot educativo}
 \label{sec:arquitectura_chatbots}
-La arquitectura de un chatbot educativo moderno trasciende el modelo base y se articula en una estructura en capas:
+En el desarrollo de aplicaciones prácticas, un asistente conversacional basado en LLM no opera de forma aislada, sino que se integra dentro de una arquitectura modular en capas diseñada para gobernar el ciclo completo de la interacción discente.
 
-\begin{itemize}
-    \item \textbf{Capa de Interfaz de Usuario (\textit{Frontend}):} Gestiona la interacción comunicativa mediante interfaces web conversacionales (como Open WebUI o LibreChat).
-    \item \textbf{Capa de Orquestación y Contexto (\textit{Middleware}):} Administra el historial de diálogo multi-turno y ensambla el \textit{prompt} final inyectando el \textit{System Prompt} pedagógico.
-    \item \textbf{Mecanismos de Recuperación Aumentada (\textit{RAG - Retrieval-Augmented Generation}):} Conecta el modelo a bases de conocimiento académicas o temarios oficiales vectorizados para reducir alucinaciones factuales.
-    \item \textbf{Motor de Inferencia (\textit{Backend}):} Ejecuta el modelo (ej. Ollama o APIs de inferencia optimizadas) bajo parámetros estocásticos controlados (temperatura $T$, muestreo núcleo $\text{top-}p$).
-\end{itemize}
+En la capa frontal (\textit{Frontend}), el estudiante interactúa con una interfaz de diálogo web o móvil accesible. Esta capa se comunica con una capa intermedia de orquestación (\textit{Middleware}) encargada de gestionar el estado de la sesión, mantener la ventana de contexto multi-turno y construir el \textit{prompt} final que se trasladará al modelo. En este nivel se inyecta el \textit{System Prompt}, un conjunto de instrucciones de sistema no visibles directamente para el usuario pero que condicionan el rol pedagógico del chatbot (por ejemplo, prohibir la entrega de respuestas resueltas o forzar explicaciones paso a paso).
 
-\section{Uso de LLMs en contextos educativos}
-\label{sec:llm_educacion}
-El potencial pedagógico de los LLMs en entornos de aprendizaje es transformador \cite{kasneci2023chatgpt}:
-\begin{itemize}
-    \item \textbf{Adaptación cognitiva individualizada:} Posibilidad de ajustar la velocidad de aprendizaje, el registro comunicativo y la tipología de ejemplos a la madurez discente.
-    \item \textbf{Andamiaje socrático (\textit{Scaffolding}):} Fomento de la reflexión metacognitiva mediante preguntas guía que orientan al alumno en su Zona de Desarrollo Próximo (\textit{ZDP}) \cite{vygotsky1978mind}.
-    \item \textbf{Generación de material docente:} Asistencia en la creación de problemas didácticos graduados, resúmenes estructurados y analogías iluminadoras.
-\end{itemize}
+Para robustecer la precisión en materias con temarios curriculares específicos, la arquitectura suele incorporar mecanismos de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG). Mediante el uso de bases de datos vectoriales y modelos de incrustación semántica (\textit{embeddings}), el sistema recupera fragmentos pertinentes de libros de texto o apuntes oficiales y los concatena al contexto de la consulta, mitigando sustancialmente las alucinaciones por desconocimiento de dominio.
 
-\section{Riesgos y limitaciones de los LLMs en educación}
-\label{sec:riesgos_llm}
-A pesar de sus ventajas, los LLMs presentan riesgos intrínsecos que justifican la necesidad de metodologías de testing rigurosas:
-\begin{enumerate}
-    \item \textbf{Alucinaciones (\textit{Hallucinations}):} Fenómeno por el cual el modelo genera aserciones falsas con apariencia de certeza rigurosa \cite{ji2023survey}. Se dividen en \textit{alucinaciones intrínsecas} (contradicción del contexto aportado) y \textit{extrínsecas} (invención de hechos indemostrables).
-    \item \textbf{Sesgo de Sobreconfianza Sintomática:} Incapacidad del modelo base para reconocer lagunas de conocimiento, prefiriendo conjeturar antes que manifestar incertidumbre o decir ``No dispongo de esa información'' \cite{lin2022truthfulqa}.
-    \item \textbf{Amenazas a la Integridad y Vulnerabilidades Éticas:} Riesgo de plagio automatizado, resolución deshonesta de pruebas evaluables y susceptibilidad a ataques de inyección de instrucciones adversarias \cite{wei2023jailbroken, unesco2023guidance}.
-\end{enumerate}
+Por último, el motor de inferencia (\textit{Backend}) ejecuta los pesos del modelo mediante plataformas locales optimizadas como Ollama o servicios en la nube. En esta etapa, el comportamiento estocástico de la generación de tokens se controla mediante hiperparámetros analíticos: la temperatura $T \in [0, 1]$, que escala los logits de la capa softmax para modular la aleatoriedad, y el muestreo núcleo ($\text{top-}p$), que trunca la distribución acumulada de tokens candidatos para evitar elecciones léxicas inverosímiles.
+
+\section{Uso de LLMs en educación y análisis de riesgos asociados}
+\label{sec:llm_educacion_riesgos}
+La aplicación de modelos generativos en el aprendizaje ofrece ventajas evidentes: permiten personalizar la profundidad conceptual según el ritmo de cada alumno, ofrecer explicaciones alternativas mediante analogías cotidianas y actuar como un tutor paciente disponible en cualquier momento \cite{kasneci2023chatgpt}. Desde el punto de vista psicopedagógico, su mayor potencial reside en su capacidad para implementar el andamiaje cognitivo (\textit{scaffolding}), un concepto derivado de la Teoría de la Zona de Desarrollo Próximo (ZDP) de Vygotsky \cite{vygotsky1978mind}. Mediante el andamiaje, el asistente no sustituye el esfuerzo del discente, sino que proporciona pistas graduadas que le permiten superar el desnivel entre lo que sabe resolver por sí mismo y lo que puede alcanzar con guía.
+
+Sin embargo, cuando estos sistemas se despliegan sin salvaguardas metodológicas rigurosas, emergen modos de fallo críticos que comprometen su utilidad formativa.
+
+El riesgo más documentado en la literatura lo constituyen las alucinaciones (\textit{hallucinations}) \cite{ji2023survey}, categorizadas como intrínsecas (cuando el texto contradice la información aportada en el contexto) o extrínsecas (cuando el modelo inventa hechos, teoremas o citas que no guardan correlato con la realidad). Este fenómeno se ve agravado por el sesgo de complacencia acrítica (\textit{sycophancy}) y la sobreconfianza sintomática, por la cual el modelo prefiere inventar una respuesta plausible antes que reconocer su ignorancia o solicitar aclaraciones \cite{lin2022truthfulqa}.
+
+Desde la perspectiva pedagógica, el riesgo más sutil pero perjudicial es el solucionismo directo. Un modelo generalista entrenado para complacer al usuario tiende de forma natural a entregar directamente la solución acabada a cualquier ejercicio escolar planteado. Esta conducta priva al estudiante del proceso reflexivo necesario para la consolidación cognitiva, convirtiendo una herramienta potencialmente educativa en un mero instrumento de copia pasiva.
+
+A estos factores se añaden las amenazas a la seguridad y la integridad académica. La fragilidad de los modelos frente a ataques de inyección de instrucciones (\textit{prompt injection}) y manipulaciones de rol (\textit{jailbreaks}) permite a usuarios maliciosos forzar al chatbot a redactar trabajos íntegros con apariencia de autoría propia o a facilitar respuestas durante evaluaciones en línea \cite{wei2023jailbroken, unesco2023guidance}. La comprensión de estos riesgos demuestra que evaluar un chatbot educativo requiere una perspectiva mucho más amplia que la mera comprobación gramatical, justificando la formalización de un marco de testing específico.

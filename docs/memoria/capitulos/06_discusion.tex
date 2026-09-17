@@ -1,30 +1,45 @@
 \section{Interpretación global de los resultados}
 \label{sec:interpretacion_resultados}
-Los hallazgos experimentales confirman la validez y sensibilidad de la metodología diseñada para discriminar con precisión entre diferentes grados de idoneidad formativa en sistemas conversacionales basados en LLMs.
 
-En primer lugar, los datos demuestran empíricamente que un modelo de lenguaje general, aun cuando posea un elevado dominio sintáctico y enciclopédico, resulta \textbf{inapropiado y riesgoso para su uso autónomo en educación} si carece de un alineamiento pedagógico explícito. La tasa de alucinaciones del $33.3\%$ y la tasa de fallos críticos del $9.5\%$ en la línea de control evidencian que los LLMs base tienden de forma natural a la complacencia acrítica (\textit{sycophancy}) y a la invención de contenidos ante preguntas trampa.
+Los resultados empíricos obtenidos en la experimentación proporcionan evidencia concluyente sobre la sensibilidad y pertinencia del marco metodológico propuesto. La capacidad del sistema de rúbricas para discriminar entre perfiles con diferentes grados de instrucción valida la hipótesis central de esta investigación: la evaluación de la calidad en modelos generativos aplicados a la educación no puede reducirse a métricas estadísticas léxicas ni a pruebas unitarias binarias deterministas, sino que requiere un análisis multidimensional basado en criterios de comportamiento estructurados.
 
-En segundo lugar, se demuestra la efectividad del \textit{System Prompting} estructurado para modular el comportamiento del modelo, transformando un asistente genérico en un tutor socrático capaz de guiar el aprendizaje sin incurrir en la trampa del solucionismo pasivo.
+El primer hallazgo fundamental reside en la constatación del elevado riesgo que entraña el despliegue directo de modelos de lenguaje de propósito general en contextos de aprendizaje sin una capa previa de condicionamiento pedagógico. Una tasa de alucinaciones del $33.3\%$ y una tasa de fallos críticos del $9.5\%$, observadas en el Asistente Base, resultan inasumibles en entornos académicos donde el rigor epistémico es una precondición innegociable. La tendencia del modelo base a la complacencia acrítica (\textit{sycophancy}) y a la fabulación convincente de teorías inexistentes subraya la necesidad imperativa de someter estos sistemas a auditorías de aseguramiento de la calidad antes de su puesta en producción.
 
-\section{Fortalezas de la metodología propuesta}
+El segundo hallazgo pone de manifiesto la efectividad del diseño sistemático de directivas de sistema (\textit{system prompts}) como mecanismo de control del comportamiento. Al transformar el modelo en un Tutor Socrático mediante directivas inspiradas en el andamiaje de Vygotsky y el feedback formativo de Hattie y Timperley, no solo se erradican los fallos críticos de seguridad y alucinación, sino que se neutraliza el solucionismo pasivo. El modelo pasa de resolver mecánicamente los ejercicios a guiar al estudiante a través de preguntas reflexivas, convirtiendo la interacción en un diálogo socrático enriquecedor.
+
+\section{Fortalezas y aportaciones del marco metodológico}
 \label{sec:fortalezas_metodologia}
-La metodología aporta las siguientes fortalezas distintivas frente al estado del arte:
-\begin{itemize}
-    \item \textbf{Alineación con Estándares Internacionales:} Mapeo riguroso con el modelo de calidad de producto software ISO/IEC 25010:2023 \cite{iso25010}.
-    \item \textbf{Fundamentación Pedagógica Sólida:} Integración explícita de las teorías de Andamiaje y ZDP de Vygotsky \cite{vygotsky1978mind} y el modelo de Feedback Formativo de Hattie \& Timperley \cite{hattie2007power}.
-    \item \textbf{Rigor Psicométrico:} La escala forzada de 4 niveles ($0-3$) elimina el sesgo de tendencia central y proporciona criterios conductuales objetivos y contrastables.
-    \item \textbf{Principio Safety-First:} La definición analítica del fallo crítico ($CFR$) impide que atributos superficiales de estilo enmascaren errores de desinformación o riesgos de seguridad.
-\end{itemize}
 
-\section{Limitaciones del trabajo y amenazas a la validez}
+La propuesta desarrollada en este trabajo ofrece ventajas diferenciales frente a los enfoques convencionales de evaluación de software y benchmarks genéricos de inteligencia artificial:
+
+En el ámbito de la ingeniería de software, el marco traslada de manera rigurosa los atributos de calidad de producto definidos en el estándar internacional ISO/IEC 25010:2023 \cite{iso25010} a las particularidades probabilísticas de los LLMs. La adecuación funcional, la usabilidad, la fiabilidad y la seguridad se operacionalizan a través de dimensiones observables y contrastables, salvando la brecha entre la normativa de calidad de software y los sistemas no deterministas.
+
+En el plano pedagógico, la metodología supera la visión simplista que equipara calidad con mera corrección sintáctica o enciclopédica. Al integrar formalmente conceptos como la Zona de Desarrollo Próximo, el andamiaje y la taxonomía de niveles de feedback, el marco proporciona herramientas cuantitativas para evaluar si un asistente promueve la autonomía intelectual del discente o si, por el contrario, fomenta la dependencia cognitiva.
+
+En el diseño psicométrico, la adopción de una escala forzada de cuatro niveles ($0$ a $3$) con descripciones conductuales explícitas neutraliza el sesgo de tendencia central y maximiza la reproducibilidad de las evaluaciones. El coeficiente Kappa de Cohen alcanzado ($\kappa = 0.931$) certifica un grado de concordancia casi perfecto, evidenciando que el instrumento reduce la subjetividad inherente a la evaluación cualitativa en lenguaje natural.
+
+Finalmente, la formalización analítica del principio \textit{Safety-First} garantiza que el Índice de Calidad Educativa ($IQE$) no enmascare comportamientos peligrosos. Al ponderar de forma preponderante la ausencia de fallos críticos ($CFR$) y alucinaciones ($HR$), el sistema penaliza con severidad cualquier vulnerabilidad en desinformación o seguridad, impidiendo que una redacción elocuente compense un error epistemológico grave.
+
+\section{Limitaciones del estudio y amenazas a la validez}
 \label{sec:limitaciones_amenazas}
-Se reconocen las siguientes limitaciones metodológicas:
-\begin{enumerate}
-    \item \textbf{Tamaño de la Batería:} La suite actual consta de 42 casos de prueba calibrados. Si bien es estadísticamente suficiente para validar el marco, despliegues institucionales masivos se beneficiarán de bancos ampliados a cientos de ítems.
-    \item \textbf{Modalidad Exclusivamente Textual:} El marco actual se centra en lenguaje natural textual y código, no contemplando la evaluación de diagramas visuales, audio o fórmulas en formato gráfico.
-    \item \textbf{Evolución Continua de Modelos:} La rápida actualización de pesos y versiones de los modelos comerciales exige una reevaluación periódica continua.
-\end{enumerate}
+
+Con el fin de enmarcar adecuadamente el alcance de las conclusiones, es preciso analizar con rigor metodológico las limitaciones inherentes al estudio y las posibles amenazas a su validez:
+
+En relación con la \textit{validez interna}, existe una potencial amenaza derivada del factor humano en la asignación de rúbricas cualitativas. Aunque el protocolo de doble evaluación ciega y el coeficiente Kappa de $0.931$ demuestran una alta consistencia, la interpretación de respuestas en lenguaje natural siempre conserva un componente de subjetividad residual. Asimismo, la formulación de los prompts de prueba introduce variaciones de sensibilidad léxica ante las que los LLMs pueden responder con ligeras oscilaciones.
+
+Respecto a la \textit{validez externa}, el tamaño muestral de la batería actual, compuesto por 42 casos de prueba calibrados que generan 126 interacciones experimentales, ha demostrado ser suficiente para validar la viabilidad y sensibilidad del marco metodológico. Sin embargo, para despliegues a escala de campus universitario en plataformas de aprendizaje como Moodle o Canvas, la batería requerirá una ampliación continua que cubra temarios altamente especializados de múltiples disciplinas.
+
+En cuanto a la \textit{validez de constructo}, el marco se encuentra acotado a la modalidad textual y código fuente. En la práctica docente contemporánea, la mediación formativa involucra con frecuencia artefactos multimodales, tales como diagramas UML, esquemas de circuitos eléctricos, gráficas estadísticas o fórmulas manuscritas, cuya evaluación automática o semi-automática queda fuera del alcance del presente estudio.
+
+Por último, la \textit{no-estacionariedad} de los modelos comerciales de lenguaje representa un desafío operativo para la validez temporal de los resultados. Las actualizaciones periódicas de pesos y los ajustes finos introducidos por los proveedores de servicios en la nube pueden alterar las probabilidades de generación de forma inadvertida, lo que exige concebir esta metodología no como una auditoría estática puntual, sino como una suite de pruebas de regresión continua integrada en los ciclos de integración continua (CI/CD) del software educativo.
 
 \section{Comparación con otros marcos de evaluación de LLMs}
 \label{sec:comparacion_enfoques}
-Frente a benchmarks puramente de opción múltiple como MMLU \cite{hendrycks2021mmlu} o benchmarks genéricos como MT-Bench \cite{zheng2023judging}, la metodología propuesta introduce una evaluación holística que audita simultáneamente la corrección epistémica, la seguridad ante el fraude académico y la calidad del andamiaje pedagógico.
+
+Al contrastar la metodología propuesta con los marcos de evaluación predominantes en el estado del arte de la inteligencia artificial, se evidencian diferencias fundamentales de enfoque y aplicabilidad:
+
+Los benchmarks estandarizados tradicionales de opción múltiple, tales como MMLU \cite{hendrycks2021mmlu} o ARC \cite{clark2018think}, miden la acumulación de conocimiento factual estático mediante preguntas cerradas. Si bien estos instrumentos son útiles para comparar la capacidad de almacenamiento enciclopédico de los modelos base, resultan inoperantes para evaluar la dinámica conversacional interactiva, la empatía pedagógica o la habilidad para guiar a un alumno en la resolución de problemas abiertos.
+
+Por otra parte, los marcos conversacionales modernos basados en modelos evaluadores (\textit{LLM-as-a-judge}), como MT-Bench \cite{zheng2023judging} o LMSYS Chatbot Arena \cite{chiang2024chatbot}, evalúan respuestas abiertas mediante puntuaciones holísticas o preferencias binarias emitidas por un modelo de gran escala. Aunque estos enfoques escalan con facilidad, adolecen de sesgos conocidos (tales como la preferencia por respuestas verbosas o la auto-afinidad de modelos) y carecen de sensibilidad didáctica: un juez artificial genérico suele premiar la entrega inmediata y detallada de la solución a un problema, penalizando paradójicamente a un tutor socrático que retiene la respuesta final para estimular la reflexión del alumno.
+
+Frente a estas alternativas, la metodología formalizada en este trabajo aporta una solución especializada que une el rigor formal de la ingeniería del software con la fundamentación pedagógica y la psicometría, proporcionando un marco analítico integral para certificar la fiabilidad y utilidad formativa de los asistentes conversacionales en la educación superior.
