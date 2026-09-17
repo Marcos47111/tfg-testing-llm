@@ -1,4 +1,4 @@
-# TFG: Metodología de Testing para Sistemas Conversacionales basados en LLMs en Contextos Educativos
+# TFG: Metodología para testing de IA Generativa de texto
 
 **Autor:** Marcos Tomás Jiménez Meléndez  
 **Tutor:** Xavier Alamán Roldán  

@@ -1,8 +1,6 @@
 """
 Módulo de cálculo de métricas de calidad y fiabilidad para el TFG:
-Metodología de testing para sistemas conversacionales basados en LLMs en contextos educativos.
-
-Implementa las fórmulas matemáticas formalizadas en metodologia/metricas/definicion_metricas.md
+Metodología para testing de IA Generativa de texto.
 """
 
 from typing import List, Dict, Any, Optional
