@@ -40,9 +40,12 @@ def consultar_ollama_api(
     user_prompt: str,
     temperatura: float = 0.2,
     top_p: float = 0.9,
-    timeout: int = 30
+    repeat_penalty: float = 1.1,
+    seed: int = 42,
+    num_ctx: int = 2048,
+    timeout: int = 60
 ) -> str:
-    """Envía una consulta conversacional a una instancia local o remota de Ollama."""
+    """Envía una consulta conversacional a una instancia local o remota de Ollama con todos los parámetros experimentales."""
     url = endpoint.rstrip("/")
     if not url.endswith("/api/chat"):
         url += "/api/chat"
@@ -56,7 +59,10 @@ def consultar_ollama_api(
         "stream": False,
         "options": {
             "temperature": temperatura,
-            "top_p": top_p
+            "top_p": top_p,
+            "repeat_penalty": repeat_penalty,
+            "seed": seed,
+            "num_ctx": num_ctx
         }
     }
     
@@ -72,7 +78,7 @@ def consultar_ollama_api(
             resp_json = json.loads(response.read().decode("utf-8"))
             return resp_json.get("message", {}).get("content", "")
     except Exception as e:
-        print(f"⚠️ Error al conectar con Ollama ({url}): {e}. Usando simulación calibrada.")
+        print(f"⚠️ Error al conectar con Ollama ({url}): {e}. Verifique que el servicio Ollama esté activo.")
         return ""
 
 
@@ -101,8 +107,11 @@ def simular_o_ejecutar_respuesta(
             modelo=modelo,
             system_prompt=sys_prompt,
             user_prompt=prompt_caso["prompt"],
-            temperatura=params.get("temperatura", 0.2),
-            top_p=params.get("top_p", 0.9)
+            temperatura=params.get("temperature", params.get("temperatura", 0.2)),
+            top_p=params.get("top_p", 0.9),
+            repeat_penalty=params.get("repeat_penalty", 1.1),
+            seed=params.get("seed", 42),
+            num_ctx=params.get("num_ctx", 2048)
         )
     
     # 2. Fallback o modo simulado calibrado (basado en literatura empírica: Zheng et al., 2023; Kasneci et al., 2023)

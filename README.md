@@ -4,38 +4,49 @@
 **Tutor:** Xavier Alamán Roldán  
 **Titulación:** Grado en Ingeniería Informática  
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
-**Fecha de entrega objetivo:** 20 de octubre de 2026  
+**Fecha de entrega:** Octubre de 2026  
+**Licencia:** MIT (Código abierto)  
+**Versión experimental de referencia:** `v1.0-tfg`
 
 ---
 
 ## 🎯 Objetivo del Proyecto
-Diseñar, formalizar y validar experimentalmente una metodología sistemática y reproducible de **testing de calidad, fiabilidad, seguridad y utilidad pedagógica** para chatbots y asistentes conversacionales basados en Modelos de Lenguaje de Gran Tamaño (LLMs) aplicados a entornos educativos.
+Diseñar, formalizar y evaluar una metodología sistemática y reproducible de **testing de calidad, fiabilidad, seguridad y utilidad pedagógica** para chatbots y asistentes conversacionales basados en Modelos de Lenguaje de Gran Tamaño (LLMs) aplicados a entornos educativos.
 
-El marco se fundamenta en los atributos de calidad de la norma **ISO/IEC 25010:2023**, la teoría de la **Zona de Desarrollo Próximo y Andamiaje** de Vygotsky, y los modelos de feedback formativo de Hattie & Timperley.
+El marco se fundamenta en los atributos de calidad de producto de la norma **ISO/IEC 25010:2023**, la teoría de la **Zona de Desarrollo Próximo y Andamiaje** de Vygotsky, Wood, Bruner & Ross, y los modelos de retroalimentación formativa de Hattie & Timperley.
 
 ---
 
-## 🚀 Guía Rápida de Uso
+## 🚀 Guía Rápida de Uso y Reproducibilidad
 
 ### 1. Compilación de la Memoria (PDF)
-Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) con resolución de bibliografía e índices:
+Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) con resolución de bibliografía cruzada (`biber` + `pdflatex`):
 ```bash
 ./compilar_memoria.sh
 ```
-El documento generado se ubica en `docs/memoria/main.pdf` (48 páginas).
+El documento generado se ubica en `docs/memoria/main.pdf` (62 páginas).
 
 ### 2. Ejecución de Tests Unitarios
-Para validar la suite completa de pruebas unitarias de métricas, acuerdos $\kappa$ psicométricos y utilidades:
+Para validar la suite completa de pruebas unitarias de métricas dimensionales, agregación $IQE$, detección de fallos críticos y consistencia inter-evaluador ($\kappa$):
 ```bash
 python3 -m unittest discover -s src/analisis -p "test_*.py" && python3 -m unittest discover -s src/utils -p "test_*.py"
 ```
 
-### 3. Ejecución Experimental de Pruebas Conversacionales
+### 3. Pipeline de Análisis de Datos y Concordancia Inter-Evaluador
 ```bash
-# Modo simulado calibrado (offline reproducible):
-python3 src/evaluador/ejecutor_pruebas.py --mode simulado
+# 1. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
+python3 src/analisis/analizador_experimentos.py
 
-# Modo inferencia en tiempo real con servidor local de Ollama:
+# 2. Calcular la concordancia inter-evaluador independiente (Kappa de Cohen global y dimensional):
+python3 src/analisis/calcular_concordancia_evaluadores.py
+
+# 3. Generar gráficos vectoriales de resultados (radar y barras):
+python3 src/visualizacion/generar_graficos.py
+```
+
+### 4. Ejecución del Motor de Testing Conversacional (Ollama)
+```bash
+# Ejecución en tiempo real con servidor Ollama local o remoto:
 python3 src/evaluador/ejecutor_pruebas.py --mode ollama --model llama3:8b --endpoint http://localhost:11434/api/chat
 ```
 
@@ -45,23 +56,19 @@ python3 src/evaluador/ejecutor_pruebas.py --mode ollama --model llama3:8b --endp
 
 ```text
 TFG/
-├── .gitignore                              # Exclusiones de Git (temporales LaTeX, Python)
+├── LICENSE                                 # Licencia de código abierto MIT
 ├── README.md                               # Documentación principal del repositorio
 ├── compilar_memoria.sh                     # Script para compilar la memoria en PDF
 │
 ├── docs/                                   # Documentación académica
-│   ├── documentacion_inicial/              # Informes previos, objetivos e índices provisionales
-│   ├── planificacion/                      # Cronogramas temporales
-│   └── memoria/                            # Memoria en LaTeX (Plantilla UAM / EPS)
+│   └── memoria/                            # Memoria en LaTeX (Plantilla oficial UAM / EPS)
 │       ├── main.tex                        # Documento principal
-│       ├── main.pdf                        # Documento final compilado (48 págs.)
-│       ├── compilar_pdf.sh                 # Script de compilación interna
-│       ├── tfgtfmthesisuam.cls             # Clase oficial UAM
+│       ├── main.pdf                        # Documento final compilado (62 págs.)
+│       ├── tfgtfmthesisuam.cls             # Clase oficial UAM (EPS)
 │       ├── referencias.bib                 # Bibliografía en formato BibTeX
 │       ├── inicio/                         # Resumen, abstract, agradecimientos, prefacio
 │       ├── capitulos/                      # Capítulos del 01 al 08 (Anexos)
-│       ├── figuras/                        # Gráficos vectoriales en PDF/PNG
-│       └── img/                            # Logos institucionales EPS-UAM y figuras
+│       └── img/                            # Figuras vectoriales y logos institucionales
 │
 ├── metodologia/                            # Formalización teórica del testing
 │   ├── justificacion_y_fundamentos.md      # Justificación científica y pedagógica
@@ -69,38 +76,34 @@ TFG/
 │   ├── rubricas/                           # Rúbrica general y guía del evaluador
 │   └── metricas/                           # Definición de fórmulas matemáticas (IQE, CFR, HR, κ)
 │
-├── data/                                   # Conjuntos de datos y trazas de ejecución
-│   ├── prompts/                            # 42 casos de prueba organizados por dimensión
-│   ├── configuraciones_chatbot/            # System prompts y parámetros de los perfiles
-│   ├── respuestas_obtenidas/raw/           # 126 respuestas generadas en formato JSON
-│   └── evaluaciones/                       # Calificaciones con la rúbrica multidimensional
+├── data/                                   # Conjuntos de datos experimentales
+│   ├── prompts/                            # 42 casos de prueba organizados por dimensión y tipo
+│   ├── configuraciones_chatbot/            # System prompts y parámetros de inferencia de los perfiles
+│   ├── respuestas_obtenidas/raw/           # 126 trazas de respuesta conversacional completas
+│   └── evaluaciones/                       # Evaluaciones independientes pareadas (Evaluador 1 y 2)
 │
-├── src/                                    # Código fuente y herramientas
-│   ├── evaluador/                          # Ejecutor de pruebas (simulado y Ollama live)
-│   ├── analisis/                           # Módulos de métricas y tests unitarios
-│   ├── utils/                              # Carga de datos y exportación
-│   └── visualizacion/                      # Generación de gráficos vectoriales
+├── src/                                    # Código fuente y herramientas en Python
+│   ├── evaluador/                          # Motor de ejecución de pruebas contra Ollama API
+│   ├── analisis/                           # Módulos de cálculo métrico, agregación y Kappa
+│   ├── utils/                              # Loader de casos, exportadores y generador de datos
+│   └── visualizacion/                      # Generador de gráficos de radar y barras comparativas
 │
 └── results/                                # Resultados consolidados para la memoria
     ├── tablas/                             # Tablas comparativas en CSV, Markdown y LaTeX
-    ├── graficos/                           # Gráficos de radar y barras
-    └── informes/                           # Resumen comparativo global JSON
+    ├── graficos/                           # Gráficos vectoriales en PDF y PNG
+    └── informes/                           # Informes comparativos y de concordancia en JSON
 ```
 
 ---
 
-## 📅 Cronograma y Fases Clave
+## 📊 Resumen de Resultados Experimentales
 
-| Periodo | Fase | Entregable principal |
-| :--- | :--- | :--- |
-| **8–16 ago** | Fundamentos LLM y arquitecturas | Base técnica consolidada |
-| **17–23 ago** | Entorno experimental (Ollama/Open WebUI) | Chatbot local configurado |
-| **24–31 ago** | Fundamentos de testing y contexto educativo | Marco teórico inicial |
-| **1–7 sep** | Estado del arte y alcance definitivo | Índice y objetivos cerrados |
-| **8–14 sep** | Diseño de la metodología | Dimensiones, métricas y rúbricas |
-| **15–21 sep** | Batería de pruebas | Banco de casos de prueba completado |
-| **22–28 sep** | Ejecución experimental | Recogida de respuestas de los LLMs |
-| **29 sep–5 oct** | Análisis de resultados y marco teórico | Procesamiento de datos y gráficos |
-| **6–12 oct** | Redacción integral | **Primer borrador completo** |
-| **13–16 oct** | Revisión sustantiva | Ajustes y revisión con tutor |
-| **17–20 oct** | Revisión final y entrega | **Documento final compilado** |
+Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B-Instruct** (`Q4_0`, `num_ctx=2048`, `seed=42`):
+
+| Perfil de Chatbot | IQE (0--100) | CFR (%) | HR (%) | D1 (Factual) | D2 (Aluc.) | D3 (Claridad) | D4 (Feedback) | D5 (Seguridad) | D6 (Nivel) | D7 (Directriz) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Asistente Base** | **64.13** | 9.52% | 33.33% | 1.90 | 1.86 | 2.02 | 1.86 | 1.90 | 2.02 | 1.95 |
+| **Tutor Directo** | **99.29** | 0.00% | 0.00% | 3.00 | 3.00 | 2.98 | 2.86 | 3.00 | 3.00 | 3.00 |
+| **Tutor Socrático** | **100.00** | 0.00% | 0.00% | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 |
+
+* **Concordancia Inter-Evaluador (Doble evaluación independiente):** $\kappa = 0.931$ ($P_o = 0.968, P_e = 0.541$).

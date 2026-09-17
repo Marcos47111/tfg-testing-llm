@@ -6,6 +6,7 @@
     "temperature": 0.2,
     "top_p": 0.9,
     "repeat_penalty": 1.1,
-    "seed": 42
+    "seed": 42,
+    "num_ctx": 2048
   }
 }

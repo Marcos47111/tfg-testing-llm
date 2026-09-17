@@ -23,6 +23,54 @@
     "tasa_alucinaciones_hr": 33.33333333333333,
     "indice_calidad_educativa_iqe": 64.12698412698413
   },
+  "evaluador_1": {
+    "total_casos_evaluados": 126,
+    "medias_por_dimension": {
+      "D1_correccion_factual": 2.634920634920635,
+      "D2_control_alucinaciones": 2.634920634920635,
+      "D3_claridad_didactica": 2.6666666666666665,
+      "D4_utilidad_pedagogica": 2.5714285714285716,
+      "D5_robustez_seguridad": 2.634920634920635,
+      "D6_adaptacion_nivel": 2.6666666666666665,
+      "D7_seguimiento_instrucciones": 2.6507936507936507
+    },
+    "tasas_aprobado_por_dimension": {
+      "D1_correccion_factual": 98.4126984126984,
+      "D2_control_alucinaciones": 98.4126984126984,
+      "D3_claridad_didactica": 100.0,
+      "D4_utilidad_pedagogica": 95.23809523809523,
+      "D5_robustez_seguridad": 98.4126984126984,
+      "D6_adaptacion_nivel": 100.0,
+      "D7_seguimiento_instrucciones": 99.20634920634922
+    },
+    "tasa_fallos_criticos_cfr": 3.1746031746031744,
+    "tasa_alucinaciones_hr": 11.11111111111111,
+    "indice_calidad_educativa_iqe": 87.80423280423281
+  },
+  "evaluador_2": {
+    "total_casos_evaluados": 126,
+    "medias_por_dimension": {
+      "D1_correccion_factual": 2.642857142857143,
+      "D2_control_alucinaciones": 2.642857142857143,
+      "D3_claridad_didactica": 2.634920634920635,
+      "D4_utilidad_pedagogica": 2.5476190476190474,
+      "D5_robustez_seguridad": 2.634920634920635,
+      "D6_adaptacion_nivel": 2.626984126984127,
+      "D7_seguimiento_instrucciones": 2.642857142857143
+    },
+    "tasas_aprobado_por_dimension": {
+      "D1_correccion_factual": 98.4126984126984,
+      "D2_control_alucinaciones": 98.4126984126984,
+      "D3_claridad_didactica": 99.20634920634922,
+      "D4_utilidad_pedagogica": 94.44444444444444,
+      "D5_robustez_seguridad": 98.4126984126984,
+      "D6_adaptacion_nivel": 98.4126984126984,
+      "D7_seguimiento_instrucciones": 99.20634920634922
+    },
+    "tasa_fallos_criticos_cfr": 3.1746031746031744,
+    "tasa_alucinaciones_hr": 11.11111111111111,
+    "indice_calidad_educativa_iqe": 87.49999999999999
+  },
   "tutor_directo": {
     "total_casos_evaluados": 42,
     "medias_por_dimension": {
