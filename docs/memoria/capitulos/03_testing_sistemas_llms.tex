@@ -30,7 +30,7 @@ Esta naturaleza no determinista sitúa al ingeniero ante el denominado \textit{P
 
 En segundo lugar, el intento de emplear métricas sintácticas clásicas procedentes del procesamiento del lenguaje natural, tales como BLEU o ROUGE (basadas en el solapamiento de n-gramas con un texto de referencia), resulta insuficiente para evaluar la calidad formativa. Una respuesta generada puede obtener una coincidencia léxica muy baja respecto a una referencia canónica y, sin embargo, constituir una explicación didáctica adecuada al nivel del alumno. A la inversa, una respuesta que copie casi textualmente el texto de referencia pero altere un signo matemático o una negación lógica obtendrá una alta puntuación en BLEU a pesar de incurrir en un error conceptual grave.
 
-Por último, salvo que se fije deliberadamente una temperatura nula ($T = 0$) y una semilla determinista idéntica, el sistema puede generar salidas ligeramente divergentes ante sucesivas ejecuciones de la misma prueba, lo que dificulta la reproducibilidad de los fallos esporádicos y exige metodologías de evaluación basadas en distribuciones estadísticas y rúbricas analíticas estructuradas.
+Por último, e incluso reduciendo la aleatoriedad mediante valores bajos de temperatura ($T \approx 0$) y semillas deterministas fijas, la reproducibilidad exacta bit a bit puede verse condicionada por la arquitectura de ejecución paralela o las optimizaciones del motor de inferencia, lo que dificulta el aislamiento determinista de fallos esporádicos y exige metodologías de evaluación basadas en rúbricas analíticas estructuradas y agregación estadística.
 
 \section{Paradigmas de evaluación existentes y benchmarks generales}
 \label{sec:evaluacion_respuestas}
