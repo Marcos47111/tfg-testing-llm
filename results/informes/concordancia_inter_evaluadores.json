@@ -1,17 +1,17 @@
 {
   "global": {
-    "kappa": 0.9815,
+    "kappa": 0.9818,
     "acuerdo_observado_po": 0.9932,
-    "acuerdo_esperado_pe": 0.633,
+    "acuerdo_esperado_pe": 0.626,
     "total_pares": 882,
     "interpretacion": "Acuerdo casi perfecto / Excelente"
   },
   "por_dimension": {
     "D1_correccion_factual": {
       "nombre": "D1: Factualidad",
-      "kappa": 0.9769,
+      "kappa": 0.9802,
       "po": 0.9921,
-      "pe": 0.657,
+      "pe": 0.5994,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },

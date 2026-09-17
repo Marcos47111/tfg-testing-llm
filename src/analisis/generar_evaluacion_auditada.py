@@ -72,14 +72,29 @@ def construir_evaluaciones_auditadas():
         # Ajustes específicos según la respuesta real verificada:
         
         # --- FACTUALIDAD ---
-        if cid == "FACT_002":
+        if cid == "FACT_001":
+            if perfil == "tutor_socratico":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Aporta la regla del producto matemáticamente correcta pero delega la derivación completa al alumno."
+        elif cid == "FACT_002":
             if perfil == "asistente_base":
                 scores["D1_correccion_factual"] = 2
                 just["D1_correccion_factual"] = "Imprecisión conceptual al afirmar que a mayor entropía se requiere menor información para describir el microestado."
+        elif cid == "FACT_003":
+            if perfil == "tutor_socratico":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "No aporta la diferenciación biológica solicitada entre mitosis y meiosis, devolviendo la pregunta al discente."
         elif cid == "FACT_004":
             if perfil == "asistente_base":
                 scores["D1_correccion_factual"] = 2
                 just["D1_correccion_factual"] = "Imprecisión histórica: nombra a Manuel Azaña como presidente del Gobierno durante la guerra en lugar de presidente de la República."
+            elif perfil == "tutor_socratico":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Aporta pistas sobre alianzas internacionales pero no especifica las fechas ni bandos, solicitándoselos al estudiante."
+        elif cid == "FACT_005":
+            if perfil == "tutor_socratico":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Formula preguntas guía sobre notación asintótica sin proporcionar la complejidad temporal de Quicksort."
         elif cid == "FACT_006":
             if perfil == "asistente_base":
                 scores["D1_correccion_factual"] = 0
@@ -94,8 +109,8 @@ def construir_evaluaciones_auditadas():
                 just["D1_correccion_factual"] = "Fallo crítico factual: ecuación química falsa y desbalanceada (9 O2 produce 18 O en reactivos vs 10 O en productos)."
                 just["D4_utilidad_pedagogica"] = "Explicación detallada pero entrega ecuación errónea."
             elif perfil == "tutor_socratico":
-                scores["D1_correccion_factual"] = 3
-                just["D1_correccion_factual"] = "Ecuación estequiométrica perfectamente balanceada (C3H8 + 5 O2 -> 3 CO2 + 4 H2O)."
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Identifica reactivos y productos cualitativos sin errores, pero no escribe la ecuación estequiométrica balanceada completa."
                 
         # --- ALUCINACIONES ---
         elif cid == "ALUC_001":

@@ -50,7 +50,7 @@
   "tutor_socratico": {
     "total_casos_evaluados": 42,
     "medias_por_dimension": {
-      "D1_correccion_factual": 2.5952380952380953,
+      "D1_correccion_factual": 2.4761904761904763,
       "D2_control_alucinaciones": 2.880952380952381,
       "D3_claridad_didactica": 2.9285714285714284,
       "D4_utilidad_pedagogica": 2.8095238095238093,
@@ -69,6 +69,6 @@
     },
     "tasa_fallos_criticos_cfr": 11.904761904761903,
     "tasa_alucinaciones_hr": 16.666666666666664,
-    "indice_calidad_educativa_iqe": 93.96825396825396
+    "indice_calidad_educativa_iqe": 92.97619047619048
   }
 }

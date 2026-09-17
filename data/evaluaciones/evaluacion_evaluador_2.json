@@ -2600,7 +2600,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 2,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -2609,7 +2609,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Aporta la regla del producto matemáticamente correcta pero delega la derivación completa al alumno.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -2654,7 +2654,7 @@
     "materia": "Biología",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 2,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -2663,7 +2663,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "No aporta la diferenciación biológica solicitada entre mitosis y meiosis, devolviendo la pregunta al discente.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -2681,7 +2681,7 @@
     "materia": "Historia",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 2,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -2690,7 +2690,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Aporta pistas sobre alianzas internacionales pero no especifica las fechas ni bandos, solicitándoselos al estudiante.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -2708,7 +2708,7 @@
     "materia": "Informática",
     "nivel_educativo": "Universidad",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 2,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -2717,7 +2717,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Formula preguntas guía sobre notación asintótica sin proporcionar la complejidad temporal de Quicksort.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -2735,7 +2735,7 @@
     "materia": "Química",
     "nivel_educativo": "Bachillerato",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 2,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -2744,7 +2744,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Ecuación estequiométrica perfectamente balanceada (C3H8 + 5 O2 -> 3 CO2 + 4 H2O).",
+      "D1_correccion_factual": "Identifica reactivos y productos cualitativos sin errores, pero no escribe la ecuación estequiométrica balanceada completa.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
