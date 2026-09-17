@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.7-tfg`
+**Versión experimental de referencia:** `v1.0.8-tfg`
 
 ---
 
@@ -102,9 +102,9 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 | Perfil de Chatbot | IQE (0--100) | CFR (%) | HR (%) | D1 (Factual) | D2 (Aluc.) | D3 (Claridad) | D4 (Feedback) | D5 (Seguridad) | D6 (Nivel) | D7 (Directriz) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Asistente Base** | **92.30** | 4.76% | 16.67% | 2.90 | 2.88 | 2.81 | 2.71 | 2.93 | 2.00 | 2.90 |
-| **Tutor Directo** | **97.26** | 7.14% | 33.33% | 2.93 | 2.86 | 3.00 | 2.86 | 2.90 | 3.00 | 2.90 |
-| **Tutor Socrático** | **98.97** | 4.76% | 16.67% | 3.00 | 2.90 | 3.00 | 3.00 | 2.93 | 3.00 | 2.90 |
+| **Asistente Base** | **86.30** | 9.52% | 16.67% | 2.74 | 2.93 | 2.83 | 1.86 | 2.76 | 2.00 | 2.79 |
+| **Tutor Directo** | **89.68** | 11.90% | 33.33% | 2.67 | 2.86 | 2.93 | 1.98 | 2.76 | 3.00 | 2.83 |
+| **Tutor Socrático** | **95.48** | 9.52% | 16.67% | 2.74 | 2.88 | 2.93 | 2.88 | 2.93 | 3.00 | 2.81 |
 
-* **Concordancia Inter-Evaluador (Doble evaluación independiente):** $\kappa = 0.974$ ($P_o = 0.996, P_e = 0.824$).
+* **Concordancia Inter-Evaluador (Doble evaluación independiente):** $\kappa = 0.974$ ($P_o = 0.9909, P_e = 0.6578$).
 * **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON de `data/respuestas_obtenidas/raw/` se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.

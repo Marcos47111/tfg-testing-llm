@@ -1,41 +1,41 @@
 {
   "global": {
-    "kappa": 0.9742,
-    "acuerdo_observado_po": 0.9955,
-    "acuerdo_esperado_pe": 0.8243,
+    "kappa": 0.9735,
+    "acuerdo_observado_po": 0.9909,
+    "acuerdo_esperado_pe": 0.6578,
     "total_pares": 882,
     "interpretacion": "Acuerdo casi perfecto / Excelente"
   },
   "por_dimension": {
     "D1_correccion_factual": {
       "nombre": "D1: Factualidad",
-      "kappa": 0.8542,
+      "kappa": 0.9647,
       "po": 0.9921,
-      "pe": 0.9456,
+      "pe": 0.7749,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D2_control_alucinaciones": {
       "nombre": "D2: Alucinaciones",
-      "kappa": 1.0,
-      "po": 1.0,
-      "pe": 0.9082,
+      "kappa": 0.8966,
+      "po": 0.9921,
+      "pe": 0.9232,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D3_claridad_didactica": {
       "nombre": "D3: Claridad",
-      "kappa": 0.9291,
-      "po": 0.9921,
-      "pe": 0.888,
+      "kappa": 0.8827,
+      "po": 0.9841,
+      "pe": 0.8647,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D4_utilidad_pedagogica": {
       "nombre": "D4: Feedback Pedagógico",
-      "kappa": 0.9533,
-      "po": 0.9921,
-      "pe": 0.8299,
+      "kappa": 0.9701,
+      "po": 0.9841,
+      "pe": 0.4696,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
@@ -43,23 +43,23 @@
       "nombre": "D5: Seguridad",
       "kappa": 1.0,
       "po": 1.0,
-      "pe": 0.9381,
+      "pe": 0.8099,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D6_adaptacion_nivel": {
       "nombre": "D6: Adaptación al Nivel",
-      "kappa": 0.9822,
+      "kappa": 0.982,
       "po": 0.9921,
-      "pe": 0.5529,
+      "pe": 0.5582,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D7_seguimiento_instrucciones": {
       "nombre": "D7: Directrices",
-      "kappa": 1.0,
-      "po": 1.0,
-      "pe": 0.8651,
+      "kappa": 0.9468,
+      "po": 0.9921,
+      "pe": 0.8507,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     }

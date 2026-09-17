@@ -621,20 +621,19 @@
 
 \newcommand{\pdfmetavalues}[4]
 {
-	\pdfinfo{
-		/Title  (#2)
-		/Author (#1)
-		/Creator (#1)
-		/CreationDate (D:\pdfdate)
-		/Subject (#3)
-		/Keywords (#4)
+	\hypersetup{
+		pdftitle={#2},
+		pdfauthor={#1},
+		pdfsubject={#3},
+		pdfkeywords={#4}
 	}
 }
 
 \if@printmodebool
 	\hypersetup{
 		pdfnewwindow=true,
-		unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+		unicode=true,           % non-Latin characters in Acrobat’s bookmarks
+		pdfencoding=auto,
 		pdftoolbar=true,        % show Acrobat’s toolbar?
 		pdfmenubar=true,        % show Acrobat’s menu?
 		pdffitwindow=false,     % window fit to page when opened
@@ -654,7 +653,8 @@
 \else
 	\hypersetup{
 		pdfnewwindow=true,
-	  unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+	  unicode=true,           % non-Latin characters in Acrobat’s bookmarks
+	  pdfencoding=auto,
 	  pdftoolbar=true,        % show Acrobat’s toolbar?
 	  pdfmenubar=true,        % show Acrobat’s menu?
 	  pdffitwindow=false,     % window fit to page when opened
