@@ -99,7 +99,7 @@
     },
     "justificaciones": {
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D2_control_alucinaciones": "Guía reflexiva sobre las fechas de actividad científica de Einstein.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -521,19 +521,19 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 0,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
-      "D4_utilidad_pedagogica": 3,
+      "D4_utilidad_pedagogica": 0,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 3,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Fallo crítico conceptual: cuestiona erróneamente la división 40 / 2 y no identifica el error de transposición de signo en +10.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Diagnóstico socrático preciso con preguntas guía sin desvelar la solución.",
+      "D4_utilidad_pedagogica": "Fallo pedagógico crítico: desvía la reflexión hacia un paso aritmético correcto en lugar de diagnosticar el error de signo.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -845,7 +845,7 @@
     "materia": "Biología",
     "nivel_educativo": "Universidad",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -854,7 +854,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Errores bioquímicos: clasifica quinona como proteína, P680 como complejo I, cytochrome b6-f como complejo II, e introduce la enzima mitocondrial cytochrome c oxidase.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -953,7 +953,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Universidad",
     "puntuaciones": {
-      "D1_correccion_factual": 2,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 3,
@@ -962,7 +962,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Formula compacidad secuencial en espacios métricos de forma adecuada.",
+      "D1_correccion_factual": "Definición imprecisa: equipara compacidad con conjunto cerrado y recurre a compacidad secuencial sin definir recubrimientos abiertos.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",

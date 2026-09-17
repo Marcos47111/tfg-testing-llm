@@ -72,7 +72,15 @@ def construir_evaluaciones_auditadas():
         # Ajustes específicos según la respuesta real verificada:
         
         # --- FACTUALIDAD ---
-        if cid == "FACT_006":
+        if cid == "FACT_002":
+            if perfil == "asistente_base":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Imprecisión conceptual al afirmar que a mayor entropía se requiere menor información para describir el microestado."
+        elif cid == "FACT_004":
+            if perfil == "asistente_base":
+                scores["D1_correccion_factual"] = 2
+                just["D1_correccion_factual"] = "Imprecisión histórica: nombra a Manuel Azaña como presidente del Gobierno durante la guerra en lugar de presidente de la República."
+        elif cid == "FACT_006":
             if perfil == "asistente_base":
                 scores["D1_correccion_factual"] = 0
                 scores["D3_claridad_didactica"] = 2
@@ -112,6 +120,19 @@ def construir_evaluaciones_auditadas():
                 scores["D2_control_alucinaciones"] = 1
                 just["D2_control_alucinaciones"] = "No inventa fórmulas falsas, pero no identifica ni desmonta la premisa inexistente del teorema ficticio."
                 
+        elif cid == "ALUC_004":
+            if perfil == "asistente_base":
+                scores["D1_correccion_factual"] = 1
+                scores["D2_control_alucinaciones"] = 0
+                just["D1_correccion_factual"] = "Falsedad en citas bibliográficas y DOIs generados."
+                just["D2_control_alucinaciones"] = "Alucinación crítica: aunque aclara la fecha de defunción, inventa citas completas y DOIs falsos en Nature con total certeza."
+            elif perfil == "tutor_directo":
+                scores["D2_control_alucinaciones"] = 3
+                just["D2_control_alucinaciones"] = "Identifica la imposibilidad cronológica y contextualiza la bibliografía real de Einstein."
+            elif perfil == "tutor_socratico":
+                scores["D2_control_alucinaciones"] = 3
+                just["D2_control_alucinaciones"] = "Guía reflexiva sobre las fechas de actividad científica de Einstein."
+
         elif cid == "ALUC_005":
             if perfil == "asistente_base":
                 scores["D2_control_alucinaciones"] = 3
@@ -133,13 +154,45 @@ def construir_evaluaciones_auditadas():
                 scores["D3_claridad_didactica"] = 1
                 scores["D7_seguimiento_instrucciones"] = 1
                 just["D3_claridad_didactica"] = "Respuesta generada en inglés ante prompt en español."
+            elif perfil == "tutor_directo":
+                scores["D3_claridad_didactica"] = 1
+                scores["D7_seguimiento_instrucciones"] = 1
+                just["D3_claridad_didactica"] = "Respuesta generada en inglés ante prompt en español."
             elif perfil == "tutor_socratico":
                 scores["D3_claridad_didactica"] = 1
                 scores["D7_seguimiento_instrucciones"] = 1
                 just["D3_claridad_didactica"] = "Respuesta generada en inglés ante prompt en español."
                 
         # --- FEEDBACK ---
-        elif cid in ["FEED_001", "FEED_002", "FEED_003", "FEED_004"]:
+        elif cid == "FEED_001":
+            if perfil == "asistente_base":
+                scores["D4_utilidad_pedagogica"] = 1
+                just["D4_utilidad_pedagogica"] = "Solucionismo directo: entrega la solución resuelta sin andamiaje reflexivo."
+            elif perfil == "tutor_directo":
+                scores["D4_utilidad_pedagogica"] = 2
+                just["D4_utilidad_pedagogica"] = "Explica el error conceptual pero adjunta la solución completa resuelta."
+            elif perfil == "tutor_socratico":
+                scores["D4_utilidad_pedagogica"] = 3
+                just["D4_utilidad_pedagogica"] = "Diagnóstico socrático preciso con preguntas guía sin desvelar la solución."
+
+        elif cid == "FEED_002":
+            if perfil == "asistente_base":
+                scores["D1_correccion_factual"] = 2
+                scores["D4_utilidad_pedagogica"] = 2
+                just["D1_correccion_factual"] = "Identifica la solución x = 10 aunque con justificación algo confusa en la división."
+                just["D4_utilidad_pedagogica"] = "Proporciona la solución directamente sin andamiaje reflexivo."
+            elif perfil == "tutor_directo":
+                scores["D1_correccion_factual"] = 0
+                scores["D4_utilidad_pedagogica"] = 0
+                just["D1_correccion_factual"] = "Fallo crítico factual: valida como correcto el paso 2x = 30 + 10 = 40 y concluye que x = 20 es correcto."
+                just["D4_utilidad_pedagogica"] = "Fallo pedagógico crítico: confirma el procedimiento erróneo del alumno y no identifica el error de signo."
+            elif perfil == "tutor_socratico":
+                scores["D1_correccion_factual"] = 0
+                scores["D4_utilidad_pedagogica"] = 0
+                just["D1_correccion_factual"] = "Fallo crítico conceptual: cuestiona erróneamente la división 40 / 2 y no identifica el error de transposición de signo en +10."
+                just["D4_utilidad_pedagogica"] = "Fallo pedagógico crítico: desvía la reflexión hacia un paso aritmético correcto en lugar de diagnosticar el error de signo."
+
+        elif cid in ["FEED_003", "FEED_004"]:
             if perfil == "asistente_base":
                 scores["D4_utilidad_pedagogica"] = 1
                 just["D4_utilidad_pedagogica"] = "Solucionismo directo: entrega la solución resuelta sin andamiaje reflexivo."
@@ -152,11 +205,15 @@ def construir_evaluaciones_auditadas():
                 
         elif cid == "FEED_005":
             if perfil == "asistente_base":
-                scores["D4_utilidad_pedagogica"] = 2
-                just["D4_utilidad_pedagogica"] = "Explica que la búsqueda binaria requiere lista ordenada y da código."
+                scores["D1_correccion_factual"] = 1
+                scores["D4_utilidad_pedagogica"] = 1
+                just["D1_correccion_factual"] = "Contradicción factual: afirma que la búsqueda binaria en lista desordenada es excelente y luego exige ordenar."
+                just["D4_utilidad_pedagogica"] = "Solucionismo directo con contradicción en el diagnóstico pedagógico."
             elif perfil == "tutor_directo":
+                scores["D1_correccion_factual"] = 1
                 scores["D4_utilidad_pedagogica"] = 2
-                just["D4_utilidad_pedagogica"] = "Explica con claridad el requisito de ordenación previa y aporta ejemplos."
+                just["D1_correccion_factual"] = "Contradicción factual: afirma que la búsqueda binaria es muy eficiente en lista desordenada antes de pedir ordenación."
+                just["D4_utilidad_pedagogica"] = "Explica el requisito de ordenación pero valida inicialmente la premisa incorrecta."
             elif perfil == "tutor_socratico":
                 scores["D1_correccion_factual"] = 0
                 scores["D4_utilidad_pedagogica"] = 0
@@ -213,13 +270,16 @@ def construir_evaluaciones_auditadas():
         # --- NIVEL DISCENTE ---
         elif cid == "NIV_002":
             if perfil == "asistente_base":
-                scores["D1_correccion_factual"] = 2
-                just["D1_correccion_factual"] = "Imprecisiones menores en dirección de gradiente protónico en lumen tilacoidal."
+                scores["D1_correccion_factual"] = 1
+                scores["D7_seguimiento_instrucciones"] = 1
+                just["D1_correccion_factual"] = "Inversión de la dirección del gradiente electroquímico de protones entre lumen y estroma tilacoidal."
+                just["D7_seguimiento_instrucciones"] = "Responde en inglés ante prompt en español."
             elif perfil == "tutor_directo":
-                scores["D1_correccion_factual"] = 2
-                just["D1_correccion_factual"] = "Imprecisiones menores en dirección de gradiente protónico y síntesis de NADPH."
+                scores["D1_correccion_factual"] = 1
+                just["D1_correccion_factual"] = "Errores bioquímicos graves: introduce una inexistente NADPH sintasa e invierte el sentido de bombeo de la ATP sintasa."
             elif perfil == "tutor_socratico":
-                scores["D1_correccion_factual"] = 3
+                scores["D1_correccion_factual"] = 1
+                just["D1_correccion_factual"] = "Errores bioquímicos: clasifica quinona como proteína, P680 como complejo I, cytochrome b6-f como complejo II, e introduce la enzima mitocondrial cytochrome c oxidase."
                 
         elif cid == "NIV_006":
             if perfil == "asistente_base":
@@ -229,8 +289,8 @@ def construir_evaluaciones_auditadas():
                 scores["D1_correccion_factual"] = 1
                 just["D1_correccion_factual"] = "Definición imprecisa: confunde subcubierta finita con número finito de elementos y equipara compacto a cerrado."
             elif perfil == "tutor_socratico":
-                scores["D1_correccion_factual"] = 2
-                just["D1_correccion_factual"] = "Formula compacidad secuencial en espacios métricos de forma adecuada."
+                scores["D1_correccion_factual"] = 1
+                just["D1_correccion_factual"] = "Definición imprecisa: equipara compacidad con conjunto cerrado y recurre a compacidad secuencial sin definir recubrimientos abiertos."
 
         # --- SEGUIMIENTO DE INSTRUCCIONES ---
         elif cid == "INST_001":
@@ -245,11 +305,10 @@ def construir_evaluaciones_auditadas():
             just["D7_seguimiento_instrucciones"] = "Incumple restricción obligatoria de longitud (longitud generada inferior a 70 palabras)."
             
         elif cid == "INST_004":
+            scores["D7_seguimiento_instrucciones"] = 0
             if perfil in ["asistente_base", "tutor_directo"]:
-                scores["D7_seguimiento_instrucciones"] = 1
-                just["D7_seguimiento_instrucciones"] = "Incumplimiento de restricción estricta de salida pura JSON: incluye texto conversacional previo."
+                just["D7_seguimiento_instrucciones"] = "Incumplimiento de restricción estricta de salida pura JSON sin texto previo: incluye texto conversacional en inglés."
             elif perfil == "tutor_socratico":
-                scores["D7_seguimiento_instrucciones"] = 0
                 just["D7_seguimiento_instrucciones"] = "Incumple el formato solicitado: no genera objeto JSON, responde con diálogo conversacional."
                 
         elif cid in ["INST_005", "INST_006"]:
@@ -294,12 +353,9 @@ def construir_evaluaciones_auditadas():
             elif cid == "NIV_005" and perfil == "asistente_base":
                 s2["D6_adaptacion_nivel"] = 3
                 j2["D6_adaptacion_nivel"] = "Explicación accesible y bien orientada a secundaria."
-            elif cid == "FEED_002" and perfil == "tutor_directo":
-                s2["D4_utilidad_pedagogica"] = 1
-                j2["D4_utilidad_pedagogica"] = "Entrega la solución numérica antes de permitir la autocorrección."
             elif cid == "NIV_006" and perfil == "tutor_socratico":
-                s2["D1_correccion_factual"] = 3
-                j2["D1_correccion_factual"] = "Definición válida en espacios métricos y topología general."
+                s2["D1_correccion_factual"] = 2
+                j2["D1_correccion_factual"] = "Definición admisible en espacios métricos si se considera compacidad secuencial."
             elif cid == "FACT_001" and perfil == "asistente_base":
                 s2["D4_utilidad_pedagogica"] = 1
             elif cid == "FACT_004" and perfil == "tutor_directo":
@@ -307,9 +363,6 @@ def construir_evaluaciones_auditadas():
             elif cid == "ALUC_001" and perfil == "tutor_socratico":
                 s2["D2_control_alucinaciones"] = 2
                 j2["D2_control_alucinaciones"] = "Evita validar la existencia del teorema y pide aclaración."
-            elif cid == "INST_004" and perfil == "tutor_directo":
-                s2["D7_seguimiento_instrucciones"] = 0
-                j2["D7_seguimiento_instrucciones"] = "Fallo de formato: incluye encabezado conversacional en inglés."
                 
             item2 = {
                 "caso_id": cid,

@@ -1,41 +1,41 @@
 {
   "global": {
-    "kappa": 0.9735,
-    "acuerdo_observado_po": 0.9909,
-    "acuerdo_esperado_pe": 0.6578,
+    "kappa": 0.9815,
+    "acuerdo_observado_po": 0.9932,
+    "acuerdo_esperado_pe": 0.633,
     "total_pares": 882,
     "interpretacion": "Acuerdo casi perfecto / Excelente"
   },
   "por_dimension": {
     "D1_correccion_factual": {
       "nombre": "D1: Factualidad",
-      "kappa": 0.9647,
+      "kappa": 0.9769,
       "po": 0.9921,
-      "pe": 0.7749,
+      "pe": 0.657,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D2_control_alucinaciones": {
       "nombre": "D2: Alucinaciones",
-      "kappa": 0.8966,
+      "kappa": 0.9132,
       "po": 0.9921,
-      "pe": 0.9232,
+      "pe": 0.9086,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D3_claridad_didactica": {
       "nombre": "D3: Claridad",
-      "kappa": 0.8827,
+      "kappa": 0.8937,
       "po": 0.9841,
-      "pe": 0.8647,
+      "pe": 0.8507,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D4_utilidad_pedagogica": {
       "nombre": "D4: Feedback Pedagógico",
-      "kappa": 0.9701,
-      "po": 0.9841,
-      "pe": 0.4696,
+      "kappa": 0.9853,
+      "po": 0.9921,
+      "pe": 0.4599,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
@@ -57,9 +57,9 @@
     },
     "D7_seguimiento_instrucciones": {
       "nombre": "D7: Directrices",
-      "kappa": 0.9468,
-      "po": 0.9921,
-      "pe": 0.8507,
+      "kappa": 1.0,
+      "po": 1.0,
+      "pe": 0.8231,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     }

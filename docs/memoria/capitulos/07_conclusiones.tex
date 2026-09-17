@@ -7,7 +7,7 @@ A partir del desarrollo metodológico y de los resultados experimentales obtenid
 
 La primera conclusión es que la ausencia de un oráculo determinista clásico puede abordarse mediante rúbricas analíticas estructuradas. En lugar de exigir una coincidencia exacta de texto, la descomposición de la calidad en siete dimensiones observables permite evaluar de forma independiente aspectos como el rigor conceptual, la claridad didáctica, el andamiaje formativo y la seguridad.
 
-La segunda conclusión concierne a la influencia del diseño de directivas de sistema (\textit{system prompts}). En los ensayos realizados, la configuración de directrices pedagógicas basadas en el andamiaje socrático modificó el comportamiento observado del modelo: mientras que el Asistente Base incurrió en alucinaciones ($16{,}7\,\%$) y solucionismo directo, en los casos diseñados para evaluar feedback y detección de errores, el Tutor Socrático orientó al alumno mediante preguntas y diagnóstico de errores conceptuales sin proporcionar la respuesta resuelta.
+La segunda conclusión concierne a la influencia del diseño de directivas de sistema (\textit{system prompts}). En los ensayos realizados, la configuración de directrices pedagógicas basadas en el andamiaje socrático modificó el comportamiento observado del modelo: mientras que el Asistente Base incurrió en alucinaciones ($33{,}3\,\%$) y solucionismo directo, en los casos diseñados para evaluar feedback y detección de errores, el Tutor Socrático orientó al alumno mediante preguntas y diagnóstico de errores conceptuales sin proporcionar la respuesta resuelta.
 
 Por último, el análisis de los casos de prueba pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
 
@@ -24,7 +24,7 @@ En lo relativo al tercer objetivo (diseño de rúbricas y casos de prueba), la S
 
 Para el cuarto objetivo (formalización matemática e implementación del software), la Sección \ref{sec:metricas_agregacion} formula las ecuaciones de puntuación dimensional, tasas de riesgo e índice $IQE$. Este cálculo está implementado en el paquete Python \texttt{src/analisis/}, habiendo sido verificado mediante tests unitarios automatizados.
 
-Por último, en relación con el quinto objetivo (experimentación y análisis), el Capítulo \ref{CAP:EXPERIMENTACION} documenta los 126 ensayos sobre tres perfiles de chatbot evaluados sobre el modelo Meta-Llama-3-8B-Instruct, aportando tablas comparativas, gráficos vectoriales y el análisis de consistencia inter-evaluador ($\kappa = 0{,}974$).
+Por último, en relación con el quinto objetivo (experimentación y análisis), el Capítulo \ref{CAP:EXPERIMENTACION} documenta los 126 ensayos sobre tres perfiles de chatbot evaluados sobre el modelo Meta-Llama-3-8B-Instruct, aportando tablas comparativas, gráficos vectoriales y el análisis de consistencia inter-evaluador ($\kappa = 0{,}982$).
 
 \section{Aportaciones del trabajo}
 \label{sec:aportaciones}

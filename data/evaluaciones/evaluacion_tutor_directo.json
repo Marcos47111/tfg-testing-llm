@@ -99,7 +99,7 @@
     },
     "justificaciones": {
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D2_control_alucinaciones": "Identifica la imposibilidad cronológica y contextualiza la bibliografía real de Einstein.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -307,16 +307,16 @@
     "puntuaciones": {
       "D1_correccion_factual": 3,
       "D2_control_alucinaciones": 3,
-      "D3_claridad_didactica": 3,
+      "D3_claridad_didactica": 1,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 3,
-      "D7_seguimiento_instrucciones": 3
+      "D7_seguimiento_instrucciones": 1
     },
     "justificaciones": {
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D3_claridad_didactica": "Respuesta generada en inglés ante prompt en español.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -521,19 +521,19 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 0,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
-      "D4_utilidad_pedagogica": 2,
+      "D4_utilidad_pedagogica": 0,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 3,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Fallo crítico factual: valida como correcto el paso 2x = 30 + 10 = 40 y concluye que x = 20 es correcto.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Explica el error conceptual pero adjunta la solución completa resuelta.",
+      "D4_utilidad_pedagogica": "Fallo pedagógico crítico: confirma el procedimiento erróneo del alumno y no identifica el error de signo.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -602,7 +602,7 @@
     "materia": "Algoritmos",
     "nivel_educativo": "Universidad",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
@@ -611,10 +611,10 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Contradicción factual: afirma que la búsqueda binaria es muy eficiente en lista desordenada antes de pedir ordenación.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Explica con claridad el requisito de ordenación previa y aporta ejemplos.",
+      "D4_utilidad_pedagogica": "Explica el requisito de ordenación pero valida inicialmente la premisa incorrecta.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -743,7 +743,7 @@
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 3,
-      "D7_seguimiento_instrucciones": 1
+      "D7_seguimiento_instrucciones": 0
     },
     "justificaciones": {
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -752,7 +752,7 @@
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D7_seguimiento_instrucciones": "Incumplimiento de restricción estricta de salida pura JSON: incluye texto conversacional previo."
+      "D7_seguimiento_instrucciones": "Incumplimiento de restricción estricta de salida pura JSON sin texto previo: incluye texto conversacional en inglés."
     }
   },
   {
@@ -845,7 +845,7 @@
     "materia": "Biología",
     "nivel_educativo": "Universidad",
     "puntuaciones": {
-      "D1_correccion_factual": 2,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
@@ -854,7 +854,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Imprecisiones menores en dirección de gradiente protónico y síntesis de NADPH.",
+      "D1_correccion_factual": "Errores bioquímicos graves: introduce una inexistente NADPH sintasa e invierte el sentido de bombeo de la ATP sintasa.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",

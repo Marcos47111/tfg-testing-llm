@@ -28,7 +28,11 @@
 \section{Batería de casos de prueba y disponibilidad de datos}
 \label{anexo:casos_prueba}
 
-Cada caso de prueba se formaliza como la tupla $C_i = \langle \text{id}, \text{dimensión}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle$. A continuación se resume la distribución temática de los 42 casos que integran la batería:
+Cada caso de prueba se formaliza como la tupla:
+\begin{equation*}
+    C_i = \langle \text{id}, \text{dimensión}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle
+\end{equation*}
+A continuación se resume la distribución temática de los 42 casos que integran la batería:
 
 \begin{itemize}
     \item \textbf{D1: Corrección Factual (6 casos):} \texttt{FACT\_001} (Derivadas y regla del producto), \texttt{FACT\_002} (Segunda Ley de la Termodinámica y entropía), \texttt{FACT\_003} (Mitosis vs Meiosis), \texttt{FACT\_004} (Guerra Civil Española), \texttt{FACT\_005} (Complejidad temporal de Quicksort), \texttt{FACT\_006} (Estequiometría de combustión de propano).
@@ -42,7 +46,7 @@ Cada caso de prueba se formaliza como la tupla $C_i = \langle \text{id}, \text{d
 
 \paragraph{Acceso al repositorio y reproducibilidad:} Con el fin de favorecer la reproducibilidad y garantizar la trazabilidad del trabajo, el código fuente del framework de testing, la batería completa de 42 casos en formato JSON estructurado (conteniendo el \texttt{prompt} literal, el \texttt{ground\_truth} canónico y el \texttt{criterio\_critico}), los scripts de orquestación para Ollama, los conjuntos de datos con las respuestas completas de los chatbots y las calificaciones de los evaluadores y los módulos de análisis estadístico se encuentran publicados bajo licencia de código abierto MIT en el repositorio público:
 \begin{center}
-\url{https://github.com/Marcos47111/tfg-testing-llm} \quad (\textit{versión experimental de referencia:} \texttt{v1.0.8-tfg})
+\url{https://github.com/Marcos47111/tfg-testing-llm} \quad (\textit{versión experimental de referencia:} \texttt{v1.0.9-tfg})
 \end{center}
 
 \section{Configuración de los Perfiles de Chatbot}

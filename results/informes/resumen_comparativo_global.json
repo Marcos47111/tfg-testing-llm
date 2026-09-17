@@ -2,73 +2,73 @@
   "asistente_base": {
     "total_casos_evaluados": 42,
     "medias_por_dimension": {
-      "D1_correccion_factual": 2.738095238095238,
-      "D2_control_alucinaciones": 2.9285714285714284,
+      "D1_correccion_factual": 2.5476190476190474,
+      "D2_control_alucinaciones": 2.857142857142857,
       "D3_claridad_didactica": 2.8333333333333335,
       "D4_utilidad_pedagogica": 1.8571428571428572,
       "D5_robustez_seguridad": 2.761904761904762,
       "D6_adaptacion_nivel": 2.0,
-      "D7_seguimiento_instrucciones": 2.7857142857142856
+      "D7_seguimiento_instrucciones": 2.7142857142857144
     },
     "tasas_aprobado_por_dimension": {
-      "D1_correccion_factual": 90.47619047619048,
-      "D2_control_alucinaciones": 97.61904761904762,
+      "D1_correccion_factual": 83.33333333333334,
+      "D2_control_alucinaciones": 95.23809523809523,
       "D3_claridad_didactica": 92.85714285714286,
       "D4_utilidad_pedagogica": 85.71428571428571,
       "D5_robustez_seguridad": 95.23809523809523,
       "D6_adaptacion_nivel": 100.0,
-      "D7_seguimiento_instrucciones": 90.47619047619048
+      "D7_seguimiento_instrucciones": 88.09523809523809
     },
-    "tasa_fallos_criticos_cfr": 9.523809523809524,
-    "tasa_alucinaciones_hr": 16.666666666666664,
-    "indice_calidad_educativa_iqe": 86.30952380952381
+    "tasa_fallos_criticos_cfr": 11.904761904761903,
+    "tasa_alucinaciones_hr": 33.33333333333333,
+    "indice_calidad_educativa_iqe": 84.12698412698414
   },
   "tutor_directo": {
     "total_casos_evaluados": 42,
     "medias_por_dimension": {
-      "D1_correccion_factual": 2.6666666666666665,
+      "D1_correccion_factual": 2.5238095238095237,
       "D2_control_alucinaciones": 2.857142857142857,
-      "D3_claridad_didactica": 2.9285714285714284,
-      "D4_utilidad_pedagogica": 1.9761904761904763,
+      "D3_claridad_didactica": 2.880952380952381,
+      "D4_utilidad_pedagogica": 1.9285714285714286,
       "D5_robustez_seguridad": 2.761904761904762,
       "D6_adaptacion_nivel": 3.0,
-      "D7_seguimiento_instrucciones": 2.8333333333333335
+      "D7_seguimiento_instrucciones": 2.761904761904762
     },
     "tasas_aprobado_por_dimension": {
-      "D1_correccion_factual": 88.09523809523809,
+      "D1_correccion_factual": 80.95238095238095,
       "D2_control_alucinaciones": 95.23809523809523,
-      "D3_claridad_didactica": 97.61904761904762,
-      "D4_utilidad_pedagogica": 97.61904761904762,
+      "D3_claridad_didactica": 95.23809523809523,
+      "D4_utilidad_pedagogica": 95.23809523809523,
       "D5_robustez_seguridad": 95.23809523809523,
       "D6_adaptacion_nivel": 100.0,
-      "D7_seguimiento_instrucciones": 92.85714285714286
+      "D7_seguimiento_instrucciones": 90.47619047619048
     },
-    "tasa_fallos_criticos_cfr": 11.904761904761903,
+    "tasa_fallos_criticos_cfr": 14.285714285714285,
     "tasa_alucinaciones_hr": 33.33333333333333,
-    "indice_calidad_educativa_iqe": 89.72222222222223
+    "indice_calidad_educativa_iqe": 87.93650793650794
   },
   "tutor_socratico": {
     "total_casos_evaluados": 42,
     "medias_por_dimension": {
-      "D1_correccion_factual": 2.738095238095238,
+      "D1_correccion_factual": 2.5952380952380953,
       "D2_control_alucinaciones": 2.880952380952381,
       "D3_claridad_didactica": 2.9285714285714284,
-      "D4_utilidad_pedagogica": 2.880952380952381,
+      "D4_utilidad_pedagogica": 2.8095238095238093,
       "D5_robustez_seguridad": 2.9285714285714284,
       "D6_adaptacion_nivel": 3.0,
       "D7_seguimiento_instrucciones": 2.8095238095238093
     },
     "tasas_aprobado_por_dimension": {
-      "D1_correccion_factual": 92.85714285714286,
+      "D1_correccion_factual": 85.71428571428571,
       "D2_control_alucinaciones": 95.23809523809523,
       "D3_claridad_didactica": 97.61904761904762,
-      "D4_utilidad_pedagogica": 95.23809523809523,
+      "D4_utilidad_pedagogica": 92.85714285714286,
       "D5_robustez_seguridad": 97.61904761904762,
       "D6_adaptacion_nivel": 100.0,
       "D7_seguimiento_instrucciones": 92.85714285714286
     },
-    "tasa_fallos_criticos_cfr": 9.523809523809524,
+    "tasa_fallos_criticos_cfr": 11.904761904761903,
     "tasa_alucinaciones_hr": 16.666666666666664,
-    "indice_calidad_educativa_iqe": 95.51587301587301
+    "indice_calidad_educativa_iqe": 93.96825396825396
   }
 }
