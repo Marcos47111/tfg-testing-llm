@@ -1,0 +1,56 @@
+[
+  {
+    "id": "NIV_001",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Biología",
+    "nivel_educativo": "Primaria",
+    "prompt": "Tengo 8 años y estoy en 3º de Primaria. ¿Qué es la fotosíntesis? Explícamelo con palabras muy sencillas.",
+    "ground_truth": "Lenguaje infantil adaptado: la planta 'cocina su propia comida' usando la luz del sol, agua del suelo y aire (dióxido de carbono), produciendo oxígeno y alimento. Tono cálido y motivador sin tecnicismos complejos como ciclo de Calvin o tilacoides.",
+    "criterio_fallo_critico": "Usar jerga bioquímica avanzada incomprensible para un niño de 8 años (ej. fotofosforilación acíclica, NADPH)."
+  },
+  {
+    "id": "NIV_002",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Biología",
+    "nivel_educativo": "Universidad",
+    "prompt": "Soy estudiante de Grado en Biotecnología. Explícame el mecanismo bioquímico de la fase luminosa de la fotosíntesis y el gradiente electroquímico de protones en el cloroplasto.",
+    "ground_truth": "Rigor biotecnológico avanzado: fotosistemas II (P680) y I (P700), fotólisis del agua, cadena de transporte de electrones (plastoquinona, citocromo b6f, plastocianina), translocación de protones al lumen tilacoidal y síntesis de ATP vía ATP sintasa (fuerza protón-motriz).",
+    "criterio_fallo_critico": "Explicación superficial de nivel escolar que omita los complejos proteicos y el gradiente quimiosmótico."
+  },
+  {
+    "id": "NIV_003",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Física",
+    "nivel_educativo": "Primaria",
+    "prompt": "¿Por qué las cosas se caen al suelo si las suelto? Explícaselo a un niño de 7 años.",
+    "ground_truth": "Analogía sencilla sobre la Tierra como un imán gigante invisible (la gravedad) que nos abraza y mantiene todo pegado al suelo para que no flotemos por el espacio.",
+    "criterio_fallo_critico": "Formular ecuaciones de campo de Einstein o formulación matemática de la gravitación universal a un niño de 7 años."
+  },
+  {
+    "id": "NIV_004",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Física",
+    "nivel_educativo": "Universidad",
+    "prompt": "Explica la gravedad desde la perspectiva de la Relatividad General de Einstein a nivel de física universitaria, mencionando la curvatura del espaciotiempo y el tensor de energía-momento.",
+    "ground_truth": "Fundamentación en geometría diferencial y relatividad: la gravedad no es una fuerza a distancia sino la manifestación de la curvatura del espaciotiempo tetradimensional provocada por la distribución de masa-energía, descrita por las ecuaciones de campo de Einstein (G_mu_nu = 8*pi*G/c^4 * T_mu_nu).",
+    "criterio_fallo_critico": "Quedarse en la definición clásica newtoniana sin mencionar la curvatura del tensor métrico o el espaciotiempo."
+  },
+  {
+    "id": "NIV_005",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Economía",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Tengo 13 años. ¿Por qué el dinero pierde valor con la inflación? Ponme el ejemplo de la paga semanal y las chuches.",
+    "ground_truth": "Adaptación didáctica excelente: si hoy con 1 euro compras 10 caramelos y el año que viene con el mismo euro solo compras 8 porque han subido de precio, tu dinero rinde menos. Tono cercano y comprensible para ESO.",
+    "criterio_fallo_critico": "Explicación macroeconómica cargada de modelos econométricos (curva de Phillips, ecuaciones de Fisher) sin responder al ejemplo pedido."
+  },
+  {
+    "id": "NIV_006",
+    "dimension_principal": "D6_adaptacion_nivel",
+    "materia": "Matemáticas",
+    "nivel_educativo": "Universidad",
+    "prompt": "Define el concepto de compacidad topológica para un estudiante de último curso del Grado en Matemáticas.",
+    "ground_truth": "Definición topológica rigurosa: un espacio topológico X es compacto si de todo recubrimiento abierto de X se puede extraer un subrecubrimiento finito. Mención de equivalencias en R^n (teorema de Heine-Borel: cerrado y acotado) y propiedades de funciones continuas.",
+    "criterio_fallo_critico": "Definir compacidad únicamente como 'conjunto que no es infinito' o con lenguaje vago no formal."
+  }
+]

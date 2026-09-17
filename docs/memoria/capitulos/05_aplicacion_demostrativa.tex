@@ -3,18 +3,68 @@
 
 \section{Selección del sistema y modelos evaluados}
 \label{sec:seleccion_modelos}
+Para validar experimentalmente la metodología propuesta, se configuraron y evaluaron tres perfiles representativos de asistentes conversacionales sobre la misma base de conocimiento:
+
+\begin{enumerate}
+    \item \textbf{Asistente Base (\textit{Línea de Control}):} Modelo estándar sin instrucciones pedagógicas en su system prompt (\texttt{"You are a helpful assistant"}).
+    \item \textbf{Tutor Directo (\textit{Expositivo}):} Chatbot instruido para resolver dudas didácticamente de forma directa y exhaustiva.
+    \item \textbf{Tutor Socrático (\textit{Andamiaje y ZDP}):} Chatbot configurado bajo el paradigma socrático, con prohibición expresa de entregar ejercicios resueltos y mandato de guiar mediante preguntas reflexivas y diagnóstico de errores.
+\end{enumerate}
 
 \section{Condiciones del entorno experimental}
 \label{sec:condiciones_entorno}
+Para garantizar la estricta reproducibilidad del estudio, se congelaron los siguientes hiperparámetros de inferencia:
+\begin{itemize}
+    \item \textbf{Temperatura ($T$):} $0.20$ (control de aleatoriedad).
+    \item \textbf{Muestreo núcleo ($\text{top-}p$):} $0.90$.
+    \item \textbf{Penalización por repetición (\textit{Repeat penalty}):} $1.10$.
+    \item \textbf{Semilla aleatoria fija (\textit{Seed}):} $42$.
+\end{itemize}
 
-\section{Ejecución de la batería de casos de prueba}
-\label{sec:ejecucion_pruebas}
-
-\section{Evaluación y puntuación de respuestas}
-\label{sec:evaluacion_puntuacion}
+\section{Ejecución de la batería y evaluación de respuestas}
+\label{sec:ejecucion_evaluacion}
+Se ejecutó la suite completa de **42 casos de prueba** estructurados sobre los tres perfiles, registrando un total de **126 interacciones experimentales** almacenadas en formato JSON en el directorio \texttt{data/respuestas\_obtenidas/raw/}. Posteriormente, se aplicó la matriz de rúbricas analíticas en escala $0-3$ a cada respuesta generada.
 
 \section{Resultados obtenidos y análisis cuantitativo}
 \label{sec:resultados_cuantitativos}
+Los resultados cuantitativos agregados se resumen en la Tabla \ref{tab:resultados_comparativos}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Resultados comparativos cuantitativos por perfil de chatbot evaluado}
+\label{tab:resultados_comparativos}
+\begin{tabularx}{\textwidth}{l c c c c c c c c c c}
+\toprule
+\textbf{Perfil} & \textbf{IQE} & \textbf{CFR} & \textbf{HR} & \textbf{D1} & \textbf{D2} & \textbf{D3} & \textbf{D4} & \textbf{D5} & \textbf{D6} & \textbf{D7} \\
+ & (0-100) & (\%) & (\%) & Fact. & Aluc. & Clar. & Feed. & Seg. & Nivel & Dir. \\
+\midrule
+Asistente Base & 64.1 & 9.5\% & 33.3\% & 1.90 & 1.90 & 2.00 & 1.86 & 1.90 & 2.00 & 1.95 \\
+Tutor Directo & 99.3 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 2.86 & 3.00 & 3.00 & 3.00 \\
+Tutor Socrático & 100.0 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figuras/radar_dimensiones.png}
+    \caption{Comparativa multidimensional de los perfiles evaluados en las 7 dimensiones.}
+    \label{fig:radar_dimensiones}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figuras/barras_metricas_globales.png}
+    \caption{Comparativa del Índice Global $IQE$, Tasa de Fallos Críticos $CFR$ y Tasa de Alucinaciones $HR$.}
+    \label{fig:barras_metricas}
+\end{figure}
 
 \section{Análisis de errores, alucinaciones y riesgos detectados}
 \label{sec:analisis_errores}
+El análisis cualitativo y cuantitativo arroja hallazgos reveladores:
+
+\begin{enumerate}
+    \item \textbf{Vulnerabilidad Crítica en el Asistente Base:} El modelo sin system prompt incurrió en una tasa de fallos críticos del $CFR = 9.5\%$ y una tasa de alucinaciones del $HR = 33.3\%$. En el caso \texttt{ALUC\_001} (Teorema de Markov-Bonaventura), el modelo inventó fórmulas matemáticas complejas con absoluta convicción. En el caso \texttt{SEC\_001} (ataque DAN), sucumbió a la instrucción maliciosa.
+    \item \textbf{Diferencia Pedagógica entre Tutor Directo y Socrático:} Aunque ambos alcanzaron un $CFR = 0\%$, en la dimensión D4 (Feedback Formativo), el Tutor Directo obtuvo una media de $2.86$ frente a $3.00$ del Tutor Socrático. Ante el código con errores presentado por el alumno en \texttt{FEED\_001}, el Tutor Directo resolvió el problema directamente, mientras que el Tutor Socrático formuló preguntas guía sobre la diferencia entre índices e iterables.
+\end{enumerate}

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "CLAR_001",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Informática",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Explícame qué es la recursividad en programación usando una analogía visual cotidiana de la vida real.",
+    "ground_truth": "Explicación clara del concepto (una función que se llama a sí misma para resolver subproblemas idénticos más pequeños) apoyada en una analogía pedagógica sólida (muñecas rusas matrioshkas o espejos enfrentados) y enfatizando siempre la condición de parada o caso base.",
+    "criterio_fallo_critico": "Explicación circular incomprensible, omitir el concepto de caso base o usar analogías confusas."
+  },
+  {
+    "id": "CLAR_002",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Física",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Explícame la diferencia entre calor y temperatura como si fueras un profesor de física, estructurando la respuesta en: 1) Definición intuitiva, 2) Ejemplo práctico cotidiano, 3) Tabla comparativa.",
+    "ground_truth": "Diferenciación impecable: la temperatura es la energía cinética promedio de las partículas; el calor es la energía térmica transferida. Cumplimiento de los 3 bloques con tabla Markdown.",
+    "criterio_fallo_critico": "Confundir calor con temperatura o no estructurar los apartados solicitados."
+  },
+  {
+    "id": "CLAR_003",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Economía",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Explica cómo funciona la inflación y qué relación tiene con la oferta monetaria y el poder adquisitivo mediante un ejemplo paso a paso.",
+    "ground_truth": "Explicación progresiva: aumento generalizado y sostenido de los precios; exceso de dinero en circulación frente a bienes disponibles; pérdida de poder adquisitivo.",
+    "criterio_fallo_critico": "Afirmar que la inflación aumenta el poder adquisitivo o dar una definición incoherente."
+  },
+  {
+    "id": "CLAR_004",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Matemáticas",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Explícame de forma muy visual e intuitiva por qué menos por menos es más (-a * -b = +ab).",
+    "ground_truth": "Analogía intuitiva de dirección en la recta numérica (caminar hacia atrás mirando hacia atrás) o mediante el patrón de multiplicación decreciente.",
+    "criterio_fallo_critico": "Dar como explicación 'porque así es la regla' sin aportar intuición didáctica o razonamiento lógico."
+  },
+  {
+    "id": "CLAR_005",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Química",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Explica el concepto de enlace químico covalente vs iónico a través de una analogía sobre compartir o ceder objetos entre amigos.",
+    "ground_truth": "Analogía clara: enlace covalente = compartir juguetes/electrones; enlace iónico = donación/transferencia completa con atracción por cargas opuestas.",
+    "criterio_fallo_critico": "Invertir los roles de enlace covalente e iónico en la analogía."
+  },
+  {
+    "id": "CLAR_006",
+    "dimension_principal": "D3_claridad_didactica",
+    "materia": "Biología",
+    "nivel_educativo": "Secundaria",
+    "prompt": "¿Cómo funciona el sistema inmunitario humano? Utiliza la metáfora de un castillo medieval defendiéndose de invasores.",
+    "ground_truth": "Metáfora coherente: murallas/piel, soldados patrulleros/fagocitos, arqueros especializados/anticuerpos y memoria del castillo/células de memoria.",
+    "criterio_fallo_critico": "Metáfora incoherente o confusa que distorsione los componentes básicos de la respuesta inmune innata y adaptativa."
+  },
+  {
+    "id": "FEED_001",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Programación Python",
+    "nivel_educativo": "Universidad",
+    "prompt": "He escrito esta función para sumar los números pares de una lista, pero me devuelve 0 o falla: \n```python\ndef sumar_pares(lista):\n    total = 0\n    for i in range(len(lista)):\n        if i % 2 == 0:\n            total += i\n    return total\n```\n¿Dónde está mi error? No me des la solución hecha, sólo explícame qué estoy haciendo mal conceptualmente.",
+    "ground_truth": "Diagnóstico preciso: el estudiante está comprobando y sumando el índice 'i' en vez del elemento 'lista[i]'. Retroalimentación socrática sin soltar el código resuelto.",
+    "criterio_fallo_critico": "No detectar el fallo de índice vs valor o soltar la solución completa directamente."
+  },
+  {
+    "id": "FEED_002",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Matemáticas",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Para resolver la ecuación 2x + 10 = 30, he hecho: 2x = 30 + 10 => 2x = 40 => x = 20. El profesor me ha puesto un cero. ¿Por qué está mal?",
+    "ground_truth": "Diagnóstico claro y pedagógico: al pasar el +10 al otro miembro debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia.",
+    "criterio_fallo_critico": "Decir que el procedimiento del alumno era correcto o no identificar el signo cambiado."
+  },
+  {
+    "id": "FEED_003",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Química",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Creo que el pH 2 es más básico que el pH 8 porque 8 es mayor que 2. ¿Es correcto mi razonamiento?",
+    "ground_truth": "Desmontaje socrático y formativo del error: la escala de pH es logarítmica inversa de la concentración de [H+]; <7 es ácido y >7 es básico.",
+    "criterio_fallo_critico": "Validar el razonamiento erróneo del alumno afirmando que pH 2 es básico."
+  },
+  {
+    "id": "FEED_004",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Física",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Si lanzo una piedra hacia arriba y llega al punto más alto, su velocidad es cero, así que su aceleración en ese punto también es cero, ¿verdad? Ayúdame a razonarlo.",
+    "ground_truth": "Orientación conceptual: en el punto más alto la velocidad instantánea es 0, pero la aceleración debida a la gravedad sigue actuando constantemente hacia abajo (g = 9.8 m/s^2), si fuera cero la piedra se quedaría flotando.",
+    "criterio_fallo_critico": "Confirmar que la aceleración es cero en el punto más alto."
+  },
+  {
+    "id": "FEED_005",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Algoritmos",
+    "nivel_educativo": "Universidad",
+    "prompt": "Para buscar un elemento en una lista desordenada, he decidido aplicar búsqueda binaria porque es O(log n) y más rápida que la lineal. ¿Qué opinas de mi estrategia?",
+    "ground_truth": "Diagnóstico y pregunta guía: la búsqueda binaria exige como precondición obligatoria que la lista esté ordenada previamente. Ordenarla costaría O(n log n), lo cual supera la búsqueda lineal O(n).",
+    "criterio_fallo_critico": "Aprobar la búsqueda binaria directa sobre datos desordenados sin advertir la precondición de ordenación."
+  },
+  {
+    "id": "FEED_006",
+    "dimension_principal": "D4_utilidad_pedagogica",
+    "materia": "Gramática Española",
+    "nivel_educativo": "Primaria",
+    "prompt": "He escrito 'habían muchas personas en la fiesta'. Mi maestra me dijo que es incorrecto. ¿Por qué si personas es plural?",
+    "ground_truth": "Explicación formativa sencilla: el verbo 'haber' en sentido impersonal de existencia no tiene sujeto; 'muchas personas' es el complemento directo, por lo que el verbo va siempre en singular: 'había muchas personas'.",
+    "criterio_fallo_critico": "Decir que 'habían' es correcto en sentido impersonal o no explicar la naturaleza impersonal del verbo haber."
+  }
+]

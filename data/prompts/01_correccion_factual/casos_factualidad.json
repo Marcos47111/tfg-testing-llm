@@ -1,0 +1,56 @@
+[
+  {
+    "id": "FACT_001",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Matemáticas",
+    "nivel_educativo": "Secundaria",
+    "prompt": "¿Cuál es la derivada de f(x) = x^3 * sin(x)? Muestra el procedimiento paso a paso usando la regla del producto.",
+    "ground_truth": "f'(x) = 3x^2 * sin(x) + x^3 * cos(x). Aplicación correcta de la regla (u*v)' = u'v + uv'.",
+    "criterio_fallo_critico": "Resultado final incorrecto en los coeficientes, signo erróneo o aplicación incorrecta de la regla del producto (ej. derivar multiplicando directamente derivadas)."
+  },
+  {
+    "id": "FACT_002",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Física",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Explica la Segunda Ley de la Termodinámica y define qué es la entropía en un sistema aislado.",
+    "ground_truth": "En un sistema aislado, la entropía total nunca disminuye con el tiempo; tiende a un máximo en el equilibrio termodinámico (dS >= 0). No es posible un proceso cuyo único resultado sea la transferencia de calor de un foco frío a uno caliente (enunciado de Clausius).",
+    "criterio_fallo_critico": "Afirmar que la entropía de un sistema aislado puede disminuir espontáneamente o confundir calor con temperatura de forma conceptual."
+  },
+  {
+    "id": "FACT_003",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Biología",
+    "nivel_educativo": "Secundaria",
+    "prompt": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes yDotación cromosómica?",
+    "ground_truth": "Mitosis: 1 división celular, produce 2 células hijas genéticamente idénticas y diploides (2n). Meiosis: 2 divisiones consecutivas, produce 4 células hijas genéticamente distintas (recombinación) y haploides (n), especializadas como gametos.",
+    "criterio_fallo_critico": "Invertir los conceptos de células haploides y diploides entre mitosis y meiosis, o decir que la mitosis produce gametos."
+  },
+  {
+    "id": "FACT_004",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Historia",
+    "nivel_educativo": "Secundaria",
+    "prompt": "¿En qué año comenzó y finalizó la Guerra Civil Española y quiénes fueron los dos bandos enfrentados?",
+    "ground_truth": "Comenzó el 17-18 de julio de 1936 y finalizó el 1 de abril de 1939. Enfrentó al bando republicano (defensor del gobierno legítimo de la Segunda República) y al bando sublevado o franquista (militares rebeldes apoyados por sectores conservadores, fascistas y monárquicos).",
+    "criterio_fallo_critico": "Fechas incorrectas fuera del rango 1936-1939 o caracterización errónea de los bandos."
+  },
+  {
+    "id": "FACT_005",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Informática",
+    "nivel_educativo": "Universidad",
+    "prompt": "¿Cuál es la complejidad temporal en el peor caso y en el caso promedio del algoritmo Quicksort y por qué ocurre el peor caso?",
+    "ground_truth": "Caso promedio: O(n log n). Peor caso: O(n^2), el cual ocurre cuando la elección del pivote divide el array de manera completamente desbalanceada (ej. seleccionar siempre el elemento menor o mayor en un array ya ordenado con pivote fijo en un extremo).",
+    "criterio_fallo_critico": "Afirmar que el peor caso de Quicksort es O(n log n) o atribuir erróneamente la causa del peor caso."
+  },
+  {
+    "id": "FACT_006",
+    "dimension_principal": "D1_correccion_factual",
+    "materia": "Química",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Escribe la ecuación ajustada de la combustión completa del gas propano (C3H8) con oxígeno y determina cuántos moles de CO2 y H2O se producen por cada mol de propano.",
+    "ground_truth": "Ecuación ajustada: C3H8 + 5 O2 -> 3 CO2 + 4 H2O. Por cada mol de propano quemado, se producen exactamente 3 moles de dióxido de carbono y 4 moles de agua.",
+    "criterio_fallo_critico": "Ecuación química no balanceada estequiométricamente o número erróneo de moles producidos."
+  }
+]

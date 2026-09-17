@@ -3,15 +3,60 @@
 
 \section{Fundamentos del testing tradicional de software}
 \label{sec:testing_tradicional}
+La disciplina de la Ingeniería de Software ha consolidado a lo largo de décadas un cuerpo normativo y metodológico riguroso para la Verificación y Validación (V\&V), articulado en estándares internacionales como ISO/IEC/IEEE 29119 \cite{iso29119} e ISO/IEC 25010 \cite{iso25010}.
+
+En el paradigma de programación clásico:
+\begin{equation}
+    \text{Entrada } (X) \xrightarrow{\text{Algoritmo Determinista } f} \text{Salida } (Y = f(X))
+\end{equation}
+El diseño de casos de prueba parte de una especificación funcional donde para cada entrada $X_i$ existe un \textit{oráculo de prueba} que define de forma unívoca la salida esperada $Y_i^*$. La evaluación de la prueba se reduce a una función booleana de aserción:
+\begin{equation}
+    \text{Resultado} = 
+    \begin{cases} 
+      \text{Éxito (Pass)}, & \text{si } Y_i == Y_i^* \\
+      \text{Fallo (Fail)}, & \text{si } Y_i \neq Y_i^* 
+    \end{cases}
+\end{equation}
 
 \section{Diferencias entre testing tradicional y testing de LLMs}
 \label{sec:diferencias_testing}
+En los sistemas generativos basados en LLMs, el flujo operacional se transforma radicalmente:
+\begin{equation}
+    \text{Prompt } (P) \xrightarrow{\text{Muestreo Estocástico } \mathcal{M}_\theta(P, T, \text{top-}p)} \text{Texto Generado } (\hat{Y})
+\end{equation}
+
+Esta naturaleza introduce el **Problema del Oráculo** (\textit{The Oracle Problem}) \cite{barr2015oracle}:
+\begin{enumerate}
+    \item \textbf{Espacio de salida infinito y abierto:} Para una misma consulta conceptual, existen infinitas redacciones válidas en lenguaje natural con diferente léxico, sintaxis y estructura que expresan exactamente el mismo significado.
+    \item \textbf{Insuficiencia de métricas sintácticas clásicas:} Métricas de coincidencia de n-gramas como BLEU o ROUGE, diseñadas para traducción automática, correlacionan pobremente con el rigor conceptual y el valor didáctico de una explicación pedagógica.
+    \item \textbf{No determinismo y variabilidad estocástica:} Salvo que se fuerce temperatura $T=0$ y una semilla determinista fija, dos ejecuciones idénticas pueden arrojar variaciones sutiles pero críticas.
+\end{enumerate}
 
 \section{Evaluación de respuestas generadas por IA}
 \label{sec:evaluacion_respuestas}
+Para abordar el problema del oráculo, la literatura científica propone dos enfoques complementarios:
+\begin{itemize}
+    \item \textbf{Evaluación Humana Experta:} Proporciona el máximo estándar de calidad cualitativa y pedagógica, pero sufre de alto coste económico, baja escalabilidad y sesgos de variabilidad inter-evaluador si no se emplean rúbricas rigurosamente calibradas.
+    \item \textbf{Evaluación Automatizada por Juez LLM (\textit{LLM-as-a-Judge}):} Empleo de un modelo de alta capacidad (ej. GPT-4) como evaluador de las respuestas generadas por modelos más pequeños, guiado por rúbricas estructuradas \cite{zheng2023judging}.
+\end{itemize}
 
 \section{Benchmarks y métodos de evaluación existentes}
 \label{sec:benchmarks_existentes}
+En los últimos años se han desarrollado diversos benchmarks estándar para evaluar LLMs:
+\begin{itemize}
+    \item \textbf{MMLU (\textit{Massive Multitask Language Understanding}) \cite{hendrycks2021mmlu}:} Evalúa conocimiento factual en 57 materias mediante preguntas de opción múltiple (test cerrado).
+    \item \textbf{TruthfulQA \cite{lin2022truthfulqa}:} Mide la propensión del modelo a reproducir mitos populares y falacias humanas.
+    \item \textbf{MT-Bench \cite{zheng2023judging}:} Evalúa conversaciones multi-turno en categorías como codificación, razonamiento y juego de rol.
+\end{itemize}
 
 \section{Necesidad de una metodología específica para contextos educativos}
 \label{sec:necesidad_metodologia_educativa}
+Si bien los benchmarks existentes evalúan capacidades cognitivas generales, presentan una carencia crítica: **ignoran por completo la dimensión pedagógica e interactiva del aprendizaje**.
+
+Un chatbot que obtenga una puntuación perfecta en MMLU puede ser un pésimo tutor si:
+\begin{enumerate}
+    \item Proporciona respuestas crípticas e ininteligibles para un estudiante de secundaria.
+    \item Resuelve los ejercicios escolares directamente en vez de diagnosticar el error del alumno y guiarlo socráticamente.
+    \item Es vulnerable a solicitudes de trampa deshonesta en exámenes online.
+\end{enumerate}
+Esta brecha fundamenta la propuesta metodológica desarrollada en este Trabajo de Fin de Grado.

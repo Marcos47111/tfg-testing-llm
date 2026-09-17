@@ -1,0 +1,74 @@
+{
+  "asistente_base": {
+    "total_casos_evaluados": 42,
+    "medias_por_dimension": {
+      "D1_correccion_factual": 1.9047619047619047,
+      "D2_control_alucinaciones": 1.9047619047619047,
+      "D3_claridad_didactica": 2.0,
+      "D4_utilidad_pedagogica": 1.8571428571428572,
+      "D5_robustez_seguridad": 1.9047619047619047,
+      "D6_adaptacion_nivel": 2.0,
+      "D7_seguimiento_instrucciones": 1.9523809523809523
+    },
+    "tasas_aprobado_por_dimension": {
+      "D1_correccion_factual": 95.23809523809523,
+      "D2_control_alucinaciones": 95.23809523809523,
+      "D3_claridad_didactica": 100.0,
+      "D4_utilidad_pedagogica": 85.71428571428571,
+      "D5_robustez_seguridad": 95.23809523809523,
+      "D6_adaptacion_nivel": 100.0,
+      "D7_seguimiento_instrucciones": 97.61904761904762
+    },
+    "tasa_fallos_criticos_cfr": 9.523809523809524,
+    "tasa_alucinaciones_hr": 33.33333333333333,
+    "indice_calidad_educativa_iqe": 64.12698412698413
+  },
+  "tutor_directo": {
+    "total_casos_evaluados": 42,
+    "medias_por_dimension": {
+      "D1_correccion_factual": 3.0,
+      "D2_control_alucinaciones": 3.0,
+      "D3_claridad_didactica": 3.0,
+      "D4_utilidad_pedagogica": 2.857142857142857,
+      "D5_robustez_seguridad": 3.0,
+      "D6_adaptacion_nivel": 3.0,
+      "D7_seguimiento_instrucciones": 3.0
+    },
+    "tasas_aprobado_por_dimension": {
+      "D1_correccion_factual": 100.0,
+      "D2_control_alucinaciones": 100.0,
+      "D3_claridad_didactica": 100.0,
+      "D4_utilidad_pedagogica": 100.0,
+      "D5_robustez_seguridad": 100.0,
+      "D6_adaptacion_nivel": 100.0,
+      "D7_seguimiento_instrucciones": 100.0
+    },
+    "tasa_fallos_criticos_cfr": 0.0,
+    "tasa_alucinaciones_hr": 0.0,
+    "indice_calidad_educativa_iqe": 99.28571428571429
+  },
+  "tutor_socratico": {
+    "total_casos_evaluados": 42,
+    "medias_por_dimension": {
+      "D1_correccion_factual": 3.0,
+      "D2_control_alucinaciones": 3.0,
+      "D3_claridad_didactica": 3.0,
+      "D4_utilidad_pedagogica": 3.0,
+      "D5_robustez_seguridad": 3.0,
+      "D6_adaptacion_nivel": 3.0,
+      "D7_seguimiento_instrucciones": 3.0
+    },
+    "tasas_aprobado_por_dimension": {
+      "D1_correccion_factual": 100.0,
+      "D2_control_alucinaciones": 100.0,
+      "D3_claridad_didactica": 100.0,
+      "D4_utilidad_pedagogica": 100.0,
+      "D5_robustez_seguridad": 100.0,
+      "D6_adaptacion_nivel": 100.0,
+      "D7_seguimiento_instrucciones": 100.0
+    },
+    "tasa_fallos_criticos_cfr": 0.0,
+    "tasa_alucinaciones_hr": 0.0,
+    "indice_calidad_educativa_iqe": 100.0
+  }
+}

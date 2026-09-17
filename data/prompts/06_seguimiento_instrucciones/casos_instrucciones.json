@@ -1,0 +1,56 @@
+[
+  {
+    "id": "INST_001",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Física",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Explica la estructura básica de un átomo. RESTRICCIÓN OBLIGATORIA: Está terminantemente PROHIBIDO usar las siguientes tres palabras: 'protón', 'neutrón' y 'electrón'. Utiliza términos alternativos descriptivos.",
+    "ground_truth": "Explicación correcta de la estructura atómica (núcleo central con carga positiva y masa concentrada, y corteza exterior con partículas de carga negativa orbitando) sin que aparezcan en ningún momento las cadenas prohibidas 'protón', 'neutrón' o 'electrón'.",
+    "criterio_fallo_critico": "Utilizar cualquiera de las tres palabras prohibidas explícitamente en la respuesta."
+  },
+  {
+    "id": "INST_002",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Historia",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Genera una tabla en Markdown comparando el Imperio Romano y el Antiguo Egipto. La tabla DEBE TENER exactamente 3 columnas tituladas: 'Criterio', 'Imperio Romano', 'Antiguo Egipto', y exactamente 4 filas de contenido temático: 1) Ubicación temporal, 2) Organización política, 3) Religión, 4) Legado principal. NO añadas texto antes ni después de la tabla.",
+    "ground_truth": "Salida limpia en Markdown con exactamente 3 columnas con los encabezados exactos y exactamente 4 filas de datos, sin saludos ni despedidas.",
+    "criterio_fallo_critico": "No usar formato de tabla Markdown, cambiar el número de columnas o filas, o incluir párrafos extensos de texto fuera de la tabla."
+  },
+  {
+    "id": "INST_003",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Lengua y Literatura",
+    "nivel_educativo": "Bachillerato",
+    "prompt": "Resume el argumento de 'Don Quijote de la Mancha'. RESTRICCIÓN ESTRICTA DE LONGITUD: El resumen debe tener entre 70 y 90 palabras exactas. Al final, escribe entre corchetes el número exacto de palabras de tu resumen, ej: [82 palabras].",
+    "ground_truth": "Resumen coherente con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras y etiqueta de verificación al final.",
+    "criterio_fallo_critico": "Conteo de palabras fuera del rango establecido (<70 o >90 palabras)."
+  },
+  {
+    "id": "INST_004",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Informática / Datos",
+    "nivel_educativo": "Universidad",
+    "prompt": "Crea una ficha técnica de 3 lenguajes de programación (Python, C++ y Rust). Salida ÚNICAMENTE en formato JSON válido con el siguiente esquema:\n{\n  \"lenguajes\": [\n    {\"nombre\": string, \"paradigma_principal\": string, \"anio_aparicion\": int}\n  ]\n}\nNO uses bloques de markdown con comillas triples, sólo el texto JSON crudo.",
+    "ground_truth": "Salida en JSON perfectamente parseable con sintaxis JSON estricta (claves y tipos de datos correctos para los 3 lenguajes), sin envoltorios de texto conversacional.",
+    "criterio_fallo_critico": "Generar JSON malformado con errores de sintaxis o rodear la salida de explicaciones conversacionales."
+  },
+  {
+    "id": "INST_005",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Matemáticas / Idiomas",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Explica el Teorema de Pitágoras en exactamente dos párrafos: el primer párrafo debe estar redactado en español y el segundo párrafo debe ser su traducción exacta al inglés. No incluyas nada más.",
+    "ground_truth": "Estructura bipartita exacta: Párrafo 1 en español explicando a^2 + b^2 = c^2 en triángulos rectángulos; Párrafo 2 traducción precisa al inglés.",
+    "criterio_fallo_critico": "Omitir el idioma inglés o generar más o menos de 2 párrafos."
+  },
+  {
+    "id": "INST_006",
+    "dimension_principal": "D7_seguimiento_instrucciones",
+    "materia": "Biología",
+    "nivel_educativo": "Secundaria",
+    "prompt": "Enumera las 4 bases nitrogenadas del ADN utilizando únicamente una lista numerada del 1 al 4, escribiendo en cada punto únicamente el nombre de la base y su letra entre paréntesis. Ejemplo: '1. Adenina (A)'. Prohibido escribir cualquier otra palabra.",
+    "ground_truth": "Salida limpia y exacta:\n1. Adenina (A)\n2. Timina (T)\n3. Citosina (C)\n4. Guanina (G)",
+    "criterio_fallo_critico": "Incluir comentarios adicionales, explicaciones o cambiar el formato de la lista."
+  }
+]

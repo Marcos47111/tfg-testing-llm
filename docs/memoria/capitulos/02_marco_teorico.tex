@@ -3,15 +3,45 @@
 
 \section{Inteligencia artificial generativa}
 \label{sec:ia_generativa}
+La Inteligencia Artificial Generativa representa un cambio de paradigma respecto a los modelos discriminativos tradicionales. En lugar de predecir una etiqueta o clasificar una entrada existente, los modelos generativos aprenden la distribución de probabilidad subyacente $P(X)$ sobre un corpus masivo de datos para generar nuevas muestras representativas e inéditas.
+
+El hito fundacional de la era moderna del Procesamiento del Lenguaje Natural (PLN) lo constituye la arquitectura \textit{Transformer}, introducida por Vaswani et al. en 2017 \cite{vaswani2017attention}. Mediante el mecanismo de \textit{auto-atención} (\textit{Self-Attention}), el modelo es capaz de ponderar dinámicamente la relevancia relativa de cada token en una secuencia respecto a todos los demás, superando las limitaciones de desvanecimiento del gradiente y el procesamiento estrictamente secuencial de las redes neuronales recurrentes (RNNs y LSTMs).
 
 \section{Modelos de lenguaje de gran tamaño (LLMs)}
 \label{sec:llms}
+Los Modelos de Lenguaje de Gran Tamaño (LLMs) son redes neuronales basadas en Transformers con decenas o cientos de miles de millones de parámetros. Su ciclo de vida comprende tres fases críticas:
+
+\begin{enumerate}
+    \item \textbf{Preentrenamiento no supervisado (\textit{Pre-training}):} El modelo predice el siguiente token (\textit{next-token prediction}) sobre billones de palabras, adquiriendo capacidades lingüísticas generales y una amplia base de conocimiento enciclopédico.
+    \item \textbf{Ajuste fino de instrucciones (\textit{Supervised Fine-Tuning - SFT}):} El modelo se refina con pares de instrucción-respuesta humana para aprender a seguir órdenes de forma conversacional.
+    \item \textbf{Alineamiento por refuerzo (\textit{Reinforcement Learning from Human Feedback - RLHF}):} Se optimizan las respuestas mediante modelos de recompensa para maximizar su utilidad (\textit{helpfulness}), veracidad (\textit{honesty}) y seguridad (\textit{harmlessness}) \cite{achiam2023gpt4}.
+\end{enumerate}
 
 \section{Chatbots basados en LLMs: arquitectura y componentes}
 \label{sec:arquitectura_chatbots}
+La arquitectura de un chatbot educativo moderno trasciende el modelo base y se articula en una estructura en capas:
+
+\begin{itemize}
+    \item \textbf{Capa de Interfaz de Usuario (\textit{Frontend}):} Gestiona la interacción comunicativa mediante interfaces web conversacionales (como Open WebUI o LibreChat).
+    \item \textbf{Capa de Orquestación y Contexto (\textit{Middleware}):} Administra el historial de diálogo multi-turno y ensambla el \textit{prompt} final inyectando el \textit{System Prompt} pedagógico.
+    \item \textbf{Mecanismos de Recuperación Aumentada (\textit{RAG - Retrieval-Augmented Generation}):} Conecta el modelo a bases de conocimiento académicas o temarios oficiales vectorizados para reducir alucinaciones factuales.
+    \item \textbf{Motor de Inferencia (\textit{Backend}):} Ejecuta el modelo (ej. Ollama o APIs de inferencia optimizadas) bajo parámetros estocásticos controlados (temperatura $T$, muestreo núcleo $\text{top-}p$).
+\end{itemize}
 
 \section{Uso de LLMs en contextos educativos}
 \label{sec:llm_educacion}
+El potencial pedagógico de los LLMs en entornos de aprendizaje es transformador \cite{kasneci2023chatgpt}:
+\begin{itemize}
+    \item \textbf{Adaptación cognitiva individualizada:} Posibilidad de ajustar la velocidad de aprendizaje, el registro comunicativo y la tipología de ejemplos a la madurez discente.
+    \item \textbf{Andamiaje socrático (\textit{Scaffolding}):} Fomento de la reflexión metacognitiva mediante preguntas guía que orientan al alumno en su Zona de Desarrollo Próximo (\textit{ZDP}) \cite{vygotsky1978mind}.
+    \item \textbf{Generación de material docente:} Asistencia en la creación de problemas didácticos graduados, resúmenes estructurados y analogías iluminadoras.
+\end{itemize}
 
 \section{Riesgos y limitaciones de los LLMs en educación}
 \label{sec:riesgos_llm}
+A pesar de sus ventajas, los LLMs presentan riesgos intrínsecos que justifican la necesidad de metodologías de testing rigurosas:
+\begin{enumerate}
+    \item \textbf{Alucinaciones (\textit{Hallucinations}):} Fenómeno por el cual el modelo genera aserciones falsas con apariencia de certeza rigurosa \cite{ji2023survey}. Se dividen en \textit{alucinaciones intrínsecas} (contradicción del contexto aportado) y \textit{extrínsecas} (invención de hechos indemostrables).
+    \item \textbf{Sesgo de Sobreconfianza Sintomática:} Incapacidad del modelo base para reconocer lagunas de conocimiento, prefiriendo conjeturar antes que manifestar incertidumbre o decir ``No dispongo de esa información'' \cite{lin2022truthfulqa}.
+    \item \textbf{Amenazas a la Integridad y Vulnerabilidades Éticas:} Riesgo de plagio automatizado, resolución deshonesta de pruebas evaluables y susceptibilidad a ataques de inyección de instrucciones adversarias \cite{wei2023jailbroken, unesco2023guidance}.
+\end{enumerate}

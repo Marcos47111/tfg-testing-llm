@@ -3,15 +3,31 @@
 
 \section{Interpretación global de los resultados}
 \label{sec:interpretacion_resultados}
+Los hallazgos experimentales confirman la validez y sensibilidad de la metodología diseñada para discriminar con precisión entre diferentes grados de idoneidad formativa en sistemas conversacionales basados en LLMs.
+
+En primer lugar, los datos demuestran empíricamente que un modelo de lenguaje general, aun cuando posea un elevado dominio sintáctico y enciclopédico, resulta **inapropiado y riesgoso para su uso autónomo en educación** si carece de un alineamiento pedagógico explícito. La tasa de alucinaciones del $33.3\%$ y la tasa de fallos críticos del $9.5\%$ en la línea de control evidencian que los LLMs base tienden de forma natural a la complacencia acrítica (\textit{sycophancy}) y a la invención de contenidos ante preguntas trampa.
+
+En segundo lugar, se demuestra la efectividad del \textit{System Prompting} estructurado para modular el comportamiento del modelo, transformando un asistente genérico en un tutor socrático capaz de guiar el aprendizaje sin incurrir en la trampa del solucionismo pasivo.
 
 \section{Fortalezas de la metodología propuesta}
 \label{sec:fortalezas_metodologia}
+La metodología aporta las siguientes fortalezas distintivas frente al estado del arte:
+\begin{itemize}
+    \item \textbf{Alineación con Estándares Internacionales:} Mapeo riguroso con el modelo de calidad de producto software ISO/IEC 25010:2023 \cite{iso25010}.
+    \item \textbf{Fundamentación Pedagógica Sólida:} Integración explícita de las teorías de Andamiaje y ZDP de Vygotsky \cite{vygotsky1978mind} y el modelo de Feedback Formativo de Hattie \& Timperley \cite{hattie2007power}.
+    \item \textbf{Rigor Psicométrico:} La escala forzada de 4 niveles ($0-3$) elimina el sesgo de tendencia central y proporciona criterios conductuales objetivos y contrastables.
+    \item \textbf{Principio Safety-First:} La definición analítica del fallo crítico ($CFR$) impide que atributos superficiales de estilo enmascaren errores de desinformación o riesgos de seguridad.
+\end{itemize}
 
 \section{Limitaciones del trabajo y amenazas a la validez}
 \label{sec:limitaciones_amenazas}
+Se reconocen las siguientes limitaciones metodológicas:
+\begin{enumerate}
+    \item \textbf{Tamaño de la Batería:} La suite actual consta de 42 casos de prueba calibrados. Si bien es estadísticamente suficiente para validar el marco, despliegues institucionales masivos se beneficiarán de bancos ampliados a cientos de ítems.
+    \item \textbf{Modalidad Exclusivamente Textual:} El marco actual se centra en lenguaje natural textual y código, no contemplando la evaluación de diagramas visuales, audio o fórmulas en formato gráfico.
+    \item \textbf{Evolución Continua de Modelos:} La rápida actualización de pesos y versiones de los modelos comerciales exige una reevaluación periódica continua.
+\end{enumerate}
 
 \section{Comparación con otros marcos de evaluación de LLMs}
 \label{sec:comparacion_enfoques}
-
-\section{Propuestas de mejora}
-\label{sec:propuestas_mejora}
+Frente a benchmarks puramente de opción múltiple como MMLU \cite{hendrycks2021mmlu} o benchmarks genéricos como MT-Bench \cite{zheng2023judging}, la metodología propuesta introduce una evaluación holística que audita simultáneamente la corrección epistémica, la seguridad ante el fraude académico y la calidad del andamiaje pedagógico.
