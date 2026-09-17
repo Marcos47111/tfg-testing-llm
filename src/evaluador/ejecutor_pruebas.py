@@ -163,7 +163,8 @@ def simular_o_ejecutar_respuesta(
     else:
         raise ValueError(f"Modo de ejecución '{modo}' no reconocido. Utilice 'ollama' o 'simulado'.")
 
-    latencia = round(time.time() - tiempo_inicio + random.uniform(1.2, 3.2), 3)
+    # Medición real de latencia sin adiciones aleatorias
+    latencia = round(time.time() - tiempo_inicio, 3)
     
     return {
         "caso_id": cid,
@@ -186,7 +187,10 @@ def ejecutar_bateria_completa(
     filtro_perfil: Optional[str] = None
 ):
     """Ejecuta todos los casos de prueba para los perfiles configurados."""
-    RESPUESTAS_RAW_DIR.mkdir(parents=True, exist_ok=True)
+    # Las salidas de modo simulado se aíslan en raw/simulado para no sobreescribir las trazas reales de Ollama
+    dir_salida = RESPUESTAS_RAW_DIR if modo == "ollama" else (RESPUESTAS_RAW_DIR / "simulado")
+    dir_salida.mkdir(parents=True, exist_ok=True)
+    
     prompts = cargar_todos_los_prompts()
     configs = cargar_configuraciones()
     
@@ -211,10 +215,10 @@ def ejecutar_bateria_completa(
             )
             respuestas_perfil.append(res)
             
-        archivo_salida = RESPUESTAS_RAW_DIR / f"respuestas_{nombre_perfil}.json"
+        archivo_salida = dir_salida / f"respuestas_{nombre_perfil}.json"
         with open(archivo_salida, "w", encoding="utf-8") as f:
             json.dump(respuestas_perfil, f, indent=2, ensure_ascii=False)
-        print(f"     ✅ Guardadas {len(respuestas_perfil)} respuestas en {archivo_salida.name}")
+        print(f"     ✅ Guardadas {len(respuestas_perfil)} respuestas en {archivo_salida}")
 
 
 if __name__ == "__main__":
