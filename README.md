@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.2-tfg`
+**Versión experimental de referencia:** `v1.0.3-tfg`
 
 ---
 
@@ -107,3 +107,4 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 | **Tutor Socrático** | **100.00** | 0.00% | 0.00% | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 | 3.00 |
 
 * **Concordancia Inter-Evaluador (Doble evaluación independiente):** $\kappa = 0.924$ ($P_o = 0.965, P_e = 0.537$).
+* **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON de `data/respuestas_obtenidas/raw/` se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.

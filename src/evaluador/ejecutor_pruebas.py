@@ -6,7 +6,6 @@ como en modo de inferencia en tiempo real contra servidores Ollama (HTTP) o endp
 
 import argparse
 import json
-import random
 import sys
 import time
 import urllib.request

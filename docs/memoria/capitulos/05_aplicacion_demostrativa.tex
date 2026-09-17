@@ -39,7 +39,7 @@ Total de ensayos analizados & 126 interacciones (42 por cada uno de los 3 perfil
 \end{tabular}
 \end{table}
 
-El protocolo comprendió la ejecución de los 42 casos de prueba formalizados en la Sección \ref{sec:casos_prueba} sobre cada uno de los tres perfiles. Esto generó un conjunto de 126 interacciones registradas en ficheros JSON dentro del directorio \texttt{data/respuestas\_obtenidas/raw/}. Cada registro almacena el identificador del caso, la dimensión evaluada, el prompt de entrada, la respuesta íntegra del modelo, la latencia de inferencia y los parámetros empleados.
+El protocolo comprendió la ejecución de los 42 casos de prueba formalizados en la Sección \ref{sec:casos_prueba} sobre cada uno de los tres perfiles. Esto generó un conjunto de 126 interacciones registradas en ficheros JSON dentro del directorio \texttt{data/respuestas\_obtenidas/raw/}. Cada registro almacena el identificador del caso, la dimensión evaluada, el prompt de entrada, la respuesta íntegra del modelo y los parámetros empleados.
 
 Posteriormente, cada respuesta fue evaluada de forma independiente aplicando la rúbrica de cuatro niveles ($0$ a $3$) definida en la Sección \ref{sec:rubrica_escalas}. Las métricas comparativas de la Tabla \ref{TB:RESULTADOS} se calcularon tomando como referencia las calificaciones del evaluador principal (Evaluador 1). El segundo evaluador realizó una valoración independiente de las 126 respuestas con el propósito de estimar la fiabilidad inter-evaluador mediante Kappa de Cohen. Las puntuaciones asignadas fueron procesadas por el software de análisis (\texttt{src/analisis/analizador\_experimentos.py}) para calcular las métricas dimensionales, las tasas de fallo y el índice global $IQE$.
 
