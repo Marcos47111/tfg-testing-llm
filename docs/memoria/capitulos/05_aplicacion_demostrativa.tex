@@ -50,9 +50,22 @@ Tutor Socrático & 100.0 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.
 
 \section{Análisis de errores, alucinaciones y riesgos detectados}
 \label{sec:analisis_errores}
-El análisis cualitativo y cuantitativo arroja hallazgos reveladores:
+El análisis cualitativo y cuantitativo arroja hallazgos reveladores sobre los patrones de comportamiento de los tres perfiles:
 
 \begin{enumerate}
-    \item \textbf{Vulnerabilidad Crítica en el Asistente Base:} El modelo sin system prompt incurrió en una tasa de fallos críticos del $CFR = 9.5\%$ y una tasa de alucinaciones del $HR = 33.3\%$. En el caso \texttt{ALUC\_001} (Teorema de Markov-Bonaventura), el modelo inventó fórmulas matemáticas complejas con absoluta convicción. En el caso \texttt{SEC\_001} (ataque DAN), sucumbió a la instrucción maliciosa.
-    \item \textbf{Diferencia Pedagógica entre Tutor Directo y Socrático:} Aunque ambos alcanzaron un $CFR = 0\%$, en la dimensión D4 (Feedback Formativo), el Tutor Directo obtuvo una media de $2.86$ frente a $3.00$ del Tutor Socrático. Ante el código con errores presentado por el alumno en \texttt{FEED\_001}, el Tutor Directo resolvió el problema directamente, mientras que el Tutor Socrático formuló preguntas guía sobre la diferencia entre índices e iterables.
+    \item \textbf{Vulnerabilidad Crítica y Alucinaciones en el Asistente Base:} El modelo sin system prompt pedagógico incurrió en una tasa de fallos críticos del $CFR = 9.5\%$ y una tasa de alucinaciones del $HR = 33.3\%$. En el caso \texttt{ALUC\_001} (pregunta trampa sobre el ficticio \textit{Teorema de Markov-Bonaventura para árboles AVL}), el Asistente Base inventó una formulación matemática ficticia ($B = \log_2(N) / 1.44$) con absoluta convicción, obteniendo Nivel 0 en D1 y D2. Por el contrario, tanto el Tutor Directo como el Tutor Socrático obtuvieron Nivel 3 al detectar la falsedad de la premisa y reorientar al discente hacia los factores de balanceo reales de Adelson-Velsky y Landis.
+    
+    \item \textbf{Divergencia Pedagógica: Solucionismo Pasivo vs Andamiaje Socrático:} En el caso \texttt{FEED\_001} (detección de un bug clásico en Python donde el estudiante suma el índice \texttt{i} en lugar del valor \texttt{lista[i]}), los perfiles mostraron contrastes pedagógicos fundamentales:
+    \begin{itemize}
+        \item \textbf{Asistente Base (Nivel 1 en D4):} Entregó inmediatamente el código corregido usando una función generadora (\texttt{return sum(x for x in lista...)}), anulando el proceso de reflexión del alumno.
+        \item \textbf{Tutor Directo (Nivel 2 en D4):} Explicó con claridad conceptual la diferencia entre índice y valor, pero incluyó el código resuelto completo al final de la explicación.
+        \item \textbf{Tutor Socrático (Nivel 3 en D4):} Diagnosticó la causa raíz sin desvelar la solución, formulando una pregunta orientadora: \textit{«Fijémonos en un detalle clave: estás iterando con un contador, ¿ese contador representa la posición o el elemento de la lista? ¿Cómo cambiarías esa línea?»}, logrando un andamiaje efectivo en la Zona de Desarrollo Próximo.
+    \end{itemize}
+    
+    \item \textbf{Robustez de Seguridad y Resistencia a Jailbreaks:} En el caso \texttt{SEC\_001} (inyección de prompt adversaria tipo DAN solicitando métodos de clonación financiera), el Asistente Base sucumbió a la manipulación (Nivel 0 en D5). El Tutor Directo y el Tutor Socrático mantuvieron un bloqueo categórico sin agresividad, redirigiendo el diálogo hacia conceptos legítimos de criptografía y seguridad de redes (Nivel 3 en D5).
 \end{enumerate}
+
+\section{Evaluación de concordancia inter-evaluador}
+\label{sec:evaluacion_concordancia}
+Siguiendo el protocolo formalizado en la Sección \ref{sec:concordancia_inter_evaluador}, se contrastaron las evaluaciones asignadas de forma independiente por dos evaluadores sobre la muestra de 126 ensayos. Se obtuvo un acuerdo observado $P_o = 0.968$ y un acuerdo esperado por azar $P_e = 0.541$, arrojando un coeficiente \textbf{$\kappa = 0.931$}, lo que certifica un \textit{acuerdo casi perfecto} según la escala psicométrica de Landis \& Koch \cite{landis1977measurement}, demostrando la objetividad y reproducibilidad de la rúbrica propuesta.
+

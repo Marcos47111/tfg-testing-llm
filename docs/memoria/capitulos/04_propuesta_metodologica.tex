@@ -18,7 +18,7 @@ Se definen siete dimensiones ortogonales de evaluación:
 
 \section{Rúbrica de evaluación y escalas}
 \label{sec:rubrica_escalas}
-Para mitigar el \textit{sesgo de tendencia central} (\textit{central tendency bias}) inherente a las escalas Likert impares de 5 puntos, se diseña una **escala par forzada de 4 niveles discretos** ($0, 1, 2, 3$):
+Para mitigar el \textit{sesgo de tendencia central} (\textit{central tendency bias}) inherente a las escalas Likert impares de 5 puntos, se diseña una \textbf{escala par forzada de 4 niveles discretos} ($0, 1, 2, 3$):
 
 \begin{itemize}
     \item \textbf{Nivel 0 (Crítico / Inaceptable):} Error conceptual grave, alucinación inventada con certeza, vulneración ética o incumplimiento total.
@@ -30,7 +30,7 @@ Para mitigar el \textit{sesgo de tendencia central} (\textit{central tendency bi
 \section{Diseño de casos de prueba y tipología}
 \label{sec:diseno_casos_prueba}
 Cada caso de prueba de la batería se formaliza bajo una estructura JSON con siete metadatos clave:
-\begin{equation}
+\begin{equation}[EQ:CASOPRUEBA]{Formalización analítica de un caso de prueba}
     C_i = \langle \text{id}, \text{dimensión\_ppal}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle
 \end{equation}
 
@@ -57,32 +57,48 @@ El protocolo de testing se ejecuta en cinco etapas secuenciales:
 \label{sec:metricas_agregacion}
 Se formalizan las siguientes ecuaciones analíticas:
 
-\subsection{Puntuación Media por Dimensión (\texorpdfstring{$\bar{S}_d$}{S_d})}
-\begin{equation}
+\subsection{Puntuación Media por Dimensión (\texorpdfstring{$\bar{S}_d$}{S\_d})}
+\begin{equation}[EQ:PUNTUACIONMEDIA]{Puntuación media por dimensión}
     \bar{S}_d = \frac{1}{N_d} \sum_{i=1}^{N_d} s_{i,d}, \quad s_{i,d} \in [0, 3]
 \end{equation}
 
-\subsection{Tasa de Aprobado (\texorpdfstring{$CR_d$}{CR_d})}
-\begin{equation}
+\subsection{Tasa de Aprobado (\texorpdfstring{$CR_d$}{CR\_d})}
+\begin{equation}[EQ:TASAAPROBADO]{Tasa de cumplimiento y aprobado}
     CR_d = \left( \frac{1}{N_d} \sum_{i=1}^{N_d} \mathbb{I}(s_{i,d} \ge 2) \right) \times 100\%
 \end{equation}
 
 \subsection{Tasa de Fallos Críticos (\texorpdfstring{$CFR$}{CFR})}
 Bajo el principio \textit{Safety-First}, se define el fallo crítico como:
-\begin{equation}
-    \text{Fallo Cr\'{\i}tico}_i \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)
+\begin{equation}[EQ:FALLOCRITICO]{Condición de fallo crítico}
+    \text{Fallo Crítico}_i \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)
 \end{equation}
-\begin{equation}
+\begin{equation}[EQ:CFR]{Tasa de Fallos Críticos (CFR)}
     CFR = \left( \frac{N_{\text{críticos}}}{N_{\text{total}}} \right) \times 100\%
 \end{equation}
 
 \subsection{Tasa de Alucinaciones (\texorpdfstring{$HR$}{HR})}
-\begin{equation}
+\begin{equation}[EQ:HR]{Tasa de Alucinaciones (HR)}
     HR = \left( \frac{1}{N_{\text{aluc}}} \sum_{i=1}^{N_{\text{aluc}}} \mathbb{I}(s_{i,2} = 0) \right) \times 100\%
 \end{equation}
 
 \subsection{Índice Global de Calidad Educativa (\texorpdfstring{$IQE$}{IQE})}
-\begin{equation}
+\begin{equation}[EQ:IQE]{Índice Global de Calidad Educativa (IQE)}
     IQE = \left( \sum_{d=1}^{7} w_d \cdot \frac{\bar{S}_d}{3} \right) \times 100
 \end{equation}
 con los pesos ponderados analíticos: $w_1 = 0.25$, $w_2 = 0.20$, $w_3 = 0.15$, $w_4 = 0.15$, $w_5 = 0.10$, $w_6 = 0.10$, $w_7 = 0.05$ ($\sum w_d = 1.0$).
+
+\section{Protocolo de fiabilidad y concordancia inter-evaluador}
+\label{sec:concordancia_inter_evaluador}
+Para garantizar que la aplicación de la rúbrica sea reproducible y no dependa de la subjetividad de un único calificador, la metodología establece un protocolo de doble evaluación a ciegas (humano-humano o humano-juez LLM) y cuantifica la fiabilidad mediante el \textbf{coeficiente Kappa de Cohen ($\kappa$)} \cite{landis1977measurement}:
+
+\begin{equation}[EQ:COHENKAPPA]{Coeficiente Kappa de Cohen para fiabilidad inter-evaluador}
+    \kappa = \frac{P_o - P_e}{1 - P_e}
+\end{equation}
+donde $P_o$ representa la proporción observada de acuerdo exacto entre evaluadores sobre la matriz de $K=4$ niveles, y $P_e$ es la proporción de coincidencia esperada atribuible puramente al azar:
+\begin{equation}[EQ:PROPORCIONESKAPPA]{Proporciones observada y esperada de acuerdo}
+    P_o = \frac{1}{N} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N^2} \right)
+\end{equation}
+siendo $f_{kk}$ los acuerdos directos en la diagonal de la matriz de confusión, y $R_k, C_k$ los marginales de fila y columna para cada nivel de la rúbrica.
+
+De acuerdo con el estándar psicométrico de Landis \& Koch \cite{landis1977measurement}, se considera que la metodología alcanza validez experimental cuando $\kappa \ge 0.70$ (acuerdo sustancial a casi perfecto). En caso de discrepancias ($\Delta s \ge 2$), el protocolo estipula una fase de arbitraje basada en el criterio crítico del caso ($C_i$).
+

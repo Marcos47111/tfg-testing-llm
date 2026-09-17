@@ -11,6 +11,7 @@ from src.analisis.metricas_tfg import (
     calcular_tasa_alucinaciones,
     calcular_iqe,
     generar_informe_sintetico,
+    calcular_cohen_kappa,
     PESOS_DIMENSIONES
 )
 
@@ -67,6 +68,25 @@ class TestMetricasTFG(unittest.TestCase):
         self.assertEqual(informe["total_casos_evaluados"], 2)
         self.assertEqual(informe["tasa_fallos_criticos_cfr"], 50.0)
         self.assertEqual(informe["tasa_alucinaciones_hr"], 100.0)
+
+
+    def test_cohen_kappa(self):
+        """Verifica el cálculo de kappa para concordancia perfecta, moderada y nula."""
+        # Concordancia perfecta
+        eval_a = [0, 1, 2, 3, 2, 1, 0, 3]
+        eval_b = [0, 1, 2, 3, 2, 1, 0, 3]
+        res_perf = calcular_cohen_kappa(eval_a, eval_b)
+        self.assertAlmostEqual(res_perf["kappa"], 1.0, places=2)
+        self.assertEqual(res_perf["interpretacion"], "Acuerdo casi perfecto / Excelente")
+
+        # Concordancia parcial alta
+        eval_c = [0, 1, 2, 3, 2, 1, 0, 2] # 1 discrepancia menor en 8
+        res_alta = calcular_cohen_kappa(eval_a, eval_c)
+        self.assertGreater(res_alta["kappa"], 0.70)
+
+        # Validación de error de longitud dispar
+        with self.assertRaises(ValueError):
+            calcular_cohen_kappa([1, 2], [1])
 
 
 if __name__ == "__main__":

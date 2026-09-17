@@ -3,11 +3,11 @@
 La disciplina de la Ingeniería de Software ha consolidado a lo largo de décadas un cuerpo normativo y metodológico riguroso para la Verificación y Validación (V\&V), articulado en estándares internacionales como ISO/IEC/IEEE 29119 \cite{iso29119} e ISO/IEC 25010 \cite{iso25010}.
 
 En el paradigma de programación clásico:
-\begin{equation}
+\begin{equation}[EQ:FLUJOCLASICO]{Paradigma de programación clásico}
     \text{Entrada } (X) \xrightarrow{\text{Algoritmo Determinista } f} \text{Salida } (Y = f(X))
 \end{equation}
 El diseño de casos de prueba parte de una especificación funcional donde para cada entrada $X_i$ existe un \textit{oráculo de prueba} que define de forma unívoca la salida esperada $Y_i^*$. La evaluación de la prueba se reduce a una función booleana de aserción:
-\begin{equation}
+\begin{equation}[EQ:ORACULOCLASICO]{Aserción booleana determinista en testing tradicional}
     \text{Resultado} = 
     \begin{cases} 
       \text{Éxito (Pass)}, & \text{si } Y_i == Y_i^* \\
@@ -18,11 +18,11 @@ El diseño de casos de prueba parte de una especificación funcional donde para 
 \section{Diferencias entre testing tradicional y testing de LLMs}
 \label{sec:diferencias_testing}
 En los sistemas generativos basados en LLMs, el flujo operacional se transforma radicalmente:
-\begin{equation}
+\begin{equation}[EQ:FLUJOLLM]{Flujo operacional estocástico en sistemas basados en LLMs}
     \text{Prompt } (P) \xrightarrow{\text{Muestreo Estocástico } \mathcal{M}_\theta(P, T, \text{top-}p)} \text{Texto Generado } (\hat{Y})
 \end{equation}
 
-Esta naturaleza introduce el **Problema del Oráculo** (\textit{The Oracle Problem}) \cite{barr2015oracle}:
+Esta naturaleza introduce el \textbf{Problema del Oráculo} (\textit{The Oracle Problem}) \cite{barr2015oracle}:
 \begin{enumerate}
     \item \textbf{Espacio de salida infinito y abierto:} Para una misma consulta conceptual, existen infinitas redacciones válidas en lenguaje natural con diferente léxico, sintaxis y estructura que expresan exactamente el mismo significado.
     \item \textbf{Insuficiencia de métricas sintácticas clásicas:} Métricas de coincidencia de n-gramas como BLEU o ROUGE, diseñadas para traducción automática, correlacionan pobremente con el rigor conceptual y el valor didáctico de una explicación pedagógica.
@@ -48,7 +48,7 @@ En los últimos años se han desarrollado diversos benchmarks estándar para eva
 
 \section{Necesidad de una metodología específica para contextos educativos}
 \label{sec:necesidad_metodologia_educativa}
-Si bien los benchmarks existentes evalúan capacidades cognitivas generales, presentan una carencia crítica: **ignoran por completo la dimensión pedagógica e interactiva del aprendizaje**.
+Si bien los benchmarks existentes evalúan capacidades cognitivas generales, presentan una carencia crítica: \textbf{ignoran por completo la dimensión pedagógica e interactiva del aprendizaje}.
 
 Un chatbot que obtenga una puntuación perfecta en MMLU puede ser un pésimo tutor si:
 \begin{enumerate}

@@ -2,19 +2,32 @@
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
+*.so
+.env
+.venv
+env/
+venv/
+ENV/
 
-# LaTeX
+# LaTeX auxiliary files (keep main.pdf)
 *.aux
 *.bbl
-*.bcf
 *.blg
 *.log
 *.out
-*.run.xml
 *.toc
 *.lof
 *.lot
+*.loa
+*.loe
+*.lol
+*.ltb
+*.mw
+*.glo
+*.idx
+*.ist
+*.acn
+*.xdy
 *.synctex.gz
 *.fls
 *.fdb_latexmk

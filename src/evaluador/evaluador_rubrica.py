@@ -4,13 +4,18 @@ sobre las respuestas generadas por los modelos.
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import List, Dict, Any
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from src.utils.loader_prompts import cargar_todos_los_prompts
 
-RESPUESTAS_RAW_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "respuestas_obtenidas" / "raw"
-EVALUACIONES_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "evaluaciones"
+RESPUESTAS_RAW_DIR = PROJECT_ROOT / "data" / "respuestas_obtenidas" / "raw"
+EVALUACIONES_DIR = PROJECT_ROOT / "data" / "evaluaciones"
 
 
 def evaluar_respuesta_segun_rubrica(caso: Dict[str, Any], respuesta_obj: Dict[str, Any]) -> Dict[str, Any]:

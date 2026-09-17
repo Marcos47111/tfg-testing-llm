@@ -132,3 +132,65 @@ def generar_informe_sintetico(evaluaciones: List[Dict[str, Any]]) -> Dict[str, A
         "tasa_alucinaciones_hr": hr,
         "indice_calidad_educativa_iqe": iqe
     }
+
+
+def calcular_cohen_kappa(
+    evaluador_a: List[int],
+    evaluador_b: List[int],
+    niveles: int = 4
+) -> Dict[str, Any]:
+    """Calcula el coeficiente kappa de Cohen (κ) para medir la concordancia inter-evaluador.
+    
+    κ = (P_o - P_e) / (1 - P_e)
+    donde P_o es la concordancia observada y P_e es la concordancia esperada por azar.
+    """
+    if len(evaluador_a) != len(evaluador_b) or not evaluador_a:
+        raise ValueError("Las listas de puntuaciones deben tener la misma longitud no vacía.")
+    
+    n = len(evaluador_a)
+    
+    # 1. Matriz de confusión
+    matriz = [[0 for _ in range(niveles)] for _ in range(niveles)]
+    for a, b in zip(evaluador_a, evaluador_b):
+        if 0 <= a < niveles and 0 <= b < niveles:
+            matriz[a][b] += 1
+            
+    # 2. Proporción observada de acuerdo (Po)
+    acuerdos_observados = sum(matriz[i][i] for i in range(niveles))
+    po = acuerdos_observados / n
+    
+    # 3. Proporción esperada por azar (Pe)
+    pe = 0.0
+    for k in range(niveles):
+        marg_a = sum(matriz[k][j] for j in range(niveles))
+        marg_b = sum(matriz[i][k] for i in range(niveles))
+        pe += (marg_a * marg_b) / (n * n)
+        
+    # 4. Cálculo de kappa
+    if pe == 1.0:
+        kappa = 1.0
+    else:
+        kappa = (po - pe) / (1.0 - pe)
+        
+    # Interpretación según Landis & Koch (1977)
+    if kappa < 0:
+        interpretacion = "Sin acuerdo (discrepancia sistemática)"
+    elif kappa <= 0.20:
+        interpretacion = "Acuerdo leve"
+    elif kappa <= 0.40:
+        interpretacion = "Acuerdo aceptable"
+    elif kappa <= 0.60:
+        interpretacion = "Acuerdo moderado"
+    elif kappa <= 0.80:
+        interpretacion = "Acuerdo sustancial"
+    else:
+        interpretacion = "Acuerdo casi perfecto / Excelente"
+        
+    return {
+        "kappa": round(kappa, 4),
+        "acuerdo_observado_po": round(po, 4),
+        "acuerdo_esperado_pe": round(pe, 4),
+        "total_pares": n,
+        "interpretacion": interpretacion
+    }
+

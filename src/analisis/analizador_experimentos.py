@@ -3,14 +3,19 @@ Módulo de análisis comparativo y agregación estadística de experimentos para
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import Dict, Any, List
 import pandas as pd
 
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from src.analisis.metricas_tfg import generar_informe_sintetico, PESOS_DIMENSIONES
 
-EVALUACIONES_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "evaluaciones"
-RESULTS_DIR = Path(__file__).resolve().parent.parent.parent / "results"
+EVALUACIONES_DIR = PROJECT_ROOT / "data" / "evaluaciones"
+RESULTS_DIR = PROJECT_ROOT / "results"
 INFORMES_DIR = RESULTS_DIR / "informes"
 TABLAS_DIR = RESULTS_DIR / "tablas"
 
