@@ -1,13 +1,13 @@
 \section{Selección del sistema y perfiles evaluados}
 \label{sec:seleccion_modelos}
 
-Con el propósito de validar la metodología formalizada en el Capítulo \ref{CAP:METODOLOGIA}, se diseñó un estudio experimental orientado a contrastar el comportamiento de tres configuraciones conversacionales diferenciadas sobre un mismo modelo base. El objetivo de esta disposición es evaluar el impacto de las directivas de sistema (\textit{system prompts}) y comprobar si la batería de pruebas y la rúbrica multidimensional permiten distinguir entre comportamientos pedagógicamente adecuados y respuestas con errores conceptuales o de seguridad.
+Con el propósito de aplicar y evaluar de forma preliminar la metodología formalizada en el Capítulo \ref{CAP:METODOLOGIA}, se diseñó un estudio experimental orientado a contrastar el comportamiento de tres configuraciones conversacionales diferenciadas sobre un mismo modelo base. El objetivo es analizar el impacto de las directivas de sistema (\textit{system prompts}) y comprobar si la batería de pruebas y la rúbrica multidimensional permiten distinguir entre comportamientos pedagógicamente adecuados y respuestas con errores conceptuales o de seguridad.
 
-Para la experimentación se utilizó el modelo fundacional de código abierto \textbf{Meta-Llama-3-8B-Instruct} (versión cuantizada en 4 bits, \textit{q4\_k\_m}), ejecutado localmente mediante el entorno de inferencia \textbf{Ollama} (versión 0.1.32).
+Para la experimentación se utilizó el modelo de pesos abiertos \textbf{Meta-Llama-3-8B-Instruct} \cite{dubey2024llama} (distribuido bajo la Meta Llama 3 Community License, tag Ollama \texttt{llama3:8b}, cuantización \textbf{Q4\_0}, digest \texttt{365c0bd3c000}), ejecutado localmente mediante el entorno de inferencia \textbf{Ollama} (versión 0.1.32).
 
 Sobre este modelo se configuraron tres perfiles de interacción:
 
-En primer lugar, el \textbf{Asistente Base} actúa como línea de control. Emplea la directriz estándar sin condicionamiento educativo (\texttt{"You are a helpful assistant"}), emulando el comportamiento por defecto de un modelo de propósito general sin mediación institucional.
+En primer lugar, el \textbf{Asistente Base} actúa como línea de control. Emplea la directriz estándar sin condicionamiento educativo (\texttt{"You are a helpful assistant"}), representando el comportamiento por defecto del modelo Instruct sin directrices de rol añadidas.
 
 En segundo lugar, el \textbf{Tutor Directo} implementa un enfoque didáctico expositivo. Su directriz instruye al sistema para responder de forma clara, rigurosa y adaptada al nivel del estudiante, facilitando ejemplos pero sin restricciones sobre la entrega directa de soluciones completas a ejercicios prácticos.
 
@@ -25,12 +25,13 @@ Para permitir la reproducibilidad de los ensayos sobre el modelo probabilístico
 \hline
 \textbf{Elemento} & \textbf{Configuración / Valor} \\
 \hline \hline
-Modelo base & Meta-Llama-3-8B-Instruct (\texttt{llama3:8b}, cuantización \textit{q4\_k\_m}) \\
+Modelo base & Meta-Llama-3-8B-Instruct (\texttt{llama3:8b}, cuantización Q4\_0, digest \texttt{365c0bd3c000}) \\
+Licencia del modelo & Meta Llama 3 Community License \\
 Motor de inferencia / Runtime & Ollama v0.1.32 (API REST local \texttt{/api/chat}) \\
-Ventana de contexto (\textit{Context window}) & 8192 tokens \\
+Ventana de contexto utilizada & $\text{num\_ctx} = 2048$ tokens (capacidad arquitectural máxima: 8192 tokens) \\
 Temperatura ($T$) & 0.20 \\
 Muestreo de núcleo ($\text{top-}p$) & 0.90 \\
-Penalización por repetición (\textit{Repeat penalty}) & 1.10 \\
+Penalización por repetición & 1.10 \\
 Semilla pseudoaleatoria (\textit{Seed}) & 42 (fija) \\
 Batería de pruebas & 42 casos estructurados (Sección \ref{sec:casos_prueba}) \\
 Total de ensayos analizados & 126 interacciones (42 por cada uno de los 3 perfiles) \\
@@ -71,7 +72,7 @@ Tutor Socrático & 100.0 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.
 
 Los resultados cuantitativos reflejan diferencias apreciables en el comportamiento de los perfiles:
 
-El \textbf{Asistente Base} obtuvo un $IQE$ de $64.1$ puntos. Sus puntuaciones medias en las siete dimensiones se situaron entre $1.86$ y $2.00$. En cuanto a los indicadores de riesgo, registró una Tasa de Fallos Críticos ($CFR$) del $9.5\%$ y una Tasa de Alucinaciones ($HR$) del $33.3\%$, lo que significa que en un tercio de las preguntas capciosas el modelo base generó información ficticia asumiendo como válida la premisa del usuario.
+El \textbf{Asistente Base} obtuvo un $IQE$ de $64.1$ puntos. Sus puntuaciones medias en las siete dimensiones se situaron entre $1.86$ y $2.00$. En cuanto a los indicadores de riesgo, registró una Tasa de Fallos Críticos ($CFR$) del $9.5\%$ y una Tasa de Alucinaciones ($HR$) del $33.3\%$. Esta tasa $HR$ representa que en 2 de las 6 preguntas trampa de la subbatería de alucinaciones el modelo base generó información ficticia asumiendo como válida la premisa errónea, por lo que debe interpretarse como el resultado sobre esta muestra bajo la semilla fija y no como una probabilidad universal del modelo.
 
 El \textbf{Tutor Directo} alcanzó un $IQE$ de $99.3$ puntos, sin registrar alucinaciones ($HR = 0.0\%$) ni fallos críticos de seguridad ($CFR = 0.0\%$) en la muestra analizada. En seis de las siete dimensiones obtuvo una media de $3.00$. En la dimensión de Feedback Formativo ($D_4$), obtuvo un promedio de $2.86$ debido a que, tras explicar la causa de los errores en ejercicios de programación, tendió a incluir la solución resuelta completa al final de la explicación.
 
@@ -102,4 +103,4 @@ Para evaluar la consistencia del instrumento, dos evaluadores independientes cal
 P_o = 0.968, \quad P_e = 0.541 \implies \kappa = \frac{0.968 - 0.541}{1 - 0.541} = 0.931
 \end{equation}
 
-El coeficiente $\kappa = 0.931$ corresponde a un nivel de acuerdo clasificado como \textit{casi perfecto} según la escala de Landis y Koch \cite{landis1977measurement}. Este resultado indica que las definiciones conductuales de los cuatro niveles de la rúbrica proporcionan un criterio de asignación consistente para la muestra evaluada.
+El coeficiente global $\kappa = 0.931$ corresponde a un nivel de acuerdo clasificado como \textit{casi perfecto} según la escala de Landis y Koch \cite{landis1977measurement}. Al desglosar el coeficiente por dimensiones, la concordancia osciló entre $\kappa = 0.882$ en Utilidad Pedagógica ($D_4$), donde la interpretación del grado de andamiaje presenta mayor sutileza, y $\kappa = 0.981$ en Factualidad ($D_1$) y Alucinaciones ($D_2$). Este resultado indica que las definiciones conductuales de los cuatro niveles de la rúbrica proporcionan un criterio de asignación consistente para la muestra evaluada.

@@ -18,7 +18,7 @@ Desde el punto de vista de la ingeniería del software, estas dificultades se en
 \label{sec:justificacion_trabajo}
 Frente a la proliferación de asistentes conversacionales desplegados sin una auditoría sistemática previa, resulta conveniente dotar a la disciplina de una metodología de testing estructurada, reproducible y empíricamente contrastada. Este marco debe permitir evaluar si un chatbot no solo responde de forma correcta desde el punto de vista enciclopédico, sino si lo hace con el andamiaje pedagógico, la seguridad y la adaptación al nivel que requiere una interacción formativa.
 
-El presente Trabajo de Fin de Grado aborda esta necesidad articulando un marco de evaluación multidimensional que traslada conceptos de los estándares internacionales de calidad de software (ISO/IEC 25010) \cite{iso25010} y principios pedagógicos de referencia, en particular la Teoría de la Zona de Desarrollo Próximo de Vygotsky \cite{vygotsky1978mind} y los modelos de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}, junto con los avances recientes en evaluación de modelos generativos \cite{zheng2023judging}.
+El presente Trabajo de Fin de Grado aborda esta necesidad articulando un marco de evaluación multidimensional que traslada conceptos de los estándares internacionales de calidad de software (ISO/IEC 25010) \cite{iso25010} y principios pedagógicos de referencia, en particular la Teoría de la Zona de Desarrollo Próximo de Vygotsky \cite{vygotsky1978mind}, el andamiaje tutorial de Wood, Bruner y Ross \cite{wood1976role} y los modelos de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}, junto con los avances recientes en evaluación de modelos generativos \cite{zheng2023judging}.
 
 \section{Objetivos del trabajo}
 \label{sec:objetivos}
@@ -27,10 +27,10 @@ El objetivo general de este proyecto consiste en diseñar, formalizar y evaluar 
 Para alcanzar esta meta global, se establecen los siguientes objetivos específicos:
 \begin{enumerate}
     \item Analizar las diferencias metodológicas y operacionales entre el testing de software determinista y la evaluación de modelos de lenguaje generativos, formalizando el impacto del problema del oráculo.
-    \item Definir un conjunto de dimensiones de calidad de software educativo alineadas con el estándar ISO/IEC 25010 y la literatura pedagógica.
+    \item Definir un conjunto de dimensiones de calidad de software educativo inspiradas en el estándar ISO/IEC 25010 y la literatura pedagógica.
     \item Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación.
-    \item Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$) basado en el principio de seguridad prioritaria (\textit{Safety-First}).
-    \item Construir una batería estructurada de casos de prueba calibrados y aplicarla experimentalmente sobre tres perfiles de chatbot para contrastar la sensibilidad del marco.
+    \item Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$), complementado por un criterio de seguridad prioritaria (\textit{Safety-First}).
+    \item Construir una batería estructurada de casos de prueba y aplicarla experimentalmente sobre tres perfiles de chatbot para contrastar la sensibilidad del marco.
 \end{enumerate}
 
 \section{Preguntas de investigación}

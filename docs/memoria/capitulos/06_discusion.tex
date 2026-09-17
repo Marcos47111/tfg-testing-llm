@@ -5,20 +5,20 @@ Los resultados obtenidos en la experimentación muestran que la rúbrica multidi
 
 En primer lugar, los datos reflejan los riesgos asociados al uso directo de un modelo de lenguaje de propósito general sin directrices educativas específicas. La tasa de alucinaciones del $33.3\%$ ante preguntas trampa y la tasa de fallos críticos del $9.5\%$ observadas en el Asistente Base ilustran la tendencia del modelo hacia la complacencia acrítica (\textit{sycophancy}) y la generación de información ficticia ante premisas capciosas. En un entorno formativo, estas respuestas pueden inducir a errores conceptuales si el estudiante asume la corrección del contenido generado.
 
-En segundo lugar, el experimento muestra la utilidad del diseño de directivas de sistema (\textit{system prompts}) para modular la interacción. Al configurar el modelo como un Tutor Socrático, se observó que el sistema evitó proporcionar código o soluciones acabadas, optando en su lugar por diagnosticar los fallos planteados y formular preguntas reflexivas para que el propio alumno identificara el error.
+En segundo lugar, el experimento muestra la utilidad del diseño de directivas de sistema (\textit{system prompts}) para modular la interacción. Al configurar el modelo como un Tutor Socrático, se observó que el sistema evitó proporcionar código o soluciones acabadas, optando en su lugar por diagnosticar los fallos planteados y formular preguntas reflexivas para que el propio alumno identificara el error. No obstante, dado que Meta-Llama-3-8B-Instruct incorpora alineamiento previo de seguridad mediante SFT y RLHF en su entrenamiento original, el diseño experimental no permite atribuir exclusivamente a las directivas pedagógicas el rechazo de contenidos ilegales en D5, sino a la interacción entre el alineamiento fundacional y las restricciones de rol.
 
 \section{Fortalezas y aportaciones del marco metodológico}
 \label{sec:fortalezas_metodologia}
 
 La propuesta desarrollada en este trabajo presenta varias características relevantes frente a los enfoques habituales de evaluación:
 
-En el ámbito de la ingeniería de software, el marco operacionaliza los atributos de calidad de producto definidos en la norma ISO/IEC 25010:2023 \cite{iso25010} (adecuación funcional, usabilidad, fiabilidad y seguridad) mediante dimensiones observables y evaluables en sistemas conversacionales estocásticos.
+En el ámbito de la ingeniería de software, el marco operacionaliza los atributos de calidad de producto definidos en la norma ISO/IEC 25010:2023 \cite{iso25010} (adecuación funcional, capacidad de interacción, fiabilidad y seguridad) mediante dimensiones observables y evaluables en sistemas conversacionales estocásticos.
 
-En el aspecto pedagógico, la metodología no se limita a verificar la corrección gramatical o enciclopédica, sino que incorpora conceptos formativos como la Zona de Desarrollo Próximo, el andamiaje y los niveles de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}, evaluando si el asistente fomenta la reflexión o promueve la descarga cognitiva pasiva.
+En el aspecto pedagógico, la metodología no se limita a verificar la corrección gramatical o enciclopédica, sino que incorpora conceptos formativos como la Zona de Desarrollo Próximo, el andamiaje tutorial \cite{wood1976role} y los niveles de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}, evaluando si el asistente fomenta la reflexión o promueve la descarga cognitiva pasiva.
 
-En el plano psicométrico, la adopción de una escala de cuatro niveles ($0$ a $3$) con descriptores conductuales busca reducir el recurso al punto medio neutral \cite{garland1991midpoint}. El coeficiente Kappa de Cohen obtenido ($\kappa = 0.931$) refleja un alto grado de concordancia entre los evaluadores independientes sobre el conjunto de datos de prueba analizado.
+En el plano evaluativo, la adopción de una escala discreta de cuatro niveles ($0$ a $3$) con descriptores conductuales busca reducir el recurso al punto medio neutral \cite{garland1991midpoint}. El coeficiente Kappa de Cohen obtenido ($\kappa = 0.931$) refleja un alto grado de concordancia entre los evaluadores independientes sobre el conjunto de datos de prueba analizado.
 
-Asimismo, la formulación del Índice de Calidad Educativa ($IQE$) incorpora una penalización explícita ante fallos críticos ($CFR$) y alucinaciones ($HR$), evitando que una redacción estilísticamente fluida oculte errores conceptuales o respuestas de riesgo.
+Asimismo, el Índice de Calidad Educativa ($IQE$) se interpreta de manera conjunta con la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$). Bajo el criterio de seguridad prioritaria (\textit{Safety-First}), la presencia de fallos críticos impide considerar adecuado un sistema con independencia de que su puntuación media global sea elevada.
 
 \section{Limitaciones del estudio y amenazas a la validez}
 \label{sec:limitaciones_amenazas}
@@ -29,7 +29,13 @@ Respecto a la \textit{validez interna}, la evaluación cualitativa mediante rúb
 
 En relación con la \textit{validez externa}, el tamaño de la batería —42 casos de prueba y 126 respuestas analizadas— ha permitido realizar una evaluación preliminar de la viabilidad y capacidad discriminativa del marco metodológico; no obstante, un despliegue institucional a escala requeriría ampliar el banco de ítems a materias más especializadas y a un abanico más amplio de modelos fundacionales.
 
-En cuanto a la \textit{validez de constructo}, la metodología actual se circunscribe a la interacción en texto y código fuente. La evaluación de contenidos educativos que involucran diagramas visuales, esquemas gráficos o fórmulas manuscritas queda fuera del alcance de este trabajo.
+Por otra parte, la saturación de puntuaciones observada en los perfiles instruidos, especialmente en el Tutor Socrático ($IQE = 100.0$), sugiere un posible efecto techo en la batería actual. Futuras versiones de la suite deberán incorporar casos adversariales de mayor complejidad y variantes semánticas para discriminar con mayor granularidad el rendimiento en la zona superior de la escala.
+
+Asimismo, el protocolo experimental se basó en una única ejecución por caso bajo semilla determinista fija ($\text{seed}=42$). La tasa $HR = 33.3\%$ refleja la proporción de casos fallados en esa ejecución controlada y no una estimación probabilística universal de alucinación del modelo; evaluar la variabilidad estocástica mediante múltiples semillas por ítem constituye una ampliación necesaria.
+
+En cuanto al idioma, el modelo empleado fue Meta-Llama-3-8B-Instruct, cuya documentación oficial prioriza el inglés. Aunque mostró competencia funcional en español en las pruebas realizadas, este factor aconseja replicar el estudio con modelos explícitamente multilingües.
+
+En relación con la \textit{validez de constructo}, la metodología actual se circunscribe a la interacción en texto y código fuente, quedando fuera del alcance los contenidos educativos con soporte multimodal (diagramas, fórmulas manuscritas o esquemas gráficos).
 
 Por último, la \textit{no-estacionariedad} de los modelos comerciales representa un reto para la validez temporal, ya que las actualizaciones periódicas de pesos pueden alterar el comportamiento del sistema, haciendo recomendable integrar estas pruebas en flujos de integración continua (CI/CD).
 

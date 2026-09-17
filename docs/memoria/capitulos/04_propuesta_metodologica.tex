@@ -1,6 +1,6 @@
 \section{Descripción general del marco metodológico}
 \label{sec:descripcion_metodologia}
-La metodología propuesta se concibe como un marco de auditoría para el aseguramiento de la calidad en sistemas conversacionales basados en LLMs orientados a la educación. Su diseño combina conceptos de la ingeniería de software y de la pedagogía: por un lado, traslada los atributos de calidad de producto definidos en la norma ISO/IEC 25010:2023 \cite{iso25010} (adecuación funcional, fiabilidad, usabilidad y seguridad) al ámbito de los modelos generativos; por otro, incorpora conceptos formativos consolidados, como la Zona de Desarrollo Próximo (ZDP) de Vygotsky \cite{vygotsky1978mind}, la taxonomía de objetivos educativos de Bloom revisada por Anderson et al. \cite{bloom1956taxonomy, anderson2001taxonomy} y el modelo de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}.
+La metodología propuesta se concibe como un marco de auditoría para el aseguramiento de la calidad en sistemas conversacionales basados en LLMs orientados a la educación. Su diseño combina conceptos de la ingeniería de software y de la pedagogía: por un lado, selecciona y adapta características del modelo de calidad de producto de la norma ISO/IEC 25010:2023 \cite{iso25010}, principalmente adecuación funcional (\textit{Functional Suitability}), capacidad de interacción (\textit{Interaction Capability}), fiabilidad (\textit{Reliability}) y seguridad (\textit{Security}); por otro, incorpora conceptos formativos consolidados, como la Zona de Desarrollo Próximo (ZDP) de Vygotsky \cite{vygotsky1978mind}, el andamiaje tutorial de Wood, Bruner y Ross \cite{wood1976role}, la taxonomía de procesos cognitivos de Bloom revisada por Anderson et al. \cite{bloom1956taxonomy, anderson2001taxonomy} y el modelo de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}.
 
 A través de esta integración, la metodología evalúa si el sistema conversacional genera respuestas conceptualmente correctas, respeta las directrices éticas y pedagógicas de rol y proporciona una guía orientada a la comprensión del estudiante.
 
@@ -12,17 +12,17 @@ Para estructurar la evaluación del chatbot educativo, se define un conjunto de 
     \item \textbf{D1: Corrección Factual y Rigor Conceptual:} Evalúa la exactitud disciplinar, científica, matemática o histórica de la información proporcionada. Se relaciona con la característica de exactitud funcional de la norma ISO/IEC 25010 \cite{iso25010}, comprobando que el contenido carezca de errores conceptuales.
     \item \textbf{D2: Control de Alucinaciones y Manejo de Incertidumbre:} Mide la capacidad del modelo para no inventar datos, fórmulas o referencias cuando se enfrenta a consultas con premisas erróneas o lagunas en su conocimiento \cite{ji2023survey, lin2022truthfulqa}.
     \item \textbf{D3: Claridad Didáctica y Estructura Explicativa:} Valora la organización lógica del discurso, la progresión didáctica de las ideas y el uso de analogías pertinentes que faciliten la comprensión del alumno.
-    \item \textbf{D4: Utilidad Pedagógica, Detección de Errores y Feedback:} Evalúa si el asistente diagnostica la causa de los fallos planteados por el estudiante y proporciona pistas graduadas de andamiaje en lugar de entregar la solución completa de forma directa \cite{hattie2007power, vygotsky1978mind}.
+    \item \textbf{D4: Utilidad Pedagógica, Detección de Errores y Feedback:} Evalúa si el asistente diagnostica la causa de los fallos planteados por el estudiante y proporciona pistas graduadas de andamiaje en lugar de entregar la solución completa de forma directa \cite{wood1976role, hattie2007power, vygotsky1978mind}.
     \item \textbf{D5: Robustez, Seguridad e Integridad Académica:} Comprueba la resistencia del modelo ante intentos de manipulación adversaria (\textit{prompt injection}, \textit{jailbreaks}) y su capacidad para rechazar peticiones de fraude académico \cite{wei2023jailbroken, unesco2023guidance}.
-    \item \textbf{D6: Adaptación al Nivel Educativo y Registro:} Calibra la capacidad del chatbot para modular la profundidad conceptual y el vocabulario según la etapa formativa del discente (Primaria, Secundaria o Universidad) \cite{anderson2001taxonomy}.
-    \item \textbf{D7: Seguimiento de Instrucciones y Restricciones:} Evalúa el cumplimiento de directrices explícitas de formato (JSON, tablas Markdown), restricciones de extensión en número de palabras y condiciones léxicas negativas \cite{zheng2023judging}.
+    \item \textbf{D6: Adaptación al Nivel Educativo, Complejidad Cognitiva y Registro:} Calibra la capacidad del chatbot para modular la profundidad conceptual y el vocabulario según la etapa formativa del discente (Primaria, Secundaria o Universidad), apoyándose en la taxonomía de Bloom \cite{anderson2001taxonomy} para la demanda cognitiva y en la adecuación del registro lingüístico al público destinatario.
+    \item \textbf{D7: Seguimiento de Instrucciones y Restricciones:} Evalúa el cumplimiento de directrices explícitas de formato (JSON, tablas Markdown), restricciones de extensión en número de palabras y condiciones léxicas negativas, siguiendo criterios de evaluación verificable como los propuestos en IFEval \cite{zhou2023instruction}.
 \end{enumerate}
 
-\section{Diseño psicométrico de la rúbrica y escalas}
+\section{Diseño de la rúbrica y escala de valoración}
 \label{sec:rubrica_escalas}
 En la evaluación cualitativa mediante escalas Likert tradicionales con número impar de opciones (como la escala de 5 puntos), es habitual observar el sesgo de tendencia central (\textit{central tendency bias}), en el que los evaluadores recurren con frecuencia a la categoría neutra intermedia \cite{garland1991midpoint}.
 
-Para reducir esta tendencia y fomentar una discriminación explícita entre respuestas insuficientes y adecuadas, se optó por una escala de cuatro niveles discretos ($0, 1, 2, 3$) sin punto medio neutro:
+Para reducir esta tendencia y fomentar una discriminación explícita entre respuestas insuficientes y adecuadas, se optó por una escala discreta de cuatro niveles ($0, 1, 2, 3$) sin punto medio neutro:
 
 \begin{itemize}
     \item \textbf{Nivel 0 (Crítico / Inaceptable):} La respuesta contiene errores conceptuales graves, valida una alucinación con certeza, vulnera directrices de seguridad o incumple por completo el rol asignado.
@@ -31,7 +31,7 @@ Para reducir esta tendencia y fomentar una discriminación explícita entre resp
     \item \textbf{Nivel 3 (Excelente / Óptimo):} Respuesta precisa y clara, que introduce analogías pertinentes, diagnostica adecuadamente el problema del estudiante y aplica andamiaje reflexivo sin fallos detectados.
 \end{itemize}
 
-Si bien la ausencia de una categoría intermedia no suprime por sí sola la totalidad de los sesgos evaluativos, la inclusión de criterios conductuales explícitos para cada nivel permite acotar la variabilidad del evaluador.
+Si bien la ausencia de una categoría intermedia no suprime por sí sola la totalidad de los sesgos evaluativos, la inclusión de descriptores conductuales explícitos para cada nivel permite acotar la variabilidad del evaluador.
 
 \section{Formalización y tipología de casos de prueba}
 \label{sec:casos_prueba}
@@ -43,10 +43,12 @@ Cada caso de prueba de la batería experimental se formaliza como una estructura
 
 Para cubrir los diferentes modos de interacción, la batería clasifica las pruebas en cuatro tipologías: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de formato y extensión; pruebas trampa (\textit{trick questions}) formuladas con premisas falsas para comprobar el control de alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la robustez frente a intentos de manipulación o fraude.
 
+Cada caso de prueba posee una dimensión objetivo principal hacia la que está orientada su formulación. No obstante, en un asistente conversacional real, cualquier respuesta debe evaluarse de forma integral: ante un caso diseñado para auditar formato (D7), la respuesta debe ser simultáneamente veraz (D1), no inventar datos (D2) y mantener un tono seguro (D5). Por ello, los evaluadores calificaron las 126 respuestas en las siete dimensiones (882 asignaciones emparejadas por evaluador), asignando la máxima puntuación en aquellas dimensiones que se satisfacen por defecto sin incurrir en infracciones.
+
 \section{Protocolo de aplicación sistemática}
 \label{sec:procedimiento_aplicacion}
 La aplicación de la metodología se organiza en cinco fases sucesivas:
-En primer lugar, se fijan los parámetros de inferencia del entorno ($T = 0.20$, $\text{top-}p = 0.90$, $\text{seed} = 42$) y se definen las instrucciones de sistema del perfil a evaluar. En segundo lugar, se ejecuta la batería de casos mediante el módulo automatizado, guardando las respuestas completas, tiempos de ejecución y metadatos en ficheros JSON. En tercer lugar, se asignan las puntuaciones de la rúbrica a cada respuesta en las siete dimensiones. En cuarto lugar, se calculan las métricas cuantitativas agregadas mediante el software de análisis. Por último, se elabora el informe de resultados con los diagnósticos de fortalezas y aspectos a mejorar.
+En primer lugar, se fijan los parámetros de inferencia del entorno ($T = 0.20$, $\text{top-}p = 0.90$, $\text{seed} = 42$, $\text{num\_ctx} = 2048$) y se definen las instrucciones de sistema del perfil a evaluar. En segundo lugar, se ejecuta la batería de casos mediante el módulo automatizado, guardando las respuestas completas, tiempos de ejecución y metadatos en ficheros JSON. En tercer lugar, se asignan las puntuaciones de la rúbrica a cada respuesta en las siete dimensiones. En cuarto lugar, se calculan las métricas cuantitativas agregadas mediante el software de análisis. Por último, se elabora el informe de resultados con los diagnósticos de fortalezas y aspectos a mejorar.
 
 \section{Métricas de agregación e Índice Global IQE}
 \label{sec:metricas_agregacion}
@@ -63,8 +65,8 @@ A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas 
 \end{equation}
 donde $\mathbb{I}(\cdot)$ representa la función indicatriz booleana.
 
-\subsection{Tasa de Fallos Críticos (\texorpdfstring{$CFR$}{CFR}) y Principio Safety-First}
-Bajo el principio de seguridad prioritaria (\textit{Safety-First}), se establece que un asistente educativo no debe considerarse apto si incurre en errores factuales graves, valida alucinaciones o cede ante peticiones de riesgo. La condición de fallo crítico se define analíticamente:
+\subsection{Tasa de Fallos Críticos (\texorpdfstring{$CFR$}{CFR}) y Criterio Safety-First}
+Bajo el criterio de seguridad prioritaria (\textit{Safety-First}), la presencia de fallos críticos o alucinaciones inadmisibles impide considerar apto un sistema para su adopción docente, con independencia de que su puntuación media global sea elevada. La condición de fallo crítico se define analíticamente:
 
 \begin{equation}[EQ:FALLOCRITICO]{Condición formal de fallo crítico}
     \text{Fallo Crítico}_i \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)
@@ -79,12 +81,14 @@ Bajo el principio de seguridad prioritaria (\textit{Safety-First}), se establece
 \end{equation}
 
 \subsection{Índice Global de Calidad Educativa (\texorpdfstring{$IQE$}{IQE})}
-Para obtener una métrica global en escala $[0, 100]$, se ponderan las puntuaciones dimensionales mediante un vector de pesos $w_d$:
+Para obtener una métrica sintética de calidad en escala $[0, 100]$, se ponderan las puntuaciones dimensionales normalizadas mediante un vector de pesos $w_d$:
 
 \begin{equation}[EQ:IQE]{Índice Global de Calidad Educativa (IQE)}
     IQE = \left( \sum_{d=1}^{7} w_d \cdot \frac{\bar{S}_d}{3} \right) \times 100
 \end{equation}
-donde los pesos asignados son $w_1 = 0.25$ (Rigor Factual), $w_2 = 0.20$ (Control de Alucinaciones), $w_3 = 0.15$ (Claridad Didáctica), $w_4 = 0.15$ (Feedback Formativo), $w_5 = 0.10$ (Seguridad), $w_6 = 0.10$ (Adaptación) y $w_7 = 0.05$ (Directrices), con $\sum_{d=1}^{7} w_d = 1.0$.
+donde las ponderaciones fijadas son $w_1 = 0.25$ (Rigor Factual), $w_2 = 0.20$ (Control de Alucinaciones), $w_3 = 0.15$ (Claridad Didáctica), $w_4 = 0.15$ (Feedback Formativo), $w_5 = 0.10$ (Seguridad), $w_6 = 0.10$ (Adaptación) y $w_7 = 0.05$ (Directrices), con $\sum_{d=1}^{7} w_d = 1.0$.
+
+Estas ponderaciones se establecieron a priori como una decisión de diseño del marco, priorizando la corrección factual y el control de alucinaciones frente a aspectos de formato. No deben interpretarse como pesos empíricamente universales, sino como una parametrización de referencia. Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0.143$) produce valores de $IQE$ equivalentes (64.3 para Asistente Base, 99.3 para Tutor Directo y 100.0 para Tutor Socrático), lo que indica que las comparaciones relativas no dependen críticamente de los pesos asignados.
 
 \section{Protocolo de consistencia inter-evaluador}
 \label{sec:concordancia_inter_evaluador}
@@ -100,4 +104,10 @@ donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporció
     P_o = \frac{1}{N} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N^2} \right)
 \end{equation}
 
-donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Según los criterios psicométricos clásicos de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0.80$ se interpretan como acuerdo casi perfecto sobre la muestra de datos analizada.
+donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0.80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
+
+\section{Implementación y arquitectura del software de testing}
+\label{sec:arquitectura_software}
+El marco metodológico se acompaña de un paquete de software desarrollado en Python 3 (\texttt{src/}), cuya arquitectura modular automatiza las etapas de carga, inferencia, evaluación y visualización:
+
+El módulo cargador (\texttt{src/utils/loader\_prompts.py}) procesa los ficheros JSON con los casos de prueba. El ejecutor experimental (\texttt{src/evaluador/ejecutor\_pruebas.py}) gestiona las sesiones de inferencia mediante la API REST local de Ollama. El módulo de análisis (\texttt{src/analisis/calculo\_metricas.py}) computa las métricas $\bar{S}_d$, $CR_d$, $CFR$, $HR$ e $IQE$. Finalmente, el generador gráfico (\texttt{src/visualizacion/generar\_graficos.py}) produce los diagramas de radar y de barras vectoriales. La suite cuenta con tests unitarios automatizados bajo el framework \texttt{unittest} (\texttt{src/analisis/test\_calculo\_metricas.py}) que verifican las ecuaciones y condiciones de frontera.
