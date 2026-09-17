@@ -1,0 +1,11 @@
+{
+  "perfil": "asistente_base",
+  "descripcion": "Línea base de control sin system prompt educativo. Representa el comportamiento por defecto del modelo LLM sin alineamiento pedagógico explícito.",
+  "system_prompt": "You are a helpful assistant.",
+  "parametros_inferencia": {
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "repeat_penalty": 1.1,
+    "seed": 42
+  }
+}

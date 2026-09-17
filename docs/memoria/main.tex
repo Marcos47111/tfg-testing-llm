@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+% --- Paquetes de idioma y tipografía ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{csquotes}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Geometría de página (Márgenes normalizados TFG) ---
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3.0cm, right=2.5cm]{geometry}
+
+% --- Paquetes matemáticos y tablas ---
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% --- Enlaces e hipervínculos ---
+\usepackage[colorlinks=true, linkcolor=blue!70!black, citecolor=green!50!black, urlcolor=blue!80!black]{hyperref}
+
+% --- Formato de títulos y encabezados ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% --- Bibliografía con BibLaTeX ---
+\usepackage[backend=bibtex,style=numeric-comp,sorting=none]{biblatex}
+\addbibresource{bibliografia/referencias.bib}
+
+% =========================================================================
+% DATOS DEL DOCUMENTO
+% =========================================================================
+\title{\textbf{\LARGE Metodología de Testing para Sistemas Conversacionales basados en LLMs en Contextos Educativos}\\[0.5cm]
+\large Trabajo de Fin de Grado}
+\author{\textbf{Mak}}
+\date{Octubre de 2026}
+
+\begin{document}
+
+% --- Portada ---
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    {\scshape\LARGE Universidad \par}
+    \vspace{1cm}
+    {\scshape\Large Escuela Técnica Superior de Ingeniería Informática \par}
+    \vspace{1.5cm}
+    {\Large\bfseries TRABAJO DE FIN DE GRADO \par}
+    \vspace{1.5cm}
+    {\LARGE\bfseries Propuesta metodológica para el testing de sistemas conversacionales basados en LLMs en contextos educativos \par}
+    \vspace{2cm}
+    \begin{minipage}{0.8\textwidth}
+        \begin{flushleft} \large
+            \textbf{Autor:} Mak \\
+            \textbf{Titulación:} Grado en Ingeniería Informática \\
+            \textbf{Convocatoria:} Curso Académico 2025/2026
+        \end{flushleft}
+    \end{minipage}
+    \vfill
+    {\large Octubre de 2026 \par}
+\end{titlepage}
+
+% --- Índices ---
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+% --- Inclusión de Capítulos Modulares ---
+\input{capitulos/01_introduccion.tex}
+\input{capitulos/02_marco_teorico.tex}
+\input{capitulos/03_testing_sistemas_llms.tex}
+\input{capitulos/04_propuesta_metodologica.tex}
+\input{capitulos/05_aplicacion_demostrativa.tex}
+\input{capitulos/06_discusion.tex}
+\input{capitulos/07_conclusiones.tex}
+
+% --- Bibliografía ---
+\newpage
+\printbibliography[heading=bibintoc, title={8. Bibliografía}]
+
+% --- Anexos ---
+\appendix
+\input{capitulos/08_anexos.tex}
+
+\end{document}
