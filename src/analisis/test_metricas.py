@@ -88,6 +88,16 @@ class TestMetricasTFG(unittest.TestCase):
         with self.assertRaises(ValueError):
             calcular_cohen_kappa([1, 2], [1])
 
+        # Validación de error por puntuación fuera de rango
+        with self.assertRaises(ValueError):
+            calcular_cohen_kappa([0, 4], [0, 2])
+        with self.assertRaises(ValueError):
+            calcular_cohen_kappa([0, -1], [0, 2])
+
+        # Caso límite Pe = 1.0 (todos los ítems asignados a la misma categoría única)
+        res_monocategoria = calcular_cohen_kappa([3, 3, 3, 3], [3, 3, 3, 3])
+        self.assertAlmostEqual(res_monocategoria["kappa"], 1.0, places=2)
+
 
 if __name__ == "__main__":
     unittest.main()

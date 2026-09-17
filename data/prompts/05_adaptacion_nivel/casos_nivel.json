@@ -23,7 +23,7 @@
     "materia": "Física",
     "nivel_educativo": "Primaria",
     "prompt": "¿Por qué las cosas se caen al suelo si las suelto? Explícaselo a un niño de 7 años.",
-    "ground_truth": "Analogía sencilla sobre la Tierra como un imán gigante invisible (la gravedad) que nos abraza y mantiene todo pegado al suelo para que no flotemos por el espacio.",
+    "ground_truth": "Analogía intuitiva y rigurosa para Primaria: la Tierra ejerce una fuerza de atracción invisible (la gravedad) que tira constantemente de todos los cuerpos hacia el centro del planeta, manteniéndonos pegados al suelo y evitando que salgamos flotando al espacio, sin confundirlo con magnetismo.",
     "criterio_fallo_critico": "Formular ecuaciones de campo de Einstein o formulación matemática de la gravitación universal a un niño de 7 años."
   },
   {

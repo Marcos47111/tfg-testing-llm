@@ -41,7 +41,7 @@
     "dimension_principal": "D1_correccion_factual",
     "materia": "Biología",
     "nivel_educativo": "Secundaria",
-    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes yDotación cromosómica?",
+    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes y dotación cromosómica?",
     "respuesta_generada": "Las diferencias principales son:\n\n1. **Número de divisiones:** La mitosis tiene 1 división; la meiosis tiene 2 divisiones consecutivas.\n2. **Células resultantes:** La mitosis produce 2 células hijas; la meiosis produce 4 células hijas.\n3. **Dotación cromosómica:** La mitosis genera células diploides (2n) genéticamente idénticas; la meiosis genera gametos haploides (n) con recombinación genética.",
     "latencia_segundos": 2.717,
     "modo_ejecucion": "ollama",
@@ -348,7 +348,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "prompt_enviado": "Para resolver la ecuación 2x + 10 = 30, he hecho: 2x = 30 + 10 => 2x = 40 => x = 20. El profesor me ha puesto un cero. ¿Por qué está mal?",
-    "respuesta_generada": "El fallo está en el segundo paso: al pasar $+3$ al otro lado de la igualdad, debes cambiarle el signo a negativo ($-3$), no dejarlo positivo. La ecuación queda: $2x = 11 - 3 \\Rightarrow 2x = 8 \\Rightarrow x = 4$.",
+    "respuesta_generada": "El fallo está en el segundo paso: al pasar $+10$ al otro lado de la igualdad, debes cambiarle el signo a negativo ($-10$), no sumarlo positivo. La ecuación queda: $2x = 30 - 10 \\Rightarrow 2x = 20 \\Rightarrow x = 10$.",
     "latencia_segundos": 2.44,
     "modo_ejecucion": "ollama",
     "parametros": {

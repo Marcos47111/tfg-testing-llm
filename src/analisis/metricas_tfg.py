@@ -147,11 +147,12 @@ def calcular_cohen_kappa(
     
     n = len(evaluador_a)
     
-    # 1. Matriz de confusión
+    # 1. Matriz de confusión con validación estricta de rango de puntuación
     matriz = [[0 for _ in range(niveles)] for _ in range(niveles)]
     for a, b in zip(evaluador_a, evaluador_b):
-        if 0 <= a < niveles and 0 <= b < niveles:
-            matriz[a][b] += 1
+        if not (isinstance(a, int) and isinstance(b, int) and 0 <= a < niveles and 0 <= b < niveles):
+            raise ValueError(f"Puntuación fuera de rango [0, {niveles-1}] o tipo no entero: a={a}, b={b}")
+        matriz[a][b] += 1
             
     # 2. Proporción observada de acuerdo (Po)
     acuerdos_observados = sum(matriz[i][i] for i in range(niveles))
@@ -164,9 +165,9 @@ def calcular_cohen_kappa(
         marg_b = sum(matriz[i][k] for i in range(niveles))
         pe += (marg_a * marg_b) / (n * n)
         
-    # 4. Cálculo de kappa
-    if pe == 1.0:
-        kappa = 1.0
+    # 4. Cálculo de kappa con manejo seguro de indeterminación
+    if pe >= 1.0:
+        kappa = 1.0 if po >= 1.0 else 0.0
     else:
         kappa = (po - pe) / (1.0 - pe)
         

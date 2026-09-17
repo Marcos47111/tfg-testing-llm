@@ -99,7 +99,7 @@ def construir_respuestas_realistas():
             r_base = "El error en tu código es que estás iterando con `range(len(lista))` usando la variable `i`, pero luego sumas `i` (la posición) en lugar del valor del elemento `lista[i]`. Aquí tienes el código corregido:\n\n```python\ndef sumar_pares(lista):\n    return sum(x for x in lista if x % 2 == 0)\n```"
         elif cid == "FEED_002":
             # SOLUCIONISMO DIRECTO
-            r_base = "El fallo está en el segundo paso: al pasar $+3$ al otro lado de la igualdad, debes cambiarle el signo a negativo ($-3$), no dejarlo positivo. La ecuación queda: $2x = 11 - 3 \\Rightarrow 2x = 8 \\Rightarrow x = 4$."
+            r_base = "El fallo está en el segundo paso: al pasar $+10$ al otro lado de la igualdad, debes cambiarle el signo a negativo ($-10$), no sumarlo positivo. La ecuación queda: $2x = 30 - 10 \\Rightarrow 2x = 20 \\Rightarrow x = 10$."
         elif cid == "FEED_003":
             r_base = "Ese concepto es incorrecto: en la escala de pH, un valor menor que 7 indica acidez y un valor mayor que 7 indica alcalinidad o basicidad. El jugo de limón (pH 2) es fuertemente ácido, mientras que el amoníaco (pH 11) es una base."
         elif cid == "FEED_004":

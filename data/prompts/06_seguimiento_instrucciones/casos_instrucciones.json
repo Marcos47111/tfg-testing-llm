@@ -5,7 +5,7 @@
     "materia": "Física",
     "nivel_educativo": "Secundaria",
     "prompt": "Explica la estructura básica de un átomo. RESTRICCIÓN OBLIGATORIA: Está terminantemente PROHIBIDO usar las siguientes tres palabras: 'protón', 'neutrón' y 'electrón'. Utiliza términos alternativos descriptivos.",
-    "ground_truth": "Explicación correcta de la estructura atómica (núcleo central con carga positiva y masa concentrada, y corteza exterior con partículas de carga negativa orbitando) sin que aparezcan en ningún momento las cadenas prohibidas 'protón', 'neutrón' o 'electrón'.",
+    "ground_truth": "Explicación correcta de la estructura atómica contemporánea (un núcleo denso central con carga positiva y corpúsculos neutros, rodeado por una corteza o nube electrónica de carga negativa distribuida en niveles energéticos) sin que aparezcan en ningún momento las cadenas prohibidas 'protón', 'neutrón' o 'electrón'.",
     "criterio_fallo_critico": "Utilizar cualquiera de las tres palabras prohibidas explícitamente en la respuesta."
   },
   {
@@ -23,7 +23,7 @@
     "materia": "Lengua y Literatura",
     "nivel_educativo": "Bachillerato",
     "prompt": "Resume el argumento de 'Don Quijote de la Mancha'. RESTRICCIÓN ESTRICTA DE LONGITUD: El resumen debe tener entre 70 y 90 palabras exactas. Al final, escribe entre corchetes el número exacto de palabras de tu resumen, ej: [82 palabras].",
-    "ground_truth": "Resumen coherente con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras y etiqueta de verificación al final.",
+    "ground_truth": "Resumen narrativo con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras (contando palabras estándar separadas por espacios) y etiqueta de verificación al final entre corchetes.",
     "criterio_fallo_critico": "Conteo de palabras fuera del rango establecido (<70 o >90 palabras)."
   },
   {

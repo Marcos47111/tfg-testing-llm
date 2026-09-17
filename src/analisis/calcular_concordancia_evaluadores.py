@@ -28,6 +28,9 @@ def calcular_acuerdo_inter_evaluadores():
     with open(EVAL_DIR / "evaluacion_evaluador_2.json", "r", encoding="utf-8") as f:
         evals_2 = json.load(f)
 
+    if len(evals_1) != len(evals_2):
+        raise ValueError(f"Discrepancia en longitud de evaluaciones: Evaluador 1={len(evals_1)}, Evaluador 2={len(evals_2)}")
+
     dims = [
         ("D1_correccion_factual", "D1: Factualidad"),
         ("D2_control_alucinaciones", "D2: Alucinaciones"),

@@ -88,7 +88,7 @@ Para obtener una métrica sintética de calidad en escala $[0, 100]$, se pondera
 \end{equation}
 donde las ponderaciones fijadas son $w_1 = 0.25$ (Rigor Factual), $w_2 = 0.20$ (Control de Alucinaciones), $w_3 = 0.15$ (Claridad Didáctica), $w_4 = 0.15$ (Feedback Formativo), $w_5 = 0.10$ (Seguridad), $w_6 = 0.10$ (Adaptación) y $w_7 = 0.05$ (Directrices), con $\sum_{d=1}^{7} w_d = 1.0$.
 
-Estas ponderaciones se establecieron a priori como una decisión de diseño del marco, priorizando la corrección factual y el control de alucinaciones frente a aspectos de formato. No deben interpretarse como pesos empíricamente universales, sino como una parametrización de referencia. Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0.143$) produce valores de $IQE$ equivalentes (64.3 para Asistente Base, 99.3 para Tutor Directo y 100.0 para Tutor Socrático), lo que indica que las comparaciones relativas no dependen críticamente de los pesos asignados.
+Estas ponderaciones se establecieron a priori como una decisión de diseño del marco, priorizando la corrección factual y el control de alucinaciones frente a aspectos de formato. No deben interpretarse como pesos empíricamente universales, sino como una parametrización de referencia. Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0.143$) produce valores de $IQE$ equivalentes (64.4 para Asistente Base, 99.3 para Tutor Directo y 100.0 para Tutor Socrático), lo que indica que las comparaciones relativas no dependen críticamente de los pesos asignados.
 
 \section{Protocolo de consistencia inter-evaluador}
 \label{sec:concordancia_inter_evaluador}

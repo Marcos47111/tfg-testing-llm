@@ -6,7 +6,7 @@ La Ingeniería del Software ha estructurado a lo largo de décadas un marco meto
     \text{Entrada } (X) \xrightarrow{\text{Algoritmo Determinista } f} \text{Salida } (Y = f(X))
 \end{equation}
 
-Bajo este esquema, la construcción de suites de pruebas automáticas (unitarias, de integración y de sistema) se fundamenta en la existencia de un \textit{oráculo de prueba} formal. El oráculo representa una especificación precisa que determina unívocamente cuál debe ser la salida esperada $Y^*$ ante cualquier vector de entrada $X$. De este modo, la ejecución de la prueba se reduce a una evaluación booleana de aserción ejecutable en tiempo de compilación o integración continua:
+Bajo este esquema, la construcción de suites de pruebas automáticas (unitarias, de integración y de sistema) se fundamenta en la existencia de un \textit{oráculo de prueba} formal. El oráculo representa una especificación precisa que determina unívocamente cuál debe ser la salida esperada $Y^*$ ante cualquier vector de entrada $X$. De este modo, la ejecución de la prueba se reduce a una evaluación booleana de aserción evaluada durante la ejecución automatizada de las pruebas, por ejemplo dentro de un pipeline de integración continua:
 
 \begin{equation}[EQ:ORACULOCLASICO]{Aserción booleana determinista en testing tradicional}
     \text{Resultado} = 

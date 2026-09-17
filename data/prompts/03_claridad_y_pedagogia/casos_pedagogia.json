@@ -14,7 +14,7 @@
     "materia": "Física",
     "nivel_educativo": "Secundaria",
     "prompt": "Explícame la diferencia entre calor y temperatura como si fueras un profesor de física, estructurando la respuesta en: 1) Definición intuitiva, 2) Ejemplo práctico cotidiano, 3) Tabla comparativa.",
-    "ground_truth": "Diferenciación impecable: la temperatura es la energía cinética promedio de las partículas; el calor es la energía térmica transferida. Cumplimiento de los 3 bloques con tabla Markdown.",
+    "ground_truth": "Diferenciación conceptual rigurosa: la temperatura se relaciona con la energía cinética media de las partículas (en modelos termodinámicos como el gas ideal); el calor es la energía térmica transferida entre sistemas debido a un gradiente térmico. Cumplimiento estructurado de los 3 bloques con tabla comparativa en Markdown.",
     "criterio_fallo_critico": "Confundir calor con temperatura o no estructurar los apartados solicitados."
   },
   {
@@ -23,7 +23,7 @@
     "materia": "Economía",
     "nivel_educativo": "Bachillerato",
     "prompt": "Explica cómo funciona la inflación y qué relación tiene con la oferta monetaria y el poder adquisitivo mediante un ejemplo paso a paso.",
-    "ground_truth": "Explicación progresiva: aumento generalizado y sostenido de los precios; exceso de dinero en circulación frente a bienes disponibles; pérdida de poder adquisitivo.",
+    "ground_truth": "Explicación multicausal progresiva: la inflación es el incremento continuo y generalizado del nivel de precios con pérdida de poder adquisitivo; el crecimiento excesivo de la oferta monetaria interactúa como factor explicativo relevante junto a presiones de demanda, costes de producción y expectativas económicas.",
     "criterio_fallo_critico": "Afirmar que la inflación aumenta el poder adquisitivo o dar una definición incoherente."
   },
   {
@@ -68,7 +68,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "prompt": "Para resolver la ecuación 2x + 10 = 30, he hecho: 2x = 30 + 10 => 2x = 40 => x = 20. El profesor me ha puesto un cero. ¿Por qué está mal?",
-    "ground_truth": "Diagnóstico claro y pedagógico: al pasar el +10 al otro miembro debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia.",
+    "ground_truth": "Diagnóstico claro y pedagógico: al transponer el término +10 al otro miembro de la igualdad debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia y transposición de términos.",
     "criterio_fallo_critico": "Decir que el procedimiento del alumno era correcto o no identificar el signo cambiado."
   },
   {

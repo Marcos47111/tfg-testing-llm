@@ -41,8 +41,8 @@
     "dimension_principal": "D1_correccion_factual",
     "materia": "Biología",
     "nivel_educativo": "Secundaria",
-    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes yDotación cromosómica?",
-    "respuesta_generada": "**Tutoría Académica (Secundaria - Biología):**\n\nMitosis: 1 división celular, produce 2 células hijas genéticamente idénticas y diploides (2n). Meiosis: 2 divisiones consecutivas, produce 4 células hijas genéticamente distintas (recombinación) y haploides (n), especializadas como gametos.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
+    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes y dotación cromosómica?",
+    "respuesta_generada": "**Tutoría Académica (Secundaria - Biología):**\n\nMitosis: 1 división celular, conserva la dotación cromosómica produciendo 2 células hijas genéticamente idénticas (diploides 2n en organismos diploides). Meiosis: 2 divisiones consecutivas, a partir de una célula diploide genera 4 células hijas haploides (n) con variabilidad genética por recombinación (entrecruzamiento) y segregación independiente.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
     "latencia_segundos": 1.756,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -240,7 +240,7 @@
     "materia": "Física",
     "nivel_educativo": "Secundaria",
     "prompt_enviado": "Explícame la diferencia entre calor y temperatura como si fueras un profesor de física, estructurando la respuesta en: 1) Definición intuitiva, 2) Ejemplo práctico cotidiano, 3) Tabla comparativa.",
-    "respuesta_generada": "**Explicación didáctica y estructurada:**\n\n1. **Concepto central:** Diferenciación impecable: la temperatura es la energía cinética promedio de las partículas; el calor es la energía térmica transferida. Cumplimiento de los 3 bloques con tabla Markdown.\n2. **Desarrollo:** Analicemos cómo se relacionan los elementos clave mediante ejemplos claros.\n3. **Resumen práctico:** Recuerda siempre la regla general para aplicar este conocimiento.",
+    "respuesta_generada": "**Explicación didáctica y estructurada:**\n\n1. **Concepto central:** Diferenciación conceptual rigurosa: la temperatura se relaciona con la energía cinética media de las partículas (en modelos termodinámicos como el gas ideal); el calor es la energía térmica transferida entre sistemas debido a un gradiente térmico. Cumplimiento estructurado de los 3 bloques con tabla comparativa en Markdown.\n2. **Desarrollo:** Analicemos cómo se relacionan los elementos clave mediante ejemplos claros.\n3. **Resumen práctico:** Recuerda siempre la regla general para aplicar este conocimiento.",
     "latencia_segundos": 2.868,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -258,7 +258,7 @@
     "materia": "Economía",
     "nivel_educativo": "Bachillerato",
     "prompt_enviado": "Explica cómo funciona la inflación y qué relación tiene con la oferta monetaria y el poder adquisitivo mediante un ejemplo paso a paso.",
-    "respuesta_generada": "**Explicación didáctica y estructurada:**\n\n1. **Concepto central:** Explicación progresiva: aumento generalizado y sostenido de los precios; exceso de dinero en circulación frente a bienes disponibles; pérdida de poder adquisitivo.\n2. **Desarrollo:** Analicemos cómo se relacionan los elementos clave mediante ejemplos claros.\n3. **Resumen práctico:** Recuerda siempre la regla general para aplicar este conocimiento.",
+    "respuesta_generada": "**Explicación didáctica y estructurada:**\n\n1. **Concepto central:** Explicación multicausal progresiva: la inflación es el incremento continuo y generalizado del nivel de precios con pérdida de poder adquisitivo; el crecimiento excesivo de la oferta monetaria interactúa como factor explicativo relevante junto a presiones de demanda, costes de producción y expectativas económicas.\n2. **Desarrollo:** Analicemos cómo se relacionan los elementos clave mediante ejemplos claros.\n3. **Resumen práctico:** Recuerda siempre la regla general para aplicar este conocimiento.",
     "latencia_segundos": 2.121,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -348,7 +348,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "prompt_enviado": "Para resolver la ecuación 2x + 10 = 30, he hecho: 2x = 30 + 10 => 2x = 40 => x = 20. El profesor me ha puesto un cero. ¿Por qué está mal?",
-    "respuesta_generada": "Has cometido un error en el planteamiento de tu ejercicio. Te explico detalladamente cuál es el fallo y te muestro la solución completa paso a paso:\n\n**Análisis del error:** Diagnóstico claro y pedagógico: al pasar el +10 al otro miembro debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia.\n\n**Solución explicada:** Asegúrate de repasar estos conceptos en tus apuntes para consolidar el procedimiento.",
+    "respuesta_generada": "Has cometido un error en el planteamiento de tu ejercicio. Te explico detalladamente cuál es el fallo y te muestro la solución completa paso a paso:\n\n**Análisis del error:** Diagnóstico claro y pedagógico: al transponer el término +10 al otro miembro de la igualdad debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia y transposición de términos.\n\n**Solución explicada:** Asegúrate de repasar estos conceptos en tus apuntes para consolidar el procedimiento.",
     "latencia_segundos": 1.894,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -582,7 +582,7 @@
     "materia": "Física",
     "nivel_educativo": "Primaria",
     "prompt_enviado": "¿Por qué las cosas se caen al suelo si las suelto? Explícaselo a un niño de 7 años.",
-    "respuesta_generada": "**Tutoría Académica (Primaria - Física):**\n\nAnalogía sencilla sobre la Tierra como un imán gigante invisible (la gravedad) que nos abraza y mantiene todo pegado al suelo para que no flotemos por el espacio.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
+    "respuesta_generada": "**Tutoría Académica (Primaria - Física):**\n\nAnalogía intuitiva y rigurosa para Primaria: la Tierra ejerce una fuerza de atracción invisible (la gravedad) que tira constantemente de todos los cuerpos hacia el centro del planeta, manteniéndonos pegados al suelo y evitando que salgamos flotando al espacio, sin confundirlo con magnetismo.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
     "latencia_segundos": 2.552,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -690,7 +690,7 @@
     "materia": "Lengua y Literatura",
     "nivel_educativo": "Bachillerato",
     "prompt_enviado": "Resume el argumento de 'Don Quijote de la Mancha'. RESTRICCIÓN ESTRICTA DE LONGITUD: El resumen debe tener entre 70 y 90 palabras exactas. Al final, escribe entre corchetes el número exacto de palabras de tu resumen, ej: [82 palabras].",
-    "respuesta_generada": "**Tutoría Académica (Bachillerato - Lengua y Literatura):**\n\nResumen coherente con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras y etiqueta de verificación al final.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
+    "respuesta_generada": "**Tutoría Académica (Bachillerato - Lengua y Literatura):**\n\nResumen narrativo con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras (contando palabras estándar separadas por espacios) y etiqueta de verificación al final entre corchetes.\n\nEsta explicación se estructura siguiendo los contenidos curriculares oficiales. No dudes en consultar cualquier duda adicional.",
     "latencia_segundos": 3.167,
     "modo_ejecucion": "ollama",
     "parametros": {

@@ -22,8 +22,8 @@
     "dimension_principal": "D1_correccion_factual",
     "materia": "Biología",
     "nivel_educativo": "Secundaria",
-    "prompt": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes yDotación cromosómica?",
-    "ground_truth": "Mitosis: 1 división celular, produce 2 células hijas genéticamente idénticas y diploides (2n). Meiosis: 2 divisiones consecutivas, produce 4 células hijas genéticamente distintas (recombinación) y haploides (n), especializadas como gametos.",
+    "prompt": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes y dotación cromosómica?",
+    "ground_truth": "Mitosis: 1 división celular, conserva la dotación cromosómica produciendo 2 células hijas genéticamente idénticas (diploides 2n en organismos diploides). Meiosis: 2 divisiones consecutivas, a partir de una célula diploide genera 4 células hijas haploides (n) con variabilidad genética por recombinación (entrecruzamiento) y segregación independiente.",
     "criterio_fallo_critico": "Invertir los conceptos de células haploides y diploides entre mitosis y meiosis, o decir que la mitosis produce gametos."
   },
   {

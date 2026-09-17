@@ -41,8 +41,8 @@
     "dimension_principal": "D1_correccion_factual",
     "materia": "Biología",
     "nivel_educativo": "Secundaria",
-    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes yDotación cromosómica?",
-    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Secundaria:\n\nMitosis: 1 división celular, produce 2 células hijas genéticamente idénticas y diploides (2n). Meiosis: 2 divisiones consecutivas, produce 4 células hijas genéticamente distintas (recombinación) y haploides (n), especializadas como gametos.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
+    "prompt_enviado": "¿Cuáles son las diferencias principales entre la mitosis y la meiosis en cuanto a número de divisiones, células resultantes y dotación cromosómica?",
+    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Secundaria:\n\nMitosis: 1 división celular, conserva la dotación cromosómica produciendo 2 células hijas genéticamente idénticas (diploides 2n en organismos diploides). Meiosis: 2 divisiones consecutivas, a partir de una célula diploide genera 4 células hijas haploides (n) con variabilidad genética por recombinación (entrecruzamiento) y segregación independiente.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
     "latencia_segundos": 2.644,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -240,7 +240,7 @@
     "materia": "Física",
     "nivel_educativo": "Secundaria",
     "prompt_enviado": "Explícame la diferencia entre calor y temperatura como si fueras un profesor de física, estructurando la respuesta en: 1) Definición intuitiva, 2) Ejemplo práctico cotidiano, 3) Tabla comparativa.",
-    "respuesta_generada": "Para entender este concepto de forma intuitiva:\n\nDiferenciación impecable: la temperatura es la energía cinética promedio de las partículas; el calor es la energía térmica transferida. Cumplimiento de los 3 bloques con tabla Markdown.\n\nAhora reflexiona: ¿cómo le explicarías tú este mismo principio a un compañero utilizando una situación de tu vida cotidiana?",
+    "respuesta_generada": "Para entender este concepto de forma intuitiva:\n\nDiferenciación conceptual rigurosa: la temperatura se relaciona con la energía cinética media de las partículas (en modelos termodinámicos como el gas ideal); el calor es la energía térmica transferida entre sistemas debido a un gradiente térmico. Cumplimiento estructurado de los 3 bloques con tabla comparativa en Markdown.\n\nAhora reflexiona: ¿cómo le explicarías tú este mismo principio a un compañero utilizando una situación de tu vida cotidiana?",
     "latencia_segundos": 1.892,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -258,7 +258,7 @@
     "materia": "Economía",
     "nivel_educativo": "Bachillerato",
     "prompt_enviado": "Explica cómo funciona la inflación y qué relación tiene con la oferta monetaria y el poder adquisitivo mediante un ejemplo paso a paso.",
-    "respuesta_generada": "Para entender este concepto de forma intuitiva:\n\nExplicación progresiva: aumento generalizado y sostenido de los precios; exceso de dinero en circulación frente a bienes disponibles; pérdida de poder adquisitivo.\n\nAhora reflexiona: ¿cómo le explicarías tú este mismo principio a un compañero utilizando una situación de tu vida cotidiana?",
+    "respuesta_generada": "Para entender este concepto de forma intuitiva:\n\nExplicación multicausal progresiva: la inflación es el incremento continuo y generalizado del nivel de precios con pérdida de poder adquisitivo; el crecimiento excesivo de la oferta monetaria interactúa como factor explicativo relevante junto a presiones de demanda, costes de producción y expectativas económicas.\n\nAhora reflexiona: ¿cómo le explicarías tú este mismo principio a un compañero utilizando una situación de tu vida cotidiana?",
     "latencia_segundos": 1.96,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -348,7 +348,7 @@
     "materia": "Matemáticas",
     "nivel_educativo": "Secundaria",
     "prompt_enviado": "Para resolver la ecuación 2x + 10 = 30, he hecho: 2x = 30 + 10 => 2x = 40 => x = 20. El profesor me ha puesto un cero. ¿Por qué está mal?",
-    "respuesta_generada": "¡Buen trabajo al abordar el problema! Antes de ver la solución, detengámonos en un detalle:\n\nDiagnóstico claro y pedagógico: al pasar el +10 al otro miembro debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia.\n\nFíjate bien en ese paso: ¿qué ocurre exactamente cuando ejecutas esa línea o aplicas esa propiedad? ¿Qué cambio propondrías para corregirlo?",
+    "respuesta_generada": "¡Buen trabajo al abordar el problema! Antes de ver la solución, detengámonos en un detalle:\n\nDiagnóstico claro y pedagógico: al transponer el término +10 al otro miembro de la igualdad debe restar: 2x = 30 - 10 = 20 => x = 10. Explicación empática del principio de equivalencia y transposición de términos.\n\nFíjate bien en ese paso: ¿qué ocurre exactamente cuando ejecutas esa línea o aplicas esa propiedad? ¿Qué cambio propondrías para corregirlo?",
     "latencia_segundos": 2.559,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -582,7 +582,7 @@
     "materia": "Física",
     "nivel_educativo": "Primaria",
     "prompt_enviado": "¿Por qué las cosas se caen al suelo si las suelto? Explícaselo a un niño de 7 años.",
-    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Primaria:\n\nAnalogía sencilla sobre la Tierra como un imán gigante invisible (la gravedad) que nos abraza y mantiene todo pegado al suelo para que no flotemos por el espacio.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
+    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Primaria:\n\nAnalogía intuitiva y rigurosa para Primaria: la Tierra ejerce una fuerza de atracción invisible (la gravedad) que tira constantemente de todos los cuerpos hacia el centro del planeta, manteniéndonos pegados al suelo y evitando que salgamos flotando al espacio, sin confundirlo con magnetismo.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
     "latencia_segundos": 3.742,
     "modo_ejecucion": "ollama",
     "parametros": {
@@ -690,7 +690,7 @@
     "materia": "Lengua y Literatura",
     "nivel_educativo": "Bachillerato",
     "prompt_enviado": "Resume el argumento de 'Don Quijote de la Mancha'. RESTRICCIÓN ESTRICTA DE LONGITUD: El resumen debe tener entre 70 y 90 palabras exactas. Al final, escribe entre corchetes el número exacto de palabras de tu resumen, ej: [82 palabras].",
-    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Bachillerato:\n\nResumen coherente con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras y etiqueta de verificación al final.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
+    "respuesta_generada": "Vamos a explorar este concepto paso a paso para Bachillerato:\n\nResumen narrativo con un conteo real de palabras estrictamente comprendido en el intervalo [70, 90] palabras (contando palabras estándar separadas por espacios) y etiqueta de verificación al final entre corchetes.\n\n¿Qué parte del razonamiento te parece más interesante o cómo lo conectarías con lo que hemos visto anteriormente?",
     "latencia_segundos": 2.397,
     "modo_ejecucion": "ollama",
     "parametros": {
