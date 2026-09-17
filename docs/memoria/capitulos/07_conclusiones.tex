@@ -1,51 +1,51 @@
 \section{Conclusiones principales}
 \label{sec:conclusiones_principales}
 
-El presente Trabajo de Fin de Grado ha abordado uno de los desafíos más complejos y urgentes en la intersección entre la Ingeniería del Software, la Inteligencia Artificial Generativa y la Tecnología Educativa: el diseño, formalización y validación empírica de una metodología rigurosa para auditar y certificar sistemas conversacionales basados en Modelos de Lenguaje de Gran Tamaño orientados al aprendizaje.
+Este Trabajo de Fin de Grado presenta una metodología de testing orientada a evaluar sistemas conversacionales basados en modelos de lenguaje (LLMs) cuando se utilizan como apoyo al aprendizaje. La propuesta parte de un problema concreto de la ingeniería del software: las pruebas deterministas tradicionales basadas en aserciones booleanas no permiten valorar adecuadamente respuestas abiertas y no deterministas en lenguaje natural.
 
-A lo largo de la investigación y del desarrollo experimental llevado a cabo, se han consolidado varias conclusiones de notable relevancia técnica y formativa:
+A partir del desarrollo metodológico y de los resultados experimentales obtenidos, se extraen las siguientes conclusiones:
 
-En primer lugar, se ha demostrado que el testing tradicional de software, basado en aserciones booleanas y oráculos de prueba deterministas, resulta insuficiente e inaplicable ante la naturaleza estocástica y abierta de las respuestas generadas por los LLMs. La aproximación metodológica basada en rúbricas analíticas multidimensionales con escalas de comportamiento forzadas ofrece una solución formal y reproducible al \textit{Problema del Oráculo}, permitiendo cuantificar la calidad de las interacciones sin perder el rigor exigible en la disciplina del aseguramiento de la calidad.
+La primera conclusión es que la ausencia de un oráculo determinista clásico puede abordarse mediante rúbricas analíticas estructuradas. En lugar de exigir una coincidencia exacta de texto, la descomposición de la calidad en siete dimensiones observables permite evaluar de forma independiente aspectos como el rigor conceptual, la claridad didáctica, el andamiaje formativo y la seguridad.
 
-En segundo lugar, los resultados experimentales confirman que la mera corrección sintáctica o enciclopédica de un modelo de lenguaje no garantiza su idoneidad pedagógica. Un asistente conversacional genérico sin condicionamiento didáctico incurre en riesgos inasumibles de alucinación ($33.3\%$), complacencia acrítica y solucionismo pasivo, anulando el esfuerzo cognitivo del discente. Por el contrario, la incorporación sistemática de directivas fundamentadas en el andamiaje socrático y la teoría de la Zona de Desarrollo Próximo permite modular el comportamiento del sistema, erradicando los fallos críticos y alcanzando una mediación formativa óptima.
+La segunda conclusión concierne a la influencia del diseño de directivas de sistema (\textit{system prompts}). Los ensayos demostraron que la configuración de directrices pedagógicas basadas en el andamiaje socrático permite transformar la interacción del modelo: mientras que el Asistente Base incurrió en alucinaciones ($33.3\%$) y solucionismo directo, el Tutor Socrático guió al alumno mediante preguntas orientadoras y diagnóstico de errores conceptuales sin proporcionar la respuesta resuelta.
 
-En tercer lugar, la formulación matemática de métricas de riesgo explícitas, en particular la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), junto con la integración del Índice de Calidad Educativa ($IQE$), valida el principio metodológico \textit{Safety-First}. Este enfoque previene eficazmente que la elocuencia o la fluidez estilística de un modelo enmascaren errores de contenido o brechas de seguridad, proporcionando a las instituciones académicas un criterio objetivo para autorizar o desaconsejar el despliegue de estas herramientas.
+Por último, el análisis de casos de prueba confirma la necesidad de métricas específicas de riesgo. La incorporación de la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$) en el Índice de Calidad Educativa ($IQE$) evita que una redacción sintácticamente atractiva compense errores epistemológicos graves o brechas de seguridad.
 
 \section{Grado de cumplimiento de objetivos}
 \label{sec:cumplimiento_objetivos}
 
-A la luz de los resultados alcanzados, se constata el cumplimiento íntegro y satisfactorio del 100\% de los objetivos generales y específicos fijados al inicio de este proyecto:
+Los cinco objetivos específicos planteados al inicio del trabajo han sido abordados. A continuación se resume el desarrollo y la evidencia correspondiente a cada uno:
 
-Respecto al primer objetivo específico, centrado en el estudio epistemológico y técnico de los LLMs y de los estándares de calidad de software, los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS} ofrecen un análisis exhaustivo de los fundamentos probabilísticos de los Transformers, el alineamiento por RLHF, el problema del oráculo y la adaptación del estándar ISO/IEC 25010:2023 al dominio de la IA generativa.
+Respecto al primer objetivo (estudio técnico de los LLMs y estándares de calidad), los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS} analizan los fundamentos probabilísticos de los Transformers, los procesos de alineamiento, el problema del oráculo y la traslación de la norma ISO/IEC 25010:2023 al dominio conversacional.
 
-En cuanto al segundo objetivo específico, relativo a la formalización de las dimensiones de evaluación, la Sección \ref{sec:dimensiones_evaluacion} define con rigor un modelo de siete dimensiones ($D_1$ a $D_7$) que equilibra la fidelidad factual, la seguridad y el control de alucinaciones con los principios pedagógicos del andamiaje cognitivo y la adaptación al nivel discente.
+En cuanto al segundo objetivo (formalización de dimensiones de evaluación), la Sección \ref{sec:dimensiones_evaluacion} define el modelo de siete dimensiones ($D_1$ a $D_7$), integrando aspectos de exactitud factual, control de alucinaciones, andamiaje pedagógico y seguridad.
 
-En lo concerniente al tercer objetivo específico, enfocado en el diseño de las rúbricas y la batería de pruebas, la Sección \ref{sec:rubrica_escalas} y el Anexo \ref{CAP:ANEXOS} detallan la matriz de rúbricas analíticas en escala de 4 niveles ($0$ a $3$) y el banco calibrado de 42 casos de prueba estructurados, cuya objetividad psicométrica ha sido refrendada por un acuerdo inter-evaluador casi perfecto ($\kappa = 0.931$).
+En lo relativo al tercer objetivo (diseño de rúbricas y casos de prueba), la Sección \ref{sec:rubrica_escalas} y el Anexo \ref{CAP:ANEXOS} detallan la matriz de rúbricas en escala de cuatro niveles ($0$ a $3$) y el banco calibrado de 42 casos de prueba clasificados por tipologías y materias.
 
-Para el cuarto objetivo específico, orientado a la formalización matemática y desarrollo del software de cálculo, la Sección \ref{sec:metricas_agregacion} formula las ecuaciones de agregación dimensional, tasas de riesgo e índice global $IQE$. Este modelo matemático se encuentra plenamente implementado en el paquete Python \texttt{src/analisis/}, habiendo superado con éxito el 100\% de los tests unitarios automatizados bajo el framework \texttt{unittest}.
+Para el cuarto objetivo (formalización matemática e implementación del software), la Sección \ref{sec:metricas_agregacion} formula las ecuaciones de puntuación dimensional, tasas de riesgo e índice $IQE$. Este cálculo está implementado en el paquete Python \texttt{src/analisis/}, habiendo sido validado mediante tests unitarios automatizados.
 
-Por último, en relación con el quinto objetivo específico, correspondiente a la experimentación empírica, el Capítulo \ref{CAP:EXPERIMENTACION} documenta la ejecución de 126 ensayos sobre tres perfiles de chatbot diferenciados, aportando un análisis cuantitativo exhaustivo, diagramas vectoriales de radar y barras, y un estudio cualitativo detallado de los patrones de fallo observados.
+Por último, en relación con el quinto objetivo (experimentación y análisis), el Capítulo \ref{CAP:EXPERIMENTACION} documenta los 126 ensayos sobre tres perfiles de chatbot evaluados sobre el modelo Meta-Llama-3-8B-Instruct, aportando tablas comparativas, gráficos vectoriales y el análisis de consistencia inter-evaluador ($\kappa = 0.931$).
 
-\section{Aportaciones del trabajo y transferibilidad}
+\section{Aportaciones del trabajo}
 \label{sec:aportaciones}
 
-Las principales contribuciones generadas a lo largo de este Trabajo de Fin de Grado presentan un marcado carácter práctico y transferible tanto a la comunidad académica como al tejido industrial del software educativo:
+Las principales aportaciones derivadas de este Trabajo de Fin de Grado son:
 
-La primera aportación reside en el propio marco metodológico formal, que proporciona una guía sistemática, reproducible y estandarizada para auditar la calidad, seguridad y utilidad pedagógica de asistentes conversacionales antes y durante su despliegue institucional.
+Una metodología de evaluación estructurada y reproducible para auditar la calidad, seguridad y utilidad pedagógica de asistentes conversacionales basados en LLMs.
 
-La segunda aportación consiste en el banco calibrado de 42 casos de prueba (banco de prompts), clasificados por áreas de conocimiento, niveles de complejidad cognitiva y vectores de ataque adversario, que constituye una suite de referencia reutilizable para futuros estudios comparativos.
+Un banco estructurado de 42 casos de prueba (prompts de prueba) que cubre escenarios curriculares, preguntas trampa para detección de alucinaciones y vectores de ataque adversario.
 
-La tercera aportación es el paquete de software de código abierto implementado en Python (\texttt{src/}), que automatiza la ingesta de trazas experimentales en formato JSON, la computación de las métricas dimensionales y de riesgo, el cálculo del índice global $IQE$ y la generación de gráficos vectoriales comparativos listos para su publicación.
+Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$ y la generación de gráficos vectoriales (radar y barras).
 
-La cuarta aportación la conforma el conjunto de datos experimentales abiertos recopilado, que recoge las 126 trazas completas de inferencia junto con las evaluaciones individuales de los expertos, constituyendo un recurso empírico valioso para la replicación y el contraste de resultados en la investigación en IA y educación.
+Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas y las calificaciones de los evaluadores, disponible para su consulta y réplica.
 
 \section{Líneas de trabajo futuro}
 \label{sec:trabajo_futuro}
 
-La metodología desarrollada sienta una base sólida para diversas extensiones y líneas de investigación futura en el ámbito de la ingeniería de software para inteligencia artificial:
+A partir de la metodología desarrollada, se identifican las siguientes líneas de trabajo futuro:
 
-Una primera línea prometedora se centra en la extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) aplicados a la educación. En estos entornos, resulta crucial auditar formalmente la fidelidad de la recuperación documental, la precisión de la atribución de fuentes y la concordancia con guías docentes o normativas curriculares oficiales.
+Extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) en entornos educativos, evaluando la fidelidad de la recuperación y la precisión en la citación de fuentes curriculares.
 
-Una segunda línea contempla la ampliación del alcance hacia la evaluación multimodal. La integración de casos de prueba que incluyan fórmulas matemáticas manuscritas, diagramas de arquitectura de software, circuitos electrónicos o gráficos científicos permitirá evaluar la capacidad de andamiaje de los modelos en asignaturas eminentemente visuales y prácticas de ingeniería.
+Incorporación de evaluación multimodal para auditar interacciones que incluyan diagramas técnicos, gráficas estadísticas o fórmulas manuscritas.
 
-Una tercera vía de avance consiste en la automatización del testing mediante técnicas de testing metamórfico y generación sintética de variantes de prompts. El desarrollo de herramientas capaces de mutar sistemáticamente los casos de prueba y utilizar evaluadores automáticos supervisados (\textit{LLM-as-a-judge} calibrados con la rúbrica formal) facilitará la ejecución continua de miles de pruebas de regresión en entornos de integración y despliegue continuo (CI/CD), optimizando los costes y tiempos de auditoría en proyectos de software a gran escala.
+Automatización de pruebas de regresión mediante técnicas de testing metamórfico y generación sintética de variantes de prompts, permitiendo integrar estas evaluaciones dentro de flujos de integración continua (CI/CD) para software educativo.

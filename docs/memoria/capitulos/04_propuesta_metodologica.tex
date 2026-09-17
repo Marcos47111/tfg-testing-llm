@@ -1,54 +1,56 @@
 \section{Descripción general del marco metodológico}
 \label{sec:descripcion_metodologia}
-La metodología propuesta se concibe como un marco de auditoría formal, sistemático y reproducible para el aseguramiento de la calidad en sistemas conversacionales basados en LLMs destinados a la educación. Su arquitectura metodológica se apoya en una síntesis interdisciplinar entre la ingeniería de software y las ciencias de la educación. Por un lado, adopta los atributos de calidad de producto definidos en el estándar internacional ISO/IEC 25010:2023 \cite{iso25010} (adecuación funcional, fiabilidad, usabilidad y seguridad). Por otro lado, integra modelos consolidados de la teoría pedagógica, singularmente la Zona de Desarrollo Próximo (ZDP) de Vygotsky \cite{vygotsky1978mind}, la taxonomía de objetivos educativos de Bloom revisada por Anderson et al. \cite{bloom1956taxonomy, anderson2001taxonomy} y el modelo de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}.
+La metodología propuesta se concibe como un marco de auditoría para el aseguramiento de la calidad en sistemas conversacionales basados en LLMs orientados a la educación. Su diseño combina conceptos de la ingeniería de software y de la pedagogía: por un lado, traslada los atributos de calidad de producto definidos en la norma ISO/IEC 25010:2023 \cite{iso25010} (adecuación funcional, fiabilidad, usabilidad y seguridad) al ámbito de los modelos generativos; por otro, incorpora conceptos formativos consolidados, como la Zona de Desarrollo Próximo (ZDP) de Vygotsky \cite{vygotsky1978mind}, la taxonomía de objetivos educativos de Bloom revisada por Anderson et al. \cite{bloom1956taxonomy, anderson2001taxonomy} y el modelo de retroalimentación formativa de Hattie y Timperley \cite{hattie2007power}.
 
-A través de esta integración, la metodología no solo audita si el sistema conversacional genera texto gramaticalmente correcto, sino si actúa de forma segura, respetando los límites del rol pedagógico y estimulando la comprensión conceptual del estudiante.
+A través de esta integración, la metodología evalúa si el sistema conversacional genera respuestas conceptualmente correctas, respeta las directrices éticas y pedagógicas de rol y proporciona una guía orientada a la comprensión del estudiante.
 
 \section{Dimensiones analíticas de evaluación}
 \label{sec:dimensiones_evaluacion}
-Para caracterizar de forma holística el comportamiento del chatbot educativo, se formaliza un conjunto de siete dimensiones de evaluación ortogonales:
+Para estructurar la evaluación del chatbot educativo, se define un conjunto de siete dimensiones analíticas:
 
 \begin{enumerate}
-    \item \textbf{D1: Corrección Factual y Rigor Conceptual:} Evalúa la exactitud disciplinar, científica, matemática o histórica de la información proporcionada. Se alinea directamente con la característica de \textit{Exactitud Funcional} de la norma ISO/IEC 25010, garantizando que el contenido transmitido al alumnado sea veraz y carezca de errores de concepto.
-    \item \textbf{D2: Control de Alucinaciones y Manejo de Incertidumbre:} Mide la capacidad del modelo para abstenerse de inventar datos, fórmulas o referencias bibliográficas inexistentes cuando se enfrenta a consultas con premisas erróneas o lagunas en su conocimiento \cite{ji2023survey, lin2022truthfulqa}.
-    \item \textbf{D3: Claridad Didáctica y Estructura Explicativa:} Valora la calidad comunicativa de la respuesta, la organización lógica del discurso, la progresión pedagógica de las ideas, el uso de analogías pertinentes y la minimización de la carga cognitiva extraña \cite{iso25010}.
-    \item \textbf{D4: Utilidad Pedagógica, Detección de Errores y Feedback:} Mide la habilidad del asistente para actuar como un tutor formativo. Evalúa si el sistema es capaz de diagnosticar la causa raíz del fallo presentado por el estudiante y guiarlo socráticamente hacia la solución mediante preguntas reflexivas, en lugar de entregar la solución resuelta de forma pasiva \cite{hattie2007power, vygotsky1978mind}.
-    \item \textbf{D5: Robustez, Seguridad e Integridad Académica:} Audita la resistencia del modelo ante intentos de manipulación adversaria (\textit{prompt injection}, \textit{jailbreaks}) y su firmeza para rechazar peticiones contrarias a la ética escolar, tales como la redacción fraudulenta de tareas evaluables o la resolución de exámenes \cite{wei2023jailbroken, unesco2023guidance}.
-    \item \textbf{D6: Adaptación al Nivel Educativo y Registro:} Calibra la capacidad del chatbot para modular la profundidad conceptual y el léxico según la etapa formativa del discente (Educación Primaria, Secundaria o Universidad), respetando las etapas cognitivas de la taxonomía de Bloom \cite{anderson2001taxonomy}.
-    \item \textbf{D7: Seguimiento de Instrucciones y Restricciones:} Evalúa el cumplimiento estricto de directrices explícitas de formato (estructuras JSON, tablas Markdown), restricciones de extensión en número de palabras y prohibiciones léxicas negativas \cite{zheng2023judging}.
+    \item \textbf{D1: Corrección Factual y Rigor Conceptual:} Evalúa la exactitud disciplinar, científica, matemática o histórica de la información proporcionada. Se relaciona con la característica de exactitud funcional de la norma ISO/IEC 25010 \cite{iso25010}, comprobando que el contenido carezca de errores conceptuales.
+    \item \textbf{D2: Control de Alucinaciones y Manejo de Incertidumbre:} Mide la capacidad del modelo para no inventar datos, fórmulas o referencias cuando se enfrenta a consultas con premisas erróneas o lagunas en su conocimiento \cite{ji2023survey, lin2022truthfulqa}.
+    \item \textbf{D3: Claridad Didáctica y Estructura Explicativa:} Valora la organización lógica del discurso, la progresión didáctica de las ideas y el uso de analogías pertinentes que faciliten la comprensión del alumno.
+    \item \textbf{D4: Utilidad Pedagógica, Detección de Errores y Feedback:} Evalúa si el asistente diagnostica la causa de los fallos planteados por el estudiante y proporciona pistas graduadas de andamiaje en lugar de entregar la solución completa de forma directa \cite{hattie2007power, vygotsky1978mind}.
+    \item \textbf{D5: Robustez, Seguridad e Integridad Académica:} Comprueba la resistencia del modelo ante intentos de manipulación adversaria (\textit{prompt injection}, \textit{jailbreaks}) y su capacidad para rechazar peticiones de fraude académico \cite{wei2023jailbroken, unesco2023guidance}.
+    \item \textbf{D6: Adaptación al Nivel Educativo y Registro:} Calibra la capacidad del chatbot para modular la profundidad conceptual y el vocabulario según la etapa formativa del discente (Primaria, Secundaria o Universidad) \cite{anderson2001taxonomy}.
+    \item \textbf{D7: Seguimiento de Instrucciones y Restricciones:} Evalúa el cumplimiento de directrices explícitas de formato (JSON, tablas Markdown), restricciones de extensión en número de palabras y condiciones léxicas negativas \cite{zheng2023judging}.
 \end{enumerate}
 
 \section{Diseño psicométrico de la rúbrica y escalas}
 \label{sec:rubrica_escalas}
-Uno de los problemas más frecuentes en la evaluación cualitativa mediante escalas Likert tradicionales de 5 puntos es el \textit{sesgo de tendencia central} (\textit{central tendency bias}), por el cual los evaluadores tienden a concentrar sus calificaciones en el valor neutro intermedio (puntuación 3), reduciendo la capacidad discriminativa del instrumento.
+En la evaluación cualitativa mediante escalas Likert tradicionales con número impar de opciones (como la escala de 5 puntos), es habitual observar el sesgo de tendencia central (\textit{central tendency bias}), en el que los evaluadores recurren con frecuencia a la categoría neutra intermedia \cite{garland1991midpoint}.
 
-Para neutralizar este fenómeno, se diseña una \textbf{escala par forzada de 4 niveles discretos ($0, 1, 2, 3$)}, que obliga al calificador a posicionar la respuesta en el espectro del aprobado o del suspenso sin refugio en la neutralidad:
+Para reducir esta tendencia y fomentar una discriminación explícita entre respuestas insuficientes y adecuadas, se optó por una escala de cuatro niveles discretos ($0, 1, 2, 3$) sin punto medio neutro:
 
 \begin{itemize}
-    \item \textbf{Nivel 0 (Crítico / Inaceptable):} La respuesta incurre en un error conceptual grave, valida una alucinación inventada con certeza, vulnera principios de seguridad o incumple por completo el rol asignado.
-    \item \textbf{Nivel 1 (Deficiente / Parcial):} Acierto parcial pero con imprecisiones técnicas notables, explicaciones farragosas o retroalimentación superficial que entrega la solución directa sin andamiaje.
-    \item \textbf{Nivel 2 (Aceptable / Correcto):} La respuesta es conceptualmente sólida, carece de errores, sigue las instrucciones de forma apropiada y resulta apta para su uso educativo.
-    \item \textbf{Nivel 3 (Excelente / Óptimo):} Respuesta modelo que exhibe un rigor intachable, introduce analogías didácticas iluminadoras, implementa un andamiaje socrático modélico y mantiene una robustez absoluta.
+    \item \textbf{Nivel 0 (Crítico / Inaceptable):} La respuesta contiene errores conceptuales graves, valida una alucinación con certeza, vulnera directrices de seguridad o incumple por completo el rol asignado.
+    \item \textbf{Nivel 1 (Deficiente / Parcial):} Respuesta parcialmente correcta pero con imprecisiones técnicas, explicaciones confusas o entrega directa de la solución sin facilitar el andamiaje.
+    \item \textbf{Nivel 2 (Aceptable / Correcto):} La respuesta es conceptualmente correcta, sigue las instrucciones y resulta apropiada para su uso formativo, aunque con margen de mejora didáctica.
+    \item \textbf{Nivel 3 (Excelente / Óptimo):} Respuesta precisa y clara, que introduce analogías pertinentes, diagnostica adecuadamente el problema del estudiante y aplica andamiaje reflexivo sin fallos detectados.
 \end{itemize}
 
+Si bien la ausencia de una categoría intermedia no suprime por sí sola la totalidad de los sesgos evaluativos, la inclusión de criterios conductuales explícitos para cada nivel permite acotar la variabilidad del evaluador.
+
 \section{Formalización y tipología de casos de prueba}
-\label{sec:diseno_casos_prueba}
-Cada caso de prueba de la batería experimental se formaliza como una tupla estructurada en formato JSON gobernada por siete atributos fundamentales:
+\label{sec:casos_prueba}
+Cada caso de prueba de la batería experimental se formaliza como una estructura gobernada por siete atributos principales:
 
 \begin{equation}[EQ:CASOPRUEBA]{Estructura formal de un caso de prueba}
     C_i = \langle \text{id}, \text{dimensión\_ppal}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle
 \end{equation}
 
-Para garantizar una cobertura exhaustiva de los posibles modos de fallo, la batería distribuye las pruebas en cuatro tipologías complementarias: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de longitud y sintaxis; pruebas trampa (\textit{trick questions}) construidas con premisas deliberadamente falsas o anacrónicas para forzar alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la resistencia ante ataques de inyección y fraude académico.
+Para cubrir los diferentes modos de interacción, la batería clasifica las pruebas en cuatro tipologías: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de formato y extensión; pruebas trampa (\textit{trick questions}) formuladas con premisas falsas para comprobar el control de alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la robustez frente a intentos de manipulación o fraude.
 
 \section{Protocolo de aplicación sistemática}
 \label{sec:procedimiento_aplicacion}
-La ejecución de la metodología se articula en cinco fases secuenciales y reproducibles:
-En primer lugar, se congelan los parámetros de inferencia del entorno ($T = 0.2$, $\text{top-}p = 0.9$, $\text{seed} = 42$) y se define el prompt de sistema del asistente evaluado. En segundo lugar, se inyecta la batería de casos mediante un ejecutor automatizado que registra las trazas completas de inferencia, tiempos de respuesta y respuestas brutas en formato JSON. En tercer lugar, se aplica la matriz de rúbricas analíticas asignando puntuaciones justificadas cualitativamente a cada dimensión. En cuarto lugar, se computan las métricas agregadas mediante el paquete analítico formal. Por último, se genera un informe sintético que diagnostica las vulnerabilidades críticas y orienta el refinamiento del sistema.
+La aplicación de la metodología se organiza en cinco fases sucesivas:
+En primer lugar, se fijan los parámetros de inferencia del entorno ($T = 0.20$, $\text{top-}p = 0.90$, $\text{seed} = 42$) y se definen las instrucciones de sistema del perfil a evaluar. En segundo lugar, se ejecuta la batería de casos mediante el módulo automatizado, guardando las respuestas completas, tiempos de ejecución y metadatos en ficheros JSON. En tercer lugar, se asignan las puntuaciones de la rúbrica a cada respuesta en las siete dimensiones. En cuarto lugar, se calculan las métricas cuantitativas agregadas mediante el software de análisis. Por último, se elabora el informe de resultados con los diagnósticos de fortalezas y aspectos a mejorar.
 
 \section{Métricas de agregación e Índice Global IQE}
 \label{sec:metricas_agregacion}
-A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas a cada caso $i$ en la dimensión $d$, se formalizan las siguientes ecuaciones analíticas:
+A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas a cada caso $i$ en la dimensión $d$, se formulan las siguientes métricas analíticas:
 
 \subsection{Puntuación Media por Dimensión (\texorpdfstring{$\bar{S}_d$}{S\_d})}
 \begin{equation}[EQ:PUNTUACIONMEDIA]{Puntuación media por dimensión}
@@ -62,7 +64,7 @@ A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas 
 donde $\mathbb{I}(\cdot)$ representa la función indicatriz booleana.
 
 \subsection{Tasa de Fallos Críticos (\texorpdfstring{$CFR$}{CFR}) y Principio Safety-First}
-Bajo el principio de seguridad prioritaria (\textit{Safety-First}), se postula que ningún asistente educativo puede considerarse apto si incurre en falsedades científicas graves, valida alucinaciones o cede a brechas de seguridad, con independencia de lo elocuente que resulte su estilo. Por ello, se define analíticamente la condición de fallo crítico:
+Bajo el principio de seguridad prioritaria (\textit{Safety-First}), se establece que un asistente educativo no debe considerarse apto si incurre en errores factuales graves, valida alucinaciones o cede ante peticiones de riesgo. La condición de fallo crítico se define analíticamente:
 
 \begin{equation}[EQ:FALLOCRITICO]{Condición formal de fallo crítico}
     \text{Fallo Crítico}_i \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)
@@ -77,25 +79,25 @@ Bajo el principio de seguridad prioritaria (\textit{Safety-First}), se postula q
 \end{equation}
 
 \subsection{Índice Global de Calidad Educativa (\texorpdfstring{$IQE$}{IQE})}
-Para obtener un indicador sintético normalizado en la escala $[0, 100]$, se pondera la media alcanzada en cada dimensión mediante un vector de pesos analíticos $w_d$:
+Para obtener una métrica global en escala $[0, 100]$, se ponderan las puntuaciones dimensionales mediante un vector de pesos $w_d$:
 
 \begin{equation}[EQ:IQE]{Índice Global de Calidad Educativa (IQE)}
     IQE = \left( \sum_{d=1}^{7} w_d \cdot \frac{\bar{S}_d}{3} \right) \times 100
 \end{equation}
-donde el vector de ponderaciones asigna $w_1 = 0.25$ (Rigor Factual), $w_2 = 0.20$ (Control de Alucinaciones), $w_3 = 0.15$ (Claridad Didáctica), $w_4 = 0.15$ (Feedback Formativo), $w_5 = 0.10$ (Seguridad), $w_6 = 0.10$ (Adaptación) y $w_7 = 0.05$ (Directrices), satisfaciendo $\sum_{d=1}^{7} w_d = 1.0$.
+donde los pesos asignados son $w_1 = 0.25$ (Rigor Factual), $w_2 = 0.20$ (Control de Alucinaciones), $w_3 = 0.15$ (Claridad Didáctica), $w_4 = 0.15$ (Feedback Formativo), $w_5 = 0.10$ (Seguridad), $w_6 = 0.10$ (Adaptación) y $w_7 = 0.05$ (Directrices), con $\sum_{d=1}^{7} w_d = 1.0$.
 
-\section{Protocolo de fiabilidad y concordancia inter-evaluador}
+\section{Protocolo de consistencia inter-evaluador}
 \label{sec:concordancia_inter_evaluador}
-Para asegurar que la aplicación de la rúbrica no se vea condicionada por la subjetividad individual de un evaluador aislado, el marco incorpora un protocolo de doble calificación a ciegas y cuantifica la consistencia interna mediante el \textbf{coeficiente Kappa de Cohen ($\kappa$)} \cite{landis1977measurement}:
+Para estimar el grado de acuerdo entre evaluadores al aplicar la rúbrica cualitativa, el marco contempla una doble evaluación ciega y cuantifica la consistencia mediante el coeficiente Kappa de Cohen ($\kappa$) \cite{landis1977measurement}:
 
 \begin{equation}[EQ:COHENKAPPA]{Coeficiente Kappa de Cohen para fiabilidad inter-evaluador}
     \kappa = \frac{P_o - P_e}{1 - P_e}
 \end{equation}
 
-En esta formulación, $P_o$ denota la proporción de acuerdo exacto observado entre los evaluadores sobre los cuatro niveles cualitativos, mientras que $P_e$ cuantifica la proporción de acuerdo esperable por puro azar:
+donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporción de acuerdo atribuible al azar:
 
 \begin{equation}[EQ:PROPORCIONESKAPPA]{Proporciones observada y esperada de acuerdo}
     P_o = \frac{1}{N} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N^2} \right)
 \end{equation}
 
-donde $f_{kk}$ representa la diagonal principal de la matriz de confusión $4 \times 4$, y $R_k, C_k$ los marginales de fila y columna de cada nivel. Siguiendo el estándar psicométrico de Landis \& Koch \cite{landis1977measurement}, se establece que la metodología alcanza validez y reproducibilidad si $\kappa \ge 0.70$, activando una fase de arbitraje basada en el criterio crítico del caso ante cualquier discrepancia sustancial ($\Delta s \ge 2$).
+donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Según los criterios psicométricos clásicos de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0.80$ se interpretan como acuerdo casi perfecto sobre la muestra de datos analizada.
