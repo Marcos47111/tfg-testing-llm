@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 RESULTS_DIR = Path(__file__).resolve().parent.parent.parent / "results"
 GRAFICOS_DIR = RESULTS_DIR / "graficos"
 FIGURAS_MEMORIA_DIR = Path(__file__).resolve().parent.parent.parent / "docs" / "memoria" / "figuras"
+IMG_MEMORIA_DIR = Path(__file__).resolve().parent.parent.parent / "docs" / "memoria" / "img"
 INFORMES_DIR = RESULTS_DIR / "informes"
 
 # Configuración estética global de matplotlib
@@ -75,19 +76,17 @@ def generar_grafico_radar(datos: dict):
     ax.set_thetagrids(np.degrees(angulos[:-1]), categorias, fontsize=10, fontweight="bold")
     ax.set_ylim(0, 3.2)
     ax.set_yticks([1.0, 2.0, 3.0])
-    ax.set_yticklabels(["1.0 (Deficiente)", "2.0 (Aceptable)", "3.0 (Óptimo)"], fontsize=9, color="#555555")
+    ax.set_yticklabels(["1,0 (Deficiente)", "2,0 (Aceptable)", "3,0 (Óptimo)"], fontsize=9, color="#555555")
     ax.grid(color="#cccccc", linestyle="--", alpha=0.7)
     
     plt.title("Comparativa Multidimensional del Rendimiento Educativo", size=14, weight="bold", y=1.08)
     plt.legend(loc="upper right", bbox_to_anchor=(1.25, 1.1), fontsize=9)
     plt.tight_layout()
     
-    ruta_png = GRAFICOS_DIR / "radar_dimensiones.png"
-    ruta_pdf = GRAFICOS_DIR / "radar_dimensiones.pdf"
-    plt.savefig(ruta_png, bbox_inches="tight")
-    plt.savefig(ruta_pdf, bbox_inches="tight")
-    plt.savefig(FIGURAS_MEMORIA_DIR / "radar_dimensiones.png", bbox_inches="tight")
-    plt.savefig(FIGURAS_MEMORIA_DIR / "radar_dimensiones.pdf", bbox_inches="tight")
+    for d in [GRAFICOS_DIR, FIGURAS_MEMORIA_DIR, IMG_MEMORIA_DIR]:
+        d.mkdir(parents=True, exist_ok=True)
+        plt.savefig(d / "radar_dimensiones.png", bbox_inches="tight")
+        plt.savefig(d / "radar_dimensiones.pdf", bbox_inches="tight")
     plt.close()
     print("  ✅ Gráfico de radar generado correctamente.")
 
@@ -116,13 +115,14 @@ def generar_grafico_barras_metricas(datos: dict):
     ax.set_xticklabels(nombres_perfil, fontsize=11, fontweight="bold")
     ax.legend(fontsize=10)
     ax.grid(axis="y", linestyle=":", alpha=0.6)
-    ax.set_ylim(0, 110)
+    ax.set_ylim(0, 115)
     
-    # Añadir valores numéricos encima de las barras
+    # Añadir valores numéricos encima de las barras con coma decimal en español
     def autolabel(rects):
         for rect in rects:
             height = rect.get_height()
-            ax.annotate(f"{height:.1f}",
+            val_str = f"{height:.1f}".replace(".", ",")
+            ax.annotate(val_str,
                         xy=(rect.get_x() + rect.get_width() / 2, height),
                         xytext=(0, 3),  # 3 points vertical offset
                         textcoords="offset points",
@@ -133,10 +133,10 @@ def generar_grafico_barras_metricas(datos: dict):
     autolabel(rects3)
     
     plt.tight_layout()
-    plt.savefig(GRAFICOS_DIR / "barras_metricas_globales.png", bbox_inches="tight")
-    plt.savefig(GRAFICOS_DIR / "barras_metricas_globales.pdf", bbox_inches="tight")
-    plt.savefig(FIGURAS_MEMORIA_DIR / "barras_metricas_globales.png", bbox_inches="tight")
-    plt.savefig(FIGURAS_MEMORIA_DIR / "barras_metricas_globales.pdf", bbox_inches="tight")
+    for d in [GRAFICOS_DIR, FIGURAS_MEMORIA_DIR, IMG_MEMORIA_DIR]:
+        d.mkdir(parents=True, exist_ok=True)
+        plt.savefig(d / "barras_metricas_globales.png", bbox_inches="tight")
+        plt.savefig(d / "barras_metricas_globales.pdf", bbox_inches="tight")
     plt.close()
     print("  ✅ Gráfico de barras de métricas globales generado correctamente.")
 
@@ -144,11 +144,12 @@ def generar_grafico_barras_metricas(datos: dict):
 def generar_todas_las_figuras():
     GRAFICOS_DIR.mkdir(parents=True, exist_ok=True)
     FIGURAS_MEMORIA_DIR.mkdir(parents=True, exist_ok=True)
+    IMG_MEMORIA_DIR.mkdir(parents=True, exist_ok=True)
     
     datos = cargar_datos_resumen()
     generar_grafico_radar(datos)
     generar_grafico_barras_metricas(datos)
-    print(f"📊 Todas las figuras han sido exportadas a {GRAFICOS_DIR} y {FIGURAS_MEMORIA_DIR}")
+    print(f"📊 Todas las figuras han sido exportadas a {GRAFICOS_DIR}, {FIGURAS_MEMORIA_DIR} e {IMG_MEMORIA_DIR}")
 
 
 if __name__ == "__main__":
