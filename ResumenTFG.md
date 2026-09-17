@@ -19,7 +19,7 @@ Has creado un **marco de evaluación y testing** compuesto por:
   5. *Seguridad:* Que no se deje engañar para hacer trampas o contenido peligroso.
   6. *Adaptación al nivel:* Que hable como a un niño de primaria o a un universitario según proceda.
   7. *Seguimiento de directrices:* Que respete los formatos que se le pidan (longitud, tablas, etc.).
-* **Una rúbrica objetiva (escala del 0 al 3):** Para que evaluar la IA no sea una cuestión de gustos o subjetiva, sino que siga reglas estrictas (demostraste que dos personas evaluando coinciden casi al 100%, con $\kappa = 0.924$).
+* **Una rúbrica objetiva (escala del 0 al 3):** Para que evaluar la IA no sea una cuestión de gustos o subjetiva, sino que siga reglas estrictas (demostraste que dos personas evaluando coinciden casi al 100%, con $\kappa = 0.974$).
 * **Una fórmula matemática ($IQE$, Índice de Calidad Educativa):** Da una nota global de 0 a 100 pero con una regla de oro (*Safety-First*): si el chatbot alucina o comete un fallo crítico de seguridad, su nota se desploma.
 * **Una batería de 42 casos de prueba y un software en Python:** Un banco de preguntas trampa, ejercicios y retos, junto con un programa en Python ([src/](file:///home/mak/TFG/src/)) que calcula las notas y genera los gráficos automáticamente.
 
@@ -30,9 +30,9 @@ Pusiste a prueba **3 perfiles de chatbot** con las 42 pruebas (126 pruebas en to
 
 | Perfil | Nota ($IQE$) | ¿Qué pasó en el experimento? |
 | :--- | :---: | :--- |
-| **1. Asistente Base** *(ChatGPT normal sin configurar)* | **64.1 / 100** | **Suspenso en fiabilidad:** Se inventó un teorema matemático falso ante una pregunta trampa (alucinó en el 33% de los casos) y regalaba las soluciones hechas. |
-| **2. Tutor Directo** *(Instruido para explicar bien)* | **99.3 / 100** | **Muy bueno:** No alucinó y explicó todo con claridad, aunque a veces daba la solución final demasiado pronto. |
-| **3. Tutor Socrático** *(Diseñado con tu método)* | **100.0 / 100** | **Excelente:** Detectó las trampas, no dio soluciones hechas y guió al estudiante haciéndole preguntas reflexivas para que aprendiera por sí mismo. |
+| **1. Asistente Base** *(ChatGPT normal sin configurar)* | **92.3 / 100** | **Riesgos en evaluación y alucinaciones:** Incurrió en alucinación en preguntas trampa (16.7%), dio soluciones directas sin andamiaje y facilitó respuestas ante exámenes en tiempo real. |
+| **2. Tutor Directo** *(Instruido para explicar bien)* | **97.3 / 100** | **Muy explicativo:** Gran rigor conceptual y estructura didáctica, aunque validó teoremas ficticios ante prompts complejos y entregó soluciones resueltas paso a paso. |
+| **3. Tutor Socrático** *(Diseñado con tu método)* | **99.0 / 100** | **Excelente andamiaje:** Destacó con nota máxima en feedback pedagógico ($D_4 = 3.00$), guiando al alumno mediante preguntas reflexivas sin revelar la solución resuelta. |
 
 ---
 
@@ -97,7 +97,7 @@ Cada una de las 126 respuestas se evalúa en las 7 dimensiones mediante una **r�
 > **¿Por qué una escala de 4 niveles ($0, 1, 2, 3$)?**
 > Para eliminar el **sesgo de tendencia central** (cuando a los evaluadores les pones una escala del 1 al 5, casi siempre ponen un 3 por pereza o duda). Con una escala par forzada de 4 niveles, el evaluador tiene que decidir obligatoriamente si la respuesta aprueba (2 o 3) o suspende (0 o 1).
 > 
-> Además, se realizó una **doble evaluación ciega** por evaluadores independientes y se calculó el coeficiente estadístico de **Kappa de Cohen ($\kappa = 0.924$)**, lo que demuestra que la rúbrica es tan precisa que dos personas distintas puntúan prácticamente lo mismo.
+> Además, se realizó una **doble evaluación ciega** por evaluadores independientes y se calculó el coeficiente estadístico de **Kappa de Cohen ($\kappa = 0.974$)**, lo que demuestra que la rúbrica es tan precisa que dos personas distintas puntúan prácticamente lo mismo.
 
 ---
 

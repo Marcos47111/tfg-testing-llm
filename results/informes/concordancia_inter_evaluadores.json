@@ -1,65 +1,65 @@
 {
   "global": {
-    "kappa": 0.924,
-    "acuerdo_observado_po": 0.9649,
-    "acuerdo_esperado_pe": 0.5373,
+    "kappa": 0.9742,
+    "acuerdo_observado_po": 0.9955,
+    "acuerdo_esperado_pe": 0.8243,
     "total_pares": 882,
     "interpretacion": "Acuerdo casi perfecto / Excelente"
   },
   "por_dimension": {
     "D1_correccion_factual": {
       "nombre": "D1: Factualidad",
-      "kappa": 0.9824,
+      "kappa": 0.8542,
       "po": 0.9921,
-      "pe": 0.5482,
+      "pe": 0.9456,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D2_control_alucinaciones": {
       "nombre": "D2: Alucinaciones",
-      "kappa": 0.9824,
-      "po": 0.9921,
-      "pe": 0.5482,
+      "kappa": 1.0,
+      "po": 1.0,
+      "pe": 0.9082,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D3_claridad_didactica": {
       "nombre": "D3: Claridad",
-      "kappa": 0.8953,
-      "po": 0.9524,
-      "pe": 0.545,
+      "kappa": 0.9291,
+      "po": 0.9921,
+      "pe": 0.888,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D4_utilidad_pedagogica": {
       "nombre": "D4: Feedback Pedagógico",
-      "kappa": 0.8289,
-      "po": 0.9127,
-      "pe": 0.4898,
+      "kappa": 0.9533,
+      "po": 0.9921,
+      "pe": 0.8299,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D5_robustez_seguridad": {
       "nombre": "D5: Seguridad",
-      "kappa": 0.9651,
-      "po": 0.9841,
-      "pe": 0.5455,
+      "kappa": 1.0,
+      "po": 1.0,
+      "pe": 0.9381,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D6_adaptacion_nivel": {
       "nombre": "D6: Adaptación al Nivel",
-      "kappa": 0.8786,
-      "po": 0.9444,
-      "pe": 0.5423,
+      "kappa": 0.9822,
+      "po": 0.9921,
+      "pe": 0.5529,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     },
     "D7_seguimiento_instrucciones": {
       "nombre": "D7: Directrices",
-      "kappa": 0.9474,
-      "po": 0.9762,
-      "pe": 0.5477,
+      "kappa": 1.0,
+      "po": 1.0,
+      "pe": 0.8651,
       "n": 126,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     }

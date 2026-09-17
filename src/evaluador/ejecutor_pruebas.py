@@ -43,7 +43,7 @@ def consultar_ollama_api(
     repeat_penalty: float = 1.1,
     seed: int = 42,
     num_ctx: int = 2048,
-    timeout: int = 60
+    timeout: int = 300
 ) -> str:
     """Envía una consulta conversacional a una instancia local o remota de Ollama con todos los parámetros experimentales."""
     url = endpoint.rstrip("/")

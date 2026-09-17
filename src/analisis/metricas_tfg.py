@@ -1,6 +1,6 @@
 """
 Módulo de cálculo de métricas de calidad y fiabilidad para el TFG:
-Metodología para testing de IA Generativa de texto.
+Metodología para testing de IA Generativa de texto en educación.
 """
 
 from typing import List, Dict, Any, Optional
