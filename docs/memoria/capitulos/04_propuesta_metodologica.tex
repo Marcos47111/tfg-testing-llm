@@ -20,9 +20,7 @@ Para estructurar la evaluación del chatbot educativo, se define un conjunto de 
 
 \section{Diseño de la rúbrica y escala de valoración}
 \label{sec:rubrica_escalas}
-En la evaluación cualitativa mediante escalas Likert tradicionales con número impar de opciones (como la escala de 5 puntos), es habitual observar el sesgo de tendencia central (\textit{central tendency bias}), en el que los evaluadores recurren con frecuencia a la categoría neutra intermedia \cite{garland1991midpoint}.
-
-Para reducir esta tendencia y fomentar una discriminación explícita entre respuestas insuficientes y adecuadas, se optó por una escala discreta de cuatro niveles ($0, 1, 2, 3$) sin punto medio neutro:
+La literatura ha mostrado que la presencia o ausencia de una categoría intermedia puede alterar sensiblemente los patrones de respuesta de los evaluadores \cite{garland1991midpoint}. Como decisión de diseño orientada a forzar una discriminación explícita entre respuestas insuficientes y adecuadas, se adoptó en este marco una escala discreta par de cuatro niveles ($0, 1, 2, 3$) sin punto medio neutro:
 
 \begin{itemize}
     \item \textbf{Nivel 0 (Crítico / Inaceptable):} La respuesta contiene errores conceptuales graves, valida una alucinación con certeza, vulnera directrices de seguridad o incumple por completo el rol asignado.
@@ -42,6 +40,8 @@ Cada caso de prueba de la batería experimental se formaliza como una estructura
 \end{equation}
 
 Para cubrir los diferentes modos de interacción, la batería clasifica las pruebas en cuatro tipologías: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de formato y extensión; pruebas trampa (\textit{trick questions}) formuladas con premisas falsas para comprobar el control de alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la robustez frente a intentos de manipulación o fraude.
+
+La batería experimental comprende un total de 42 casos estructurados, adoptando una distribución equilibrada de seis casos por dimensión principal ($N_d = 6, \forall d \in \{1, \dots, 7\}$). Esta elección de diseño busca garantizar una cobertura simétrica y comparable de todas las dimensiones analizadas, manteniendo al mismo tiempo un volumen muestral manejable para una auditoría manual exhaustiva y doblemente ciega en esta validación preliminar.
 
 Cada caso de prueba posee una dimensión objetivo principal hacia la que está orientada su formulación. No obstante, en un asistente conversacional real, cualquier respuesta debe evaluarse de forma integral: ante un caso diseñado para auditar formato (D7), la respuesta debe ser simultáneamente veraz (D1), no inventar datos (D2) y mantener un tono seguro (D5). Por ello, los evaluadores calificaron las 126 respuestas en las siete dimensiones (882 asignaciones emparejadas por evaluador), considerando cumplidas aquellas dimensiones transversales en las que no se detecta ninguna infracción observable, aun cuando no constituyan el objetivo principal del caso.
 
@@ -66,7 +66,7 @@ A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas 
 donde $\mathbb{I}(\cdot)$ representa la función indicatriz booleana.
 
 \subsection{Tasa de Fallos Críticos (\texorpdfstring{$CFR$}{CFR}) y Criterio Safety-First}
-Bajo el criterio de seguridad prioritaria (\textit{Safety-First}), la presencia de fallos críticos o alucinaciones inadmisibles impide considerar apto un sistema para su adopción docente, con independencia de que su puntuación media global sea elevada. La condición de fallo crítico se define analíticamente:
+Se define en este trabajo un criterio conservador de seguridad prioritaria (\textit{Safety-First}), según el cual la presencia de fallos críticos en las dimensiones consideradas no negociables para la integridad educativa ($D_1$: factualidad, $D_2$: control de alucinaciones y $D_5$: robustez y seguridad) impide considerar apto un sistema para su despliegue docente autónomo, en consonancia con las recomendaciones de adopción ética y segura de la UNESCO \cite{unesco2023guidance}, con independencia de que su puntuación media global sea elevada. La condición de fallo crítico se define analíticamente:
 
 \begin{equation}[EQ:FALLOCRITICO]{Condición formal de fallo crítico}
     \text{Fallo Crítico}_i \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)
@@ -104,7 +104,7 @@ donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporció
     P_o = \frac{1}{N} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N^2} \right)
 \end{equation}
 
-donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
+donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Aun cuando la escala de cuatro niveles posee naturaleza ordinal, se empleó el coeficiente $\kappa$ no ponderado como decisión metodológica para medir el acuerdo exacto entre evaluadores y penalizar por igual cualquier discrepancia categorial entre niveles; la evaluación mediante $\kappa$ ponderado se reserva como extensión metodológica para futuros estudios con paneles ampliados. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
 
 \section{Implementación y arquitectura del software de testing}
 \label{sec:arquitectura_software}
