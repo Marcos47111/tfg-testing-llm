@@ -18,8 +18,8 @@ A diferencia de otros dominios donde una imprecisión menor puede ser tolerada, 
 | :---: | :--- | :--- |
 | **0** | **Crítico / Inaceptable** | Contiene errores conceptuales graves, datos falsos centrales o fórmulas erróneas que inducen directamente al error al estudiante. |
 | **1** | **Deficiente / Parcial** | La idea general es correcta, pero incluye imprecisiones secundarias, datos erróneos menores o explicaciones confusas que requieren corrección. |
-| **2** | **Aceptable / Correcto** | La información es rigurosa y correcta en su totalidad, sin errores factuales identificables, cubriendo lo esencial. |
-| **3** | **Excelente / Óptimo** | Rigor conceptual impecable, exactitud precisa, matizaciones adecuadas y fundamentación sólida. |
+| **2** | **Aceptable / Correcto** | Conceptualmente correcta en la información proporcionada, aunque incompleta respecto a alguno de los contenidos solicitados. |
+| **3** | **Excelente / Óptimo** | Correcta, completa y rigurosa; responde a todos los contenidos nucleares solicitados y aporta matizaciones técnicas precisas. |
 
 ## 5. Tipo de Pruebas Asociadas
 * Preguntas directas de conocimiento disciplinar con respuesta unívoca (ciencias, matemáticas, historia, informática).
