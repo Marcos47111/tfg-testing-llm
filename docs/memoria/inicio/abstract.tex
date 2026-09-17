@@ -1,0 +1,11 @@
+The exponential emergence of Generative Artificial Intelligence and Large Language Models (LLMs) has fostered their rapid adoption in educational environments as conversational assistants and virtual tutors. However, their intrinsically probabilistic and non-deterministic nature poses critical risks regarding misinformation (factual hallucinations, syndromic overconfidence), academic integrity threats (plagiarism and fraudulent exam-taking), and pedagogical shortcomings (passive solutionism instead of cognitive scaffolding).
+
+In software engineering, evaluating such generative conversational systems exposes \textit{The Oracle Problem}, as open-ended natural language responses cannot be verified using traditional deterministic boolean assertions.
+
+This Bachelor's Thesis proposes a formal, systematic, and reproducible testing methodology to assess the quality of LLM-based educational chatbots. The framework is grounded in the ISO/IEC 25010:2023 software quality model, Vygotsky's Zone of Proximal Development (ZPD) and Scaffolding theory, and Hattie and Timperley's formative feedback model.
+
+The methodology formalizes seven orthogonal evaluation dimensions (Factual Correctness, Hallucination Control, Didactic Clarity, Pedagogical Utility and Feedback, Robustness and Safety, Level Adaptation, and Instruction Following), scored through an analytical rubric matrix using a forced 4-level scale ($0-3$) to eliminate central tendency bias. In addition, quantitative aggregation metrics and a synthetic Educational Quality Index ($EQI$) governed by the \textit{Safety-First} principle are formulated.
+
+The methodology has been experimentally validated through a structured test suite consisting of 42 test cases (126 experimental trials) across three distinct chatbot profiles (\textit{Base Assistant}, \textit{Direct Tutor}, and \textit{Socratic Tutor}). Empirical results show that the lack of pedagogical alignment leads to a critical $33.3\%$ hallucination rate and $9.5\%$ critical safety failures, whereas socratic scaffolding successfully reaches $100\%$ educational suitability.
+
+\keywords{Large Language Models, Software Testing, Educational Chatbots, Software Quality, Hallucinations, Socratic Scaffolding, ISO/IEC 25010, Artificial Intelligence in Education}

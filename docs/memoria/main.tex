@@ -1,96 +1,50 @@
-\documentclass[12pt,a4paper,oneside]{report}
+\documentclass[epsbased,copyright,final,printable,covers,firstnumbered,tfg]{tfgtfmthesisuam}
 
-% --- Paquetes de idioma y tipografía ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[spanish,es-tabla]{babel}
-\usepackage{csquotes}
-\usepackage{lmodern}
-\usepackage{microtype}
-\usepackage{setspace}
-\onehalfspacing
+\advisor{Tutor Académico}
+\levelin{Grado en Ingeniería Informática}
+\title{Propuesta metodológica para el testing de sistemas conversacionales basados en LLMs en contextos educativos}
+\subtitle{Evaluación multidimensional de calidad, fiabilidad, seguridad y utilidad pedagógica}
+\author{Marcos Tomás Jiménez Meléndez}
+\privateaddress{Escuela Politécnica Superior -- Universidad Autónoma de Madrid}
+\copyrightdate{Octubre de 2026}
 
-% --- Geometría de página (Márgenes normalizados TFG) ---
-\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=3.0cm, right=2.5cm]{geometry}
+\dedication{A mi familia y amigos, por su apoyo incondicional, paciencia y motivación en cada etapa de este camino.}
+\famouscite{Lo que tenemos que aprender a hacer, lo aprendemos haciéndolo.\\[0.1em] \begin{flushright}Aristóteles\end{flushright}}
 
-% --- Paquetes matemáticos y tablas ---
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{booktabs}
-\usepackage{tabularx}
-\usepackage{graphicx}
-\usepackage{xcolor}
+\prefacefile{inicio/prefacio}
+\ackfile{inicio/agradecimientos}
+\resumenfile{inicio/resumen}
+\abstractfile{inicio/abstract}
 
-% --- Enlaces e hipervínculos ---
-\usepackage[colorlinks=true, linkcolor=blue!70!black, citecolor=green!50!black, urlcolor=blue!80!black]{hyperref}
+\keywords{Large Language Models, Software Testing, Educational Chatbots, Software Quality, Hallucinations, Socratic Scaffolding, ISO/IEC 25010, Artificial Intelligence in Education}
+\palabrasclave{Modelos de Lenguaje de Gran Tamaño, Testing de Software, Chatbots Educativos, Calidad de Software, Alucinaciones, Andamiaje Socrático, ISO/IEC 25010, Inteligencia Artificial en Educación}
 
-% --- Formato de títulos y encabezados ---
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\setlength{\headheight}{15pt}
-\addtolength{\topmargin}{-3pt}
-\fancyhf{}
-\fancyhead[L]{\small\nouppercase{\leftmark}}
-\fancyhead[R]{\small\thepage}
-\renewcommand{\headrulewidth}{0.5pt}
+\coverdata
+{
+  Escuela Politécnica Superior \\
+  Universidad Autónoma de Madrid \\
+  C/ Francisco Tomás y Valiente nº 11, Ciudad Universitaria de Cantoblanco
+}
 
-% --- Bibliografía con BibLaTeX ---
-\usepackage[backend=biber,style=numeric-comp,sorting=none]{biblatex}
-\addbibresource{bibliografia/referencias.bib}
+\bibliographyconfig[ieeetr]{referencias}
 
-% =========================================================================
-% DATOS DEL DOCUMENTO
-% =========================================================================
-\title{\textbf{\LARGE Metodología de Testing para Sistemas Conversacionales basados en LLMs en Contextos Educativos}\\[0.5cm]
-\large Trabajo de Fin de Grado}
-\author{\textbf{Mak}}
-\date{Octubre de 2026}
+\datadir{data}
+\graphicsdir{img}
+\logosdir{img}
+\codesdir{codes}
 
 \begin{document}
 
-% --- Portada ---
-\begin{titlepage}
-    \centering
-    \vspace*{1cm}
-    {\scshape\LARGE Universidad \par}
-    \vspace{1cm}
-    {\scshape\Large Escuela Técnica Superior de Ingeniería Informática \par}
-    \vspace{1.5cm}
-    {\Large\bfseries TRABAJO DE FIN DE GRADO \par}
-    \vspace{1.5cm}
-    {\LARGE\bfseries Propuesta metodológica para el testing de sistemas conversacionales basados en LLMs en contextos educativos \par}
-    \vspace{2cm}
-    \begin{minipage}{0.8\textwidth}
-        \begin{flushleft} \large
-            \textbf{Autor:} Mak \\
-            \textbf{Titulación:} Grado en Ingeniería Informática \\
-            \textbf{Convocatoria:} Curso Académico 2025/2026
-        \end{flushleft}
-    \end{minipage}
-    \vfill
-    {\large Octubre de 2026 \par}
-\end{titlepage}
+\chapter{Introducción\label{CAP:INTRODUCCION}}{capitulos/01_introduccion}
+\chapter{Marco Teórico\label{CAP:MARCOTEORICO}}{capitulos/02_marco_teorico}
+\chapter{Testing de Sistemas basados en LLMs\label{CAP:TESTINGLLMS}}{capitulos/03_testing_sistemas_llms}
+\chapter{Propuesta Metodológica\label{CAP:METODOLOGIA}}{capitulos/04_propuesta_metodologica}
+\chapter{Aplicación Demostrativa y Resultados\label{CAP:EXPERIMENTACION}}{capitulos/05_aplicacion_demostrativa}
+\chapter{Discusión y Amenazas a la Validez\label{CAP:DISCUSION}}{capitulos/06_discusion}
+\chapter{Conclusiones y Trabajo Futuro\label{CAP:CONCLUSIONES}}{capitulos/07_conclusiones}
 
-% --- Índices ---
-\tableofcontents
-\listoffigures
-\listoftables
-\newpage
-
-% --- Inclusión de Capítulos Modulares ---
-\input{capitulos/01_introduccion.tex}
-\input{capitulos/02_marco_teorico.tex}
-\input{capitulos/03_testing_sistemas_llms.tex}
-\input{capitulos/04_propuesta_metodologica.tex}
-\input{capitulos/05_aplicacion_demostrativa.tex}
-\input{capitulos/06_discusion.tex}
-\input{capitulos/07_conclusiones.tex}
-
-% --- Bibliografía ---
-\newpage
-\printbibliography[heading=bibintoc, title={8. Bibliografía}]
-
-% --- Anexos ---
 \appendix
-\input{capitulos/08_anexos.tex}
+
+\chapter{Rúbrica de Evaluación, Casos de Prueba y Configuraciones\label{CAP:ANEXOS}}{capitulos/08_anexos}
 
 \end{document}

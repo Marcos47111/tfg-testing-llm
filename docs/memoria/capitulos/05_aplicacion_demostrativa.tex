@@ -1,6 +1,3 @@
-\chapter{Aplicación demostrativa de la metodología}
-\label{cap:aplicacion_demostrativa}
-
 \section{Selección del sistema y modelos evaluados}
 \label{sec:seleccion_modelos}
 Para validar experimentalmente la metodología propuesta, se configuraron y evaluaron tres perfiles representativos de asistentes conversacionales sobre la misma base de conocimiento:
@@ -23,41 +20,32 @@ Para garantizar la estricta reproducibilidad del estudio, se congelaron los sigu
 
 \section{Ejecución de la batería y evaluación de respuestas}
 \label{sec:ejecucion_evaluacion}
-Se ejecutó la suite completa de **42 casos de prueba** estructurados sobre los tres perfiles, registrando un total de **126 interacciones experimentales** almacenadas en formato JSON en el directorio \texttt{data/respuestas\_obtenidas/raw/}. Posteriormente, se aplicó la matriz de rúbricas analíticas en escala $0-3$ a cada respuesta generada.
+Se ejecutó la suite completa de 42 casos de prueba estructurados sobre los tres perfiles, registrando un total de 126 interacciones experimentales almacenadas en formato JSON en el directorio \texttt{data/respuestas\_obtenidas/raw/}. Posteriormente, se aplicó la matriz de rúbricas analíticas en escala $0-3$ a cada respuesta generada.
 
 \section{Resultados obtenidos y análisis cuantitativo}
 \label{sec:resultados_cuantitativos}
-Los resultados cuantitativos agregados se resumen en la Tabla \ref{tab:resultados_comparativos}.
+Los resultados cuantitativos agregados se resumen en la Tabla \ref{TB:RESULTADOS}.
 
-\begin{table}[htbp]
+\begin{table}[Resultados comparativos por perfil]{TB:RESULTADOS}{Resultados comparativos cuantitativos por perfil de chatbot evaluado.}
 \centering
-\small
-\caption{Resultados comparativos cuantitativos por perfil de chatbot evaluado}
-\label{tab:resultados_comparativos}
-\begin{tabularx}{\textwidth}{l c c c c c c c c c c}
-\toprule
+\begin{tabular}{l c c c c c c c c c c}
+\hline
 \textbf{Perfil} & \textbf{IQE} & \textbf{CFR} & \textbf{HR} & \textbf{D1} & \textbf{D2} & \textbf{D3} & \textbf{D4} & \textbf{D5} & \textbf{D6} & \textbf{D7} \\
  & (0-100) & (\%) & (\%) & Fact. & Aluc. & Clar. & Feed. & Seg. & Nivel & Dir. \\
-\midrule
+\hline \hline
 Asistente Base & 64.1 & 9.5\% & 33.3\% & 1.90 & 1.90 & 2.00 & 1.86 & 1.90 & 2.00 & 1.95 \\
 Tutor Directo & 99.3 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 2.86 & 3.00 & 3.00 & 3.00 \\
 Tutor Socrático & 100.0 & 0.0\% & 0.0\% & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 & 3.00 \\
-\bottomrule
-\end{tabularx}
+\hline
+\end{tabular}
 \end{table}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\textwidth]{figuras/radar_dimensiones.png}
-    \caption{Comparativa multidimensional de los perfiles evaluados en las 7 dimensiones.}
-    \label{fig:radar_dimensiones}
+\begin{figure}[Comparativa multidimensional]{FIG:RADAR}{Comparativa multidimensional de los perfiles evaluados en las 7 dimensiones.}
+  \image{11cm}{}{radar_dimensiones}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{figuras/barras_metricas_globales.png}
-    \caption{Comparativa del Índice Global $IQE$, Tasa de Fallos Críticos $CFR$ y Tasa de Alucinaciones $HR$.}
-    \label{fig:barras_metricas}
+\begin{figure}[Métricas globales y de riesgo]{FIG:BARRAS}{Comparativa del Índice Global IQE, Tasa de Fallos Críticos CFR y Tasa de Alucinaciones HR.}
+  \image{12cm}{}{barras_metricas_globales}
 \end{figure}
 
 \section{Análisis de errores, alucinaciones y riesgos detectados}

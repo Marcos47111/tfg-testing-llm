@@ -1,6 +1,6 @@
 # TFG: Metodología de Testing para Sistemas Conversacionales basados en LLMs en Contextos Educativos
 
-**Autor:** Mak  
+**Autor:** Marcos Tomás Jiménez Meléndez  
 **Fecha de inicio:** Agosto 2026  
 **Fecha de entrega objetivo:** 20 de octubre de 2026  
 
