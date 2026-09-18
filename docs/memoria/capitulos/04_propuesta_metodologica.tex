@@ -41,7 +41,7 @@ Cada caso de prueba de la batería experimental se formaliza como una estructura
 
 Para cubrir los diferentes modos de interacción, la batería clasifica las pruebas en cuatro tipologías: pruebas nominales de conocimiento curricular estándar; pruebas de frontera (\textit{edge cases}) con restricciones combinadas de formato y extensión; pruebas trampa (\textit{trick questions}) formuladas con premisas falsas para comprobar el control de alucinaciones; y pruebas adversariales (\textit{jailbreaks}) orientadas a evaluar la robustez frente a intentos de manipulación o fraude.
 
-La batería experimental comprende un total de 42 casos estructurados, adoptando una distribución equilibrada de seis casos por dimensión principal ($N_d = 6, \forall d \in \{1, \dots, 7\}$). Esta elección de diseño busca garantizar una cobertura simétrica y comparable de todas las dimensiones analizadas, manteniendo al mismo tiempo un volumen muestral manejable para una auditoría manual exhaustiva con evaluación independiente y etiqueta de perfil oculta en esta validación preliminar.
+La batería experimental comprende un total de 42 casos estructurados, adoptando una distribución equilibrada de seis casos por dimensión principal ($N_d^{\mathrm{ppal}} = 6, \forall d \in \{1, \dots, 7\}$). Esta elección de diseño busca garantizar una cobertura simétrica y comparable de todas las dimensiones analizadas, manteniendo al mismo tiempo un volumen muestral manejable para una auditoría manual exhaustiva con evaluación independiente y etiqueta de perfil oculta en esta validación preliminar.
 
 Cada caso de prueba posee una dimensión objetivo principal hacia la que está orientada su formulación. No obstante, en un asistente conversacional real, cualquier respuesta debe evaluarse de forma integral: ante un caso diseñado para auditar formato (D7), la respuesta debe ser simultáneamente veraz (D1), no inventar datos (D2) y mantener un tono seguro (D5). Como decisión de diseño de esta validación preliminar, los evaluadores calificaron las 126 respuestas en las siete dimensiones (882 asignaciones emparejadas por evaluador), considerando cumplidas aquellas dimensiones transversales en las que no se detecta ninguna infracción observable, aun cuando no constituyan el objetivo principal del caso.
 
@@ -52,16 +52,16 @@ En primer lugar, se fijan los parámetros de inferencia del entorno ($T = 0.20$,
 
 \section{Métricas de agregación e Índice Global IQE}
 \label{sec:metricas_agregacion}
-A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas a cada caso $i$ en la dimensión $d$, se formulan las siguientes métricas analíticas:
+A partir de las calificaciones discretas $s_{i,d} \in \{0, 1, 2, 3\}$ asignadas a cada caso $i \in \{1, \dots, N\}$ (donde $N = 42$ representa el total de respuestas evaluadas transversalmente por cada perfil) en la dimensión $d$, se formulan las siguientes métricas analíticas:
 
 \subsection{Puntuación Media por Dimensión (\texorpdfstring{$\bar{S}_d$}{S\_d})}
 \begin{equation}[EQ:PUNTUACIONMEDIA]{Puntuación media por dimensión}
-    \bar{S}_d = \frac{1}{N_d} \sum_{i=1}^{N_d} s_{i,d}, \quad s_{i,d} \in [0, 3]
+    \bar{S}_d = \frac{1}{N} \sum_{i=1}^{N} s_{i,d}, \quad s_{i,d} \in [0, 3]
 \end{equation}
 
 \subsection{Tasa de Cumplimiento y Aprobado (\texorpdfstring{$CR_d$}{CR\_d})}
 \begin{equation}[EQ:TASAAPROBADO]{Tasa de cumplimiento y aprobado}
-    CR_d = \left( \frac{1}{N_d} \sum_{i=1}^{N_d} \mathbb{I}(s_{i,d} \ge 2) \right) \times 100\%
+    CR_d = \left( \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(s_{i,d} \ge 2) \right) \times 100\%
 \end{equation}
 donde $\mathbb{I}(\cdot)$ representa la función indicatriz booleana.
 

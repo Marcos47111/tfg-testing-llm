@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.10-tfg`
+**Versión experimental de referencia:** `v1.0.11-tfg`
 
 ---
 
@@ -19,20 +19,26 @@ El marco se fundamenta en los atributos de calidad de producto de la norma **ISO
 
 ## 🚀 Guía Rápida de Uso y Reproducibilidad
 
-### 1. Compilación de la Memoria (PDF)
+### 1. Entorno Python e Instalación de Dependencias
+Se recomienda utilizar Python 3.10 o superior:
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Compilación de la Memoria (PDF)
 Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) con resolución de bibliografía cruzada (`biber` + `pdflatex`):
 ```bash
 ./compilar_memoria.sh
 ```
 El documento generado se ubica en `docs/memoria/main.pdf` (62 páginas).
 
-### 2. Ejecución de Tests Unitarios
+### 3. Ejecución de Tests Unitarios
 Para validar la suite completa de pruebas unitarias de métricas dimensionales, agregación $IQE$, detección de fallos críticos y consistencia inter-evaluador ($\kappa$):
 ```bash
 python3 -m unittest discover -s src/analisis -p "test_*.py" && python3 -m unittest discover -s src/utils -p "test_*.py"
 ```
 
-### 3. Pipeline de Análisis de Datos y Concordancia Inter-Evaluador
+### 4. Pipeline de Análisis de Datos y Concordancia Inter-Evaluador
 ```bash
 # 1. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
 python3 src/analisis/analizador_experimentos.py

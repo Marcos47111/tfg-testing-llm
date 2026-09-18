@@ -167,26 +167,26 @@ def calcular_cohen_kappa(
         
     # 4. Cálculo de kappa con manejo seguro de indeterminación
     if pe >= 1.0:
-        kappa = 1.0 if po >= 1.0 else 0.0
+        kappa = float("nan")
+        interpretacion = "Indeterminado (varianza nula / categoría única)"
     else:
         kappa = (po - pe) / (1.0 - pe)
-        
-    # Interpretación según Landis & Koch (1977)
-    if kappa < 0:
-        interpretacion = "Sin acuerdo (discrepancia sistemática)"
-    elif kappa <= 0.20:
-        interpretacion = "Acuerdo leve"
-    elif kappa <= 0.40:
-        interpretacion = "Acuerdo aceptable"
-    elif kappa <= 0.60:
-        interpretacion = "Acuerdo moderado"
-    elif kappa <= 0.80:
-        interpretacion = "Acuerdo sustancial"
-    else:
-        interpretacion = "Acuerdo casi perfecto / Excelente"
+        # Interpretación según Landis & Koch (1977)
+        if kappa < 0:
+            interpretacion = "Sin acuerdo (discrepancia sistemática)"
+        elif kappa <= 0.20:
+            interpretacion = "Acuerdo leve"
+        elif kappa <= 0.40:
+            interpretacion = "Acuerdo aceptable"
+        elif kappa <= 0.60:
+            interpretacion = "Acuerdo moderado"
+        elif kappa <= 0.80:
+            interpretacion = "Acuerdo sustancial"
+        else:
+            interpretacion = "Acuerdo casi perfecto / Excelente"
         
     return {
-        "kappa": round(kappa, 4),
+        "kappa": round(kappa, 4) if not (isinstance(kappa, float) and kappa != kappa) else float("nan"),
         "acuerdo_observado_po": round(po, 4),
         "acuerdo_esperado_pe": round(pe, 4),
         "total_pares": n,

@@ -14,17 +14,15 @@ Por último, el análisis de los casos de prueba pone de manifiesto la utilidad 
 \section{Grado de cumplimiento de objetivos}
 \label{sec:cumplimiento_objetivos}
 
-Los cinco objetivos específicos planteados al inicio del trabajo han sido abordados. A continuación se resume el desarrollo y la evidencia correspondiente a cada uno:
+Los cinco objetivos específicos planteados en la Sección \ref{sec:objetivos} han sido alcanzados satisfactoriamente a lo largo del proyecto:
 
-Respecto al primer objetivo (estudio técnico de los LLMs y estándares de calidad), los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS} analizan los fundamentos probabilísticos de los Transformers, los procesos de alineamiento, el problema del oráculo y la traslación de la norma ISO/IEC 25010:2023 al dominio conversacional.
-
-En cuanto al segundo objetivo (formalización de dimensiones de evaluación), la Sección \ref{sec:dimensiones_evaluacion} define el modelo de siete dimensiones ($D_1$ a $D_7$), integrando aspectos de exactitud factual, control de alucinaciones, andamiaje pedagógico y seguridad.
-
-En lo relativo al tercer objetivo (diseño de rúbricas y casos de prueba), la Sección \ref{sec:rubrica_escalas} y el Anexo \ref{CAP:ANEXOS} detallan la matriz de rúbricas en escala de cuatro niveles ($0$ a $3$) y el banco estructurado de 42 casos de prueba clasificados por tipologías y materias.
-
-Para el cuarto objetivo (formalización matemática e implementación del software), la Sección \ref{sec:metricas_agregacion} formula las ecuaciones de puntuación dimensional, tasas de riesgo e índice $IQE$. Este cálculo está implementado en el paquete Python \texttt{src/analisis/}, habiendo sido verificado mediante tests unitarios automatizados.
-
-Por último, en relación con el quinto objetivo (experimentación y análisis), el Capítulo \ref{CAP:EXPERIMENTACION} documenta los 126 ensayos sobre tres perfiles de chatbot evaluados sobre el modelo Meta-Llama-3-8B-Instruct, aportando tablas comparativas, gráficos vectoriales y el análisis de consistencia inter-evaluador ($\kappa = 0{,}982$).
+\begin{enumerate}
+    \item \textbf{Analizar las diferencias metodológicas y operacionales entre el testing de software determinista y la evaluación de modelos generativos, formalizando el impacto del problema del oráculo:} Cumplido en los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS}, donde se contrastan las aserciones booleanas deterministas con la naturaleza estocástica de los modelos de lenguaje, formalizando el problema del oráculo y analizando las limitaciones de las métricas sintácticas y benchmarks estáticos.
+    \item \textbf{Definir un conjunto de dimensiones de calidad de software educativo inspiradas en el estándar ISO/IEC 25010 y la literatura pedagógica:} Cumplido en la Sección \ref{sec:dimensiones_evaluacion}, donde se formalizan y justifican las siete dimensiones analíticas ($D_1$ a $D_7$) integrando características de calidad de software (adecuación funcional, interacción, fiabilidad y seguridad) y constructos pedagógicos consolidados (ZDP, andamiaje tutorial y taxonomía de Bloom).
+    \item \textbf{Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación:} Cumplido en la Sección \ref{sec:rubrica_escalas} y en el Anexo \ref{anexo:rubrica_completa}, estableciendo descriptores conductuales unívocos para cada nivel y dimensión, cuya consistencia de aplicación quedó respaldada por un coeficiente inter-evaluador $\kappa = 0{,}982$.
+    \item \textbf{Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$), complementado por un criterio de seguridad prioritaria (\textit{Safety-First}):} Cumplido en la Sección \ref{sec:metricas_agregacion}, formalizando analíticamente las medias $\bar{S}_d$, tasas $CR_d$, $CFR$, $HR$ y el índice ponderado $IQE$, complementado con la regla de decisión \textit{Safety-First} y su verificación mediante análisis de sensibilidad.
+    \item \textbf{Construir una batería estructurada de casos de prueba, aplicarla experimentalmente sobre tres perfiles de chatbot y realizar el análisis comparativo para contrastar la sensibilidad del marco:} Cumplido en el Capítulo \ref{CAP:EXPERIMENTACION} y el Anexo \ref{anexo:bateria_pruebas}, mediante el diseño de 42 casos estructurados por tipologías y su ejecución sobre tres perfiles conversacionales con Meta-Llama-3-8B-Instruct (126 ensayos registrados), demostrando la capacidad discriminativa del marco.
+\end{enumerate}
 
 \section{Aportaciones del trabajo}
 \label{sec:aportaciones}

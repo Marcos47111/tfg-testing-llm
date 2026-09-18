@@ -1,0 +1,8 @@
+# Requisitos del entorno de ejecución y análisis del TFG
+# Metodología para testing de IA Generativa de texto en educación
+# Python >= 3.10
+
+pandas>=2.0.0
+numpy>=1.24.0
+matplotlib>=3.7.0
+requests>=2.31.0

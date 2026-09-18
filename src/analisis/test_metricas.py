@@ -94,9 +94,11 @@ class TestMetricasTFG(unittest.TestCase):
         with self.assertRaises(ValueError):
             calcular_cohen_kappa([0, -1], [0, 2])
 
-        # Caso límite Pe = 1.0 (todos los ítems asignados a la misma categoría única)
+        # Caso límite Pe = 1.0 (todos los ítems asignados a la misma categoría única: 0/0 indeterminado)
+        import math
         res_monocategoria = calcular_cohen_kappa([3, 3, 3, 3], [3, 3, 3, 3])
-        self.assertAlmostEqual(res_monocategoria["kappa"], 1.0, places=2)
+        self.assertTrue(math.isnan(res_monocategoria["kappa"]))
+        self.assertEqual(res_monocategoria["interpretacion"], "Indeterminado (varianza nula / categoría única)")
 
 
 if __name__ == "__main__":

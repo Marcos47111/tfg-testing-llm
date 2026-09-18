@@ -4,7 +4,7 @@ Módulos en Python para automatizar el ciclo de vida del testing experimental.
 
 ## Módulos
 
-* **`evaluador/`**: Cliente para enviar las baterías de prompts a los LLMs (mediante API de Ollama local o APIs compatibles con OpenAI), registrar latencias, respuestas y metadatos.
-* **`analisis/`**: Cálculo automático de estadísticas agregadas, promedios por categoría, detección de correlaciones y generación de datasets consolidados.
-* **`visualizacion/`**: Scripts con `matplotlib` / `seaborn` para generar figuras vectoriales y gráficos para la memoria (diagramas de radar, barras por dimensión, etc.).
-* **`utils/`**: Lectura y escritura de ficheros JSON, CSV y generadores de tablas en formato LaTeX / Markdown.
+* **`evaluador/`**: Cliente para enviar las baterías de prompts a los LLMs mediante la API REST local de Ollama (`/api/chat`), registrando latencias, respuestas y metadatos.
+* **`analisis/`**: Cálculo automatizado de métricas analíticas ($\bar{S}_d$, $CR_d$, $CFR$, $HR$, $IQE$), análisis comparativo de experimentos, auditoría de consistencia inter-evaluador ($\kappa$ de Cohen) y tests unitarios.
+* **`visualizacion/`**: Generación de gráficos vectoriales mediante `matplotlib` (diagramas de radar multidimensional y gráficos de barras comparativos).
+* **`utils/`**: Carga y validación de ficheros JSON con casos de prueba y exportación de datos.
