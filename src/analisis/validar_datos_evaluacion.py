@@ -174,9 +174,12 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
             
         j_item = json_map[clave]
         
-        # Comparar evaluador_id
-        if row.get("evaluador_id") and row["evaluador_id"] != j_item["evaluador_id"]:
-            errores.append(f"Discrepancia evaluador_id en ({cid}, {perf}): CSV={row['evaluador_id']} vs JSON={j_item['evaluador_id']}")
+        # Comparar metadatos contextuales
+        for meta_key in ["evaluador_id", "dimension_principal", "categoria", "materia", "nivel_educativo"]:
+            csv_meta = row.get(meta_key, "").strip()
+            json_meta = j_item.get(meta_key, "").strip()
+            if csv_meta and json_meta and csv_meta != json_meta:
+                errores.append(f"Discrepancia en metadato '{meta_key}' en ({cid}, {perf}): CSV='{csv_meta}' vs JSON='{json_meta}'")
             
         # Comparar puntuaciones D1..D7
         for d in DIMENSIONES_ESPERADAS:
