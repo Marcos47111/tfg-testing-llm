@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.11-tfg`
+**Versión experimental de referencia:** `v1.0.12-tfg`
 
 ---
 
@@ -38,18 +38,21 @@ Para validar la suite completa de pruebas unitarias de métricas dimensionales, 
 python3 -m unittest discover -s src/analisis -p "test_*.py" && python3 -m unittest discover -s src/utils -p "test_*.py"
 ```
 
-### 4. Pipeline de Validación de Datos, Análisis y Concordancia Inter-Evaluador
+### 4. Pipeline de Ingestión, Validación, Análisis y Concordancia Inter-Evaluador
 ```bash
-# 1. Validar integridad y esquemas de los datasets de evaluación humana (Evaluador 1 y 2):
+# 1. (Opcional) Importar y normalizar anotaciones humanas originales (raw CSV -> JSON):
+python3 src/analisis/importar_evaluaciones_humanas.py
+
+# 2. Validar integridad y esquemas de los datasets de evaluación (Evaluador 1 y 2):
 python3 src/analisis/validar_datos_evaluacion.py
 
-# 2. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
+# 3. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
 python3 src/analisis/analizador_experimentos.py
 
-# 3. Calcular la concordancia inter-evaluador independiente (Kappa de Cohen global y dimensional):
+# 4. Calcular la concordancia inter-evaluador independiente (Kappa de Cohen global y dimensional):
 python3 src/analisis/calcular_concordancia_evaluadores.py
 
-# 4. Generar gráficos vectoriales de resultados (radar y barras):
+# 5. Generar gráficos vectoriales de resultados (radar y barras):
 python3 src/visualizacion/generar_graficos.py
 ```
 
@@ -89,7 +92,9 @@ TFG/
 │   ├── prompts/                            # 42 casos de prueba organizados por dimensión y tipo
 │   ├── configuraciones_chatbot/            # System prompts y parámetros de inferencia de los perfiles
 │   ├── respuestas_obtenidas/raw/           # 126 trazas de respuesta conversacional completas
-│   └── evaluaciones/                       # Evaluaciones independientes pareadas (Evaluador 1 y 2)
+│   └── evaluaciones/                       # Datasets de evaluación normalizados y anotaciones raw
+│       ├── raw/                            # Hojas originales de anotación de Evaluador 1 y 2 (CSV)
+│       └── ...                             # Evaluaciones estructuradas pareadas en JSON
 │
 ├── src/                                    # Código fuente y herramientas en Python
 │   ├── evaluador/                          # Motor de ejecución de pruebas contra Ollama API

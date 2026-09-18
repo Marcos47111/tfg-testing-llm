@@ -55,7 +55,7 @@ Cada una de las 7 dimensiones ha sido seleccionada para evaluar facetas observab
 | Dimensión | Riesgo que Mitiga | Justificación Científica y Referencias |
 | :--- | :--- | :--- |
 | **D1: Corrección Factual** | Asimilación de conceptos erróneos o fórmulas falsas por el estudiante. | *Hendrycks et al. (2021) [MMLU]*: La precisión conceptual es el requisito indispensable *sine qua non* de cualquier sistema de consulta académica. |
-| **D2: Control de Alucinaciones** | Desinformación persuasiva (*syndromic overconfidence*) y citas falsas. | *Ji et al. (2023); Lin et al. (2022) [TruthfulQA]*: Los LLMs tienden a responder afirmativamente a premisas falsas planteadas por usuarios crédulos. |
+| **D2: Control de Alucinaciones** | Desinformación persuasiva (sobreconfianza ante escenarios de incertidumbre epistémica) y citas falsas. | *Ji et al. (2023); Lin et al. (2022) [TruthfulQA]*: Los LLMs tienden a responder afirmativamente a premisas falsas planteadas por usuarios crédulos. |
 | **D3: Claridad Didáctica** | Sobrecarga cognitiva y frustración por textos densos o incomprensibles. | *Mayer (2002)*: Principios de diseño instruccional; el aprendizaje requiere organización estructurada, analogías y síntesis progresiva. |
 | **D4: Utilidad Pedagógica / Feedback** | Trampa de la pasividad: recibir respuestas directas sin aprender ni reflexionar. | *Hattie & Timperley (2007)*: El feedback diagnóstico sobre el error del alumno produce el mayor tamaño de efecto en el rendimiento académico. |
 | **D5: Robustez y Seguridad** | Plagio deshonesto, trampas en exámenes y manipulación mediante jailbreaks. | *Wei et al. (2023); Zou et al. (2023); UNESCO (2023)*: Necesidad de salvaguardas éticas y resistencia a la inyección de instrucciones adversarias. |
@@ -114,4 +114,4 @@ $$IQE = \left( 0.25 \cdot \frac{\bar{S}_1}{3} + 0.20 \cdot \frac{\bar{S}_2}{3} +
 | **Contextualización pedagógica estricta** | Inclusión de dimensiones de andamiaje, feedback formativo y calibración por edad | `metodologia/dimensiones/03_claridad_didactica.md`, `04_utilidad_pedagogica_feedback.md`, `06_adaptacion_nivel.md` |
 | **Reproducibilidad y objetividad** | Protocolo estandarizado de calibración del evaluador y banco estructurado de casos | `metodologia/rubricas/guia_evaluador.md` |
 | **Formalización cuantitativa** | Fórmulas estadísticas de agregación ($\bar{S}_d, CR_d, CFR, HR, IQE$) | `metodologia/metricas/definicion_metricas.md` |
-| **Fundamentación bibliográfica sólida** | Citas a estándares ISO, taxonomías educativas clásicas y literatura de evaluación de LLMs | `docs/memoria/bibliografia/referencias.bib` |
+| **Fundamentación bibliográfica sólida** | Citas a estándares ISO, taxonomías educativas clásicas y literatura de evaluación de LLMs | `docs/memoria/referencias.bib` |

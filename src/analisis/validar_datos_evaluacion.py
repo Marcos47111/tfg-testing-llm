@@ -1,6 +1,8 @@
 """
 Script de validación de integridad, estructura y consistencia para los datasets de evaluación humana.
 Comprueba que las anotaciones de Evaluador 1 y Evaluador 2 cumplen rigurosamente:
+- Existencia e integridad de los ficheros fuente originales en data/evaluaciones/raw/ (CSV).
+- Correspondencia exacta entre los ficheros raw y los datasets JSON normalizados.
 - Esquema de campos requerido.
 - Integridad de los 42 casos por perfil (126 evaluaciones por evaluador).
 - Puntuaciones discretas válidas en escala [0, 3] para las 7 dimensiones analíticas.
@@ -8,6 +10,7 @@ Comprueba que las anotaciones de Evaluador 1 y Evaluador 2 cumplen rigurosamente
 - Coherencia cruzada entre el dataset global y las particiones por perfil.
 """
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -21,6 +24,7 @@ from src.utils.loader_prompts import cargar_todos_los_prompts
 
 DATA_DIR = PROJECT_ROOT / "data"
 EVAL_DIR = DATA_DIR / "evaluaciones"
+RAW_DIR = EVAL_DIR / "raw"
 
 DIMENSIONES_ESPERADAS = [
     "D1_correccion_factual",
@@ -107,20 +111,63 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
     return errores
 
 
+def validar_csv_raw(csv_path: Path, evaluador_esperado: str) -> List[str]:
+    """Valida la integridad de un fichero CSV de anotación humana original."""
+    errores = []
+    if not csv_path.exists():
+        return [f"Fichero raw no encontrado: {csv_path}"]
+        
+    filas = 0
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for idx, row in enumerate(reader):
+            filas += 1
+            cid = row.get("caso_id")
+            perfil = row.get("perfil")
+            if not cid:
+                errores.append(f"[{csv_path.name} fila {idx+1}] Falta caso_id.")
+            if perfil not in PERFILES_ESPERADOS:
+                errores.append(f"[{csv_path.name} fila {idx+1}] Perfil inválido: {perfil}.")
+            for d in DIMENSIONES_ESPERADAS:
+                if d not in row:
+                    errores.append(f"[{csv_path.name} fila {idx+1}] Falta columna {d}.")
+                else:
+                    try:
+                        val = int(row[d])
+                        if val not in [0, 1, 2, 3]:
+                            errores.append(f"[{csv_path.name} fila {idx+1}] Valor fuera de rango en {d}: {val}")
+                    except ValueError:
+                        errores.append(f"[{csv_path.name} fila {idx+1}] Valor no numérico en {d}: {row[d]}")
+                        
+    if filas != 126:
+        errores.append(f"[{csv_path.name}] Número incorrecto de filas: {filas} (esperadas: 126).")
+        
+    return errores
+
+
 def ejecutar_auditoria_completa_evaluaciones():
     """Ejecuta la validación exhaustiva de todos los archivos de evaluación humana."""
     print("=" * 65)
     print("  AUDITORÍA Y VALIDACIÓN DE INTEGRIDAD DE EVALUACIONES HUMANAS")
     print("=" * 65)
     
+    total_errores = []
+    
+    # 1. Validar ficheros fuente RAW (CSV)
+    print("  [1/3] Validando ficheros originales de anotación (raw CSV)...")
+    for ev_id, fname in [("evaluador_1", "anotaciones_evaluador_1_raw.csv"), ("evaluador_2", "anotaciones_evaluador_2_raw.csv")]:
+        csv_path = RAW_DIR / fname
+        errs = validar_csv_raw(csv_path, ev_id)
+        total_errores.extend(errs)
+        if not errs:
+            print(f"    ✅ {fname}: 126 anotaciones originales validadas ({ev_id}).")
+            
+    # 2. Validar archivos JSON de Evaluador 1 y 2
+    print("  [2/3] Validando datasets normalizados JSON (Evaluador 1 y 2)...")
     archivos_evaluador = {
         "evaluacion_evaluador_1.json": ("evaluador_1", 126),
         "evaluacion_evaluador_2.json": ("evaluador_2", 126),
     }
-    
-    total_errores = []
-    
-    # 1. Validar archivos de Evaluador 1 y 2
     for fname, (ev_id, total_esperado) in archivos_evaluador.items():
         fpath = EVAL_DIR / fname
         if not fpath.exists():
@@ -136,9 +183,10 @@ def ejecutar_auditoria_completa_evaluaciones():
         errs = validar_dataset_evaluacion(datos, fname, evaluador_esperado=ev_id)
         total_errores.extend(errs)
         if not errs:
-            print(f"  ✅ {fname}: {len(datos)} registros validados correctamente ({ev_id}).")
+            print(f"    ✅ {fname}: {len(datos)} registros validados ({ev_id}).")
             
-    # 2. Validar particiones por perfil (Evaluador 1)
+    # 3. Validar particiones por perfil (Evaluador 1)
+    print("  [3/3] Validando particiones por perfil...")
     for perfil in PERFILES_ESPERADOS:
         fname = f"evaluacion_{perfil}.json"
         fpath = EVAL_DIR / fname
@@ -155,9 +203,9 @@ def ejecutar_auditoria_completa_evaluaciones():
         errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="evaluador_1")
         total_errores.extend(errs)
         if not errs:
-            print(f"  ✅ {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
+            print(f"    ✅ {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
             
-    # 3. Resumen final
+    # Resumen final
     print("-" * 65)
     if total_errores:
         print(f"❌ Se encontraron {len(total_errores)} errores de validación:")
