@@ -1,7 +1,7 @@
 # Resumen Ejecutivo del Trabajo de Fin de Grado (TFG)
 
 **Título:** Metodología para testing de IA Generativa de texto en educación  
-**Autor:** Marcos García  
+**Autor:** Marcos Tomás Jiménez Meléndez  
 **Grado:** Grado en Ingeniería Informática (UAM / EPS)  
 **Versión experimental de referencia:** `v1.0.11-tfg`
 
