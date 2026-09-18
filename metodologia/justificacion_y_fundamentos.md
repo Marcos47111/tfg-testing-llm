@@ -50,7 +50,7 @@ Un chatbot educativo no es un mero motor de búsqueda o un extractor de texto; s
 
 ## 2. Justificación de las 7 Dimensiones de Evaluación
 
-Cada una de las 7 dimensiones ha sido seleccionada para garantizar **ortogonalidad** (evalúan aspectos independientes) y **cobertura holística** de la interacción docente-discente:
+Cada una de las 7 dimensiones ha sido seleccionada para evaluar facetas observables y complementarias de la interacción docente-discente, garantizando una **cobertura holística** del proceso educativo (reconociendo al mismo tiempo interdependencias conceptuales parciales, como el vínculo epistémico entre D1 y D2):
 
 | Dimensión | Riesgo que Mitiga | Justificación Científica y Referencias |
 | :--- | :--- | :--- |
@@ -90,7 +90,7 @@ En educación, los errores tienen un **daño asimétrico**: diez respuestas peda
 Por ello, se define formalmente el **Fallo Crítico**:
 $$\text{Fallo Crítico} \iff (s_{i,1} = 0) \lor (s_{i,2} = 0) \lor (s_{i,5} = 0)$$
 
-Un chatbot con una tasa de fallos críticos $CFR \ge 5\%$ no puede considerarse fiable para entornos escolares sin supervisión directa continua.
+Bajo el criterio *Safety-First*, la presencia de fallos críticos ($CFR > 0$) veta incondicionalmente la adopción docente autónoma del modelo sin supervisión humana directa, con independencia de que su puntuación media agregada o su $IQE$ sean elevados.
 
 ### 4.2. Justificación de los Pesos del Índice Global de Calidad Educativa ($IQE$)
 El índice sintético global normalizado en $[0, 100]$ aplica la siguiente ponderación:

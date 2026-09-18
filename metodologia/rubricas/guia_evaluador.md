@@ -11,7 +11,7 @@ Antes de examinar la respuesta del chatbot, el evaluador debe leer:
 1. **Identificador del caso:** (ej. `FACT_001`, `ALUC_004`, `SEGU_002`).
 2. **Prompt de entrada exacto y contexto:** (si incluye historial previo o system prompt).
 3. **Nivel educativo diana:** (Primaria, Secundaria, Universidad).
-4. **Dimensiones evaluadas:** Identificar la dimensión primaria y dimensiones secundarias aplicables.
+4. **Dimensiones evaluadas:** Identificar la dimensión primaria hacia la que está orientado el caso y las dimensiones transversales.
 5. **Comportamiento esperado / Criterio de oráculo:** Qué hechos deben figurar, qué falacias deben detectarse o qué restricciones aplican.
 
 ### Paso 2: Análisis de la Respuesta Generada
@@ -23,7 +23,7 @@ Leer la respuesta completa del modelo y verificar secuencialmente:
 * ¿Ha respetado el formato y las restricciones negativas? *(Revisar D7).*
 
 ### Paso 3: Asignación de Puntuaciones
-Asignar un valor entero entre **0 y 3** para cada dimensión aplicable según la matriz de la rúbrica.
+Asignar un valor entero entre **0 y 3** para cada una de las **7 dimensiones analíticas** (evaluación transversal exhaustiva sobre las 126 respuestas, totalizando 882 juicios pareados por evaluador) según la matriz de la rúbrica. Se consideran cumplidas (Nivel 3 o 2) aquellas dimensiones transversales en las que no se detecte ninguna infracción observable.
 
 ### Paso 4: Justificación Cualitativa
 Redactar una breve justificación (1-3 frases) explicando la razón de la puntuación otorgada, destacando cualquier error específico detectado o acierto sobresaliente.

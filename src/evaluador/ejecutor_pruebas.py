@@ -1,7 +1,7 @@
 """
 Motor de ejecución de pruebas sobre modelos conversacionales para el TFG.
-Permite la ejecución tanto en modo determinista calibrado (reproducibilidad offline)
-como en modo de inferencia en tiempo real contra servidores Ollama (HTTP) o endpoints compatibles con OpenAI.
+Permite la ejecución tanto en modo determinista calibrado (demostración offline aislada)
+como en modo de inferencia en tiempo real contra servidores locales o remotos de Ollama (/api/chat).
 """
 
 import argparse
@@ -19,8 +19,9 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.utils.loader_prompts import cargar_todos_los_prompts
 
-CONFIG_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "configuraciones_chatbot"
-RESPUESTAS_RAW_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "respuestas_obtenidas" / "raw"
+CONFIG_DIR = PROJECT_ROOT / "data" / "configuraciones_chatbot"
+RESPUESTAS_RAW_DIR = PROJECT_ROOT / "data" / "respuestas_obtenidas" / "raw"
+DEMO_SIMULADA_DIR = PROJECT_ROOT / "results" / "demo_simulada"
 
 
 def cargar_configuraciones() -> Dict[str, Dict[str, Any]]:
@@ -186,8 +187,8 @@ def ejecutar_bateria_completa(
     filtro_perfil: Optional[str] = None
 ):
     """Ejecuta todos los casos de prueba para los perfiles configurados."""
-    # Las salidas de modo simulado se aíslan en raw/simulado para no sobreescribir las trazas reales de Ollama
-    dir_salida = RESPUESTAS_RAW_DIR if modo == "ollama" else (RESPUESTAS_RAW_DIR / "simulado")
+    # Las salidas de modo simulado se aíslan en results/demo_simulada para blindar las trazas reales de Ollama en raw/
+    dir_salida = RESPUESTAS_RAW_DIR if modo == "ollama" else DEMO_SIMULADA_DIR
     dir_salida.mkdir(parents=True, exist_ok=True)
     
     prompts = cargar_todos_los_prompts()

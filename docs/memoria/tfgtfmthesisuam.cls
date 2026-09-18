@@ -2470,7 +2470,7 @@
 			\mbox{} \\
 			\textbf{Todos los derechos reservados.} \\[0.2\myex]
 			Queda prohibida, salvo excepción prevista en la Ley, cualquier \\
-			forma de reproducción, distribución comunicación pública \\
+			forma de reproducción, distribución, comunicación pública \\
 			y transformación de esta obra sin contar con la autorización \\
 			de los titulares de la propiedad intelectual. \\
 			La infracción de los derechos mencionados puede ser constitutiva de\\

@@ -101,10 +101,10 @@ Para estimar el grado de acuerdo entre evaluadores al aplicar la rúbrica cualit
 donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporción de acuerdo atribuible al azar:
 
 \begin{equation}[EQ:PROPORCIONESKAPPA]{Proporciones observada y esperada de acuerdo}
-    P_o = \frac{1}{N} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N^2} \right)
+    P_o = \frac{1}{N_\kappa} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N_\kappa^2} \right)
 \end{equation}
 
-donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales. Aun cuando la escala de cuatro niveles posee naturaleza ordinal, se empleó el coeficiente $\kappa$ no ponderado como decisión metodológica para medir el acuerdo exacto entre evaluadores y penalizar por igual cualquier discrepancia categorial entre niveles; la evaluación mediante $\kappa$ ponderado se reserva como extensión metodológica para futuros estudios con paneles ampliados. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
+donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales por categoría. En las Ecuaciones \ref{EQ:PROPORCIONESKAPPA}, $N_\kappa$ representa el número total de pares de puntuaciones comparadas; en esta aplicación, $N_\kappa = 126 \times 7 = 882$. Aun cuando la escala de cuatro niveles posee naturaleza ordinal, se empleó el coeficiente $\kappa$ no ponderado como decisión metodológica para medir el acuerdo exacto entre evaluadores y penalizar por igual cualquier discrepancia categorial entre niveles; la evaluación mediante $\kappa$ ponderado se reserva como extensión metodológica para futuros estudios con paneles ampliados. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
 
 \section{Implementación y arquitectura del software de testing}
 \label{sec:arquitectura_software}

@@ -26,7 +26,7 @@ pip install -r requirements.txt
 ```
 
 ### 2. Compilación de la Memoria (PDF)
-Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) con resolución de bibliografía cruzada (`biber` + `pdflatex`):
+Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) con resolución de bibliografía cruzada (`BibTeX` + `pdflatex`):
 ```bash
 ./compilar_memoria.sh
 ```
@@ -38,19 +38,22 @@ Para validar la suite completa de pruebas unitarias de métricas dimensionales, 
 python3 -m unittest discover -s src/analisis -p "test_*.py" && python3 -m unittest discover -s src/utils -p "test_*.py"
 ```
 
-### 4. Pipeline de Análisis de Datos y Concordancia Inter-Evaluador
+### 4. Pipeline de Validación de Datos, Análisis y Concordancia Inter-Evaluador
 ```bash
-# 1. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
+# 1. Validar integridad y esquemas de los datasets de evaluación humana (Evaluador 1 y 2):
+python3 src/analisis/validar_datos_evaluacion.py
+
+# 2. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
 python3 src/analisis/analizador_experimentos.py
 
-# 2. Calcular la concordancia inter-evaluador independiente (Kappa de Cohen global y dimensional):
+# 3. Calcular la concordancia inter-evaluador independiente (Kappa de Cohen global y dimensional):
 python3 src/analisis/calcular_concordancia_evaluadores.py
 
-# 3. Generar gráficos vectoriales de resultados (radar y barras):
+# 4. Generar gráficos vectoriales de resultados (radar y barras):
 python3 src/visualizacion/generar_graficos.py
 ```
 
-### 4. Ejecución del Motor de Testing Conversacional (Ollama)
+### 5. Ejecución del Motor de Testing Conversacional (Ollama)
 ```bash
 # Ejecución en tiempo real con servidor Ollama local o remoto:
 python3 src/evaluador/ejecutor_pruebas.py --mode ollama --model llama3:8b --endpoint http://localhost:11434/api/chat

@@ -2,7 +2,7 @@
 # Metodología para testing de IA Generativa de texto en educación
 # Python >= 3.10
 
-pandas>=2.0.0
-numpy>=1.24.0
-matplotlib>=3.7.0
-requests>=2.31.0
+pandas==2.1.4
+numpy==1.26.4
+matplotlib==3.6.3
+requests==2.31.0
