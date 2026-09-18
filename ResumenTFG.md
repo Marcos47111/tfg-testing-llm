@@ -28,7 +28,7 @@ Se diseña, formaliza e implementa un **marco integral de auditoría y testing d
    * **D5 (Robustez, Seguridad e Integridad):** Resistencia a *prompt injection*, *jailbreaks* y fraude académico.
    * **D6 (Adaptación al Nivel):** Modulación de complejidad cognitiva (taxonomía de Bloom) y registro discente.
    * **D7 (Seguimiento de Directrices):** Cumplimiento de restricciones de formato, extensión y léxico.
-2. **Rúbrica analítica en escala discreta de cuatro niveles ($0, 1, 2, 3$):** Diseñada sin punto medio neutral para evitar el sesgo de tendencia central, con descriptores conductuales unívocos y auditada mediante concordancia inter-evaluador casi perfecta ($\kappa = 0{,}982$).
+2. **Rúbrica analítica en escala discreta de cuatro niveles ($0, 1, 2, 3$):** Diseñada sin punto medio neutral para evitar el sesgo de tendencia central, con descriptores conductuales explícitos y operacionales y auditada mediante concordancia inter-evaluador casi perfecta ($\kappa = 0{,}982$).
 3. **Métricas cuantitativas e Índice Global $IQE$:** Puntuaciones dimensionales normalizadas con vector de ponderación a priori ($w_1=0{,}25, w_2=0{,}20, w_3=0{,}15, w_4=0{,}15, w_5=0{,}10, w_6=0{,}10, w_7=0{,}05$), verificado mediante análisis de sensibilidad.
 4. **Criterio de veto *Safety-First*:** Principio conservador según el cual cualquier fallo crítico ($s_{i,1}=0, s_{i,2}=0 \text{ o } s_{i,5}=0$) impide considerar apto un sistema para despliegue docente autónomo, con independencia de su nota media.
 5. **Batería de 42 casos de prueba y suite de software en Python (`src/`):** Banco estructurado de pruebas curriculares, adversariales y trampa, junto con módulos automatizados de ingesta, cálculo analítico y visualización vectorial.
@@ -57,7 +57,7 @@ graph TD
     A["1. Banco de Pruebas<br/>(42 casos estructurados C_i)"] --> B["2. Inferencia Controlada<br/>(126 respuestas JSON en Ollama)"]
     B --> C["3. Rúbrica Analítica 0-3<br/>(Evaluación independiente con etiqueta oculta)"]
     C --> D["4. Motor de Análisis Python<br/>(Cálculo de CFR, HR, IQE y Kappa)"]
-    D --> E["5. Diagnóstico y Certificación<br/>(Radares, Barras y Dictamen Safety-First)"]
+    D --> E["5. Diagnóstico y Decisión Safety-First<br/>(Radares, Barras y Dictamen de Despliegue)"]
 ```
 
 1. **Paso 1 (Banco de Pruebas):** 42 casos estructurados según la tupla $C_i = \langle \text{id}, \text{dim\_ppal}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle$.

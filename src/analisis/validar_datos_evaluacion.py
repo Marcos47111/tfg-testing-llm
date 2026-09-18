@@ -2,8 +2,8 @@
 Script de validación de integridad, estructura y consistencia para los datasets de evaluación humana.
 Comprueba que las anotaciones de Evaluador 1 y Evaluador 2 cumplen rigurosamente:
 - Existencia e integridad de los ficheros fuente originales en data/evaluaciones/raw/ (CSV).
-- Correspondencia exacta entre los ficheros raw y los datasets JSON normalizados.
-- Esquema de campos requerido.
+- Correspondencia exacta campo a campo entre los ficheros raw CSV y los datasets JSON normalizados.
+- Esquema de campos requerido y ausencia de duplicados.
 - Integridad de los 42 casos por perfil (126 evaluaciones por evaluador).
 - Puntuaciones discretas válidas en escala [0, 3] para las 7 dimensiones analíticas.
 - Presencia de justificaciones cualitativas.
@@ -145,6 +145,55 @@ def validar_csv_raw(csv_path: Path, evaluador_esperado: str) -> List[str]:
     return errores
 
 
+def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
+    """Compara campo a campo los registros del CSV raw con el JSON normalizado."""
+    errores = []
+    if not csv_path.exists() or not json_path.exists():
+        return [f"No se pueden comparar: {csv_path} o {json_path} no existen."]
+        
+    with open(csv_path, "r", encoding="utf-8") as f:
+        csv_rows = list(csv.DictReader(f))
+        
+    with open(json_path, "r", encoding="utf-8") as f:
+        json_items = json.load(f)
+        
+    if len(csv_rows) != len(json_items):
+        return [f"Discrepancia en recuento: CSV={len(csv_rows)} vs JSON={len(json_items)}"]
+        
+    # Indexar JSON por (caso_id, perfil)
+    json_map = {(item["caso_id"], item["perfil"]): item for item in json_items}
+    
+    for idx, row in enumerate(csv_rows):
+        cid = row["caso_id"]
+        perf = row["perfil"]
+        clave = (cid, perf)
+        
+        if clave not in json_map:
+            errores.append(f"Registro CSV ({cid}, {perf}) no encontrado en JSON {json_path.name}")
+            continue
+            
+        j_item = json_map[clave]
+        
+        # Comparar evaluador_id
+        if row.get("evaluador_id") and row["evaluador_id"] != j_item["evaluador_id"]:
+            errores.append(f"Discrepancia evaluador_id en ({cid}, {perf}): CSV={row['evaluador_id']} vs JSON={j_item['evaluador_id']}")
+            
+        # Comparar puntuaciones D1..D7
+        for d in DIMENSIONES_ESPERADAS:
+            csv_val = int(row[d])
+            json_val = j_item["puntuaciones"][d]
+            if csv_val != json_val:
+                errores.append(f"Discrepancia de puntuación en ({cid}, {perf}, {d}): CSV={csv_val} vs JSON={json_val}")
+                
+            # Comparar justificaciones
+            just_csv = row.get(f"justificacion_{d}", "").strip()
+            just_json = j_item["justificaciones"].get(d, "").strip()
+            if just_csv and just_json and just_csv != just_json:
+                errores.append(f"Discrepancia de justificación en ({cid}, {perf}, {d}): CSV='{just_csv}' vs JSON='{just_json}'")
+                
+    return errores
+
+
 def ejecutar_auditoria_completa_evaluaciones():
     """Ejecuta la validación exhaustiva de todos los archivos de evaluación humana."""
     print("=" * 65)
@@ -154,7 +203,7 @@ def ejecutar_auditoria_completa_evaluaciones():
     total_errores = []
     
     # 1. Validar ficheros fuente RAW (CSV)
-    print("  [1/3] Validando ficheros originales de anotación (raw CSV)...")
+    print("  [1/4] Validando ficheros originales de anotación (raw CSV)...")
     for ev_id, fname in [("evaluador_1", "anotaciones_evaluador_1_raw.csv"), ("evaluador_2", "anotaciones_evaluador_2_raw.csv")]:
         csv_path = RAW_DIR / fname
         errs = validar_csv_raw(csv_path, ev_id)
@@ -163,7 +212,7 @@ def ejecutar_auditoria_completa_evaluaciones():
             print(f"    ✅ {fname}: 126 anotaciones originales validadas ({ev_id}).")
             
     # 2. Validar archivos JSON de Evaluador 1 y 2
-    print("  [2/3] Validando datasets normalizados JSON (Evaluador 1 y 2)...")
+    print("  [2/4] Validando datasets normalizados JSON (Evaluador 1 y 2)...")
     archivos_evaluador = {
         "evaluacion_evaluador_1.json": ("evaluador_1", 126),
         "evaluacion_evaluador_2.json": ("evaluador_2", 126),
@@ -185,8 +234,20 @@ def ejecutar_auditoria_completa_evaluaciones():
         if not errs:
             print(f"    ✅ {fname}: {len(datos)} registros validados ({ev_id}).")
             
-    # 3. Validar particiones por perfil (Evaluador 1)
-    print("  [3/3] Validando particiones por perfil...")
+    # 3. Comparación exacta campo a campo raw CSV <-> normalizado JSON
+    print("  [3/4] Comprobando correspondencia exacta y biunívoca (raw CSV <-> JSON)...")
+    comparaciones = [
+        ("anotaciones_evaluador_1_raw.csv", "evaluacion_evaluador_1.json"),
+        ("anotaciones_evaluador_2_raw.csv", "evaluacion_evaluador_2.json")
+    ]
+    for csv_name, json_name in comparaciones:
+        errs_comp = comparar_csv_con_json(RAW_DIR / csv_name, EVAL_DIR / json_name)
+        total_errores.extend(errs_comp)
+        if not errs_comp:
+            print(f"    ✅ {csv_name} <-> {json_name}: correspondencia exacta 126/126 registros (0 discrepancias).")
+            
+    # 4. Validar particiones por perfil (Evaluador 1)
+    print("  [4/4] Validando particiones por perfil...")
     for perfil in PERFILES_ESPERADOS:
         fname = f"evaluacion_{perfil}.json"
         fpath = EVAL_DIR / fname
@@ -216,6 +277,7 @@ def ejecutar_auditoria_completa_evaluaciones():
         sys.exit(1)
     else:
         print("🎉 TODOS LOS CONJUNTOS DE EVALUACIÓN CUMPLEN EL ESTÁNDAR METODOLÓGICO.")
+        print(f"   Trazabilidad completa: raw CSV -> normalizado JSON -> métricas.")
         print(f"   Total de pares evaluados pareados: 126 casos x 7 dimensiones = 882 puntuaciones.")
     print("=" * 65)
 
