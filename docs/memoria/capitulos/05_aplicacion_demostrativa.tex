@@ -116,7 +116,7 @@ Siguiendo el diseño metodológico formalizado en la Sección~\ref{sec:extension
 \subsection{Configuración del entorno de inferencia del juez}
 Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo independiente, de distinta familia y mayor tamaño nominal que el modelo evaluado: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}) o endpoints compatibles.
 
-La inferencia se configura con parámetros orientados al determinismo y la reproducibilidad: temperatura $T = 0{,}0$, muestreo $\text{top-}p = 0{,}90$ y semilla $\text{seed} = 42$. El proceso opera bajo un esquema de evaluación ciega respecto al perfil generador y a las evaluaciones humanas:
+La inferencia se configura con parámetros de baja variabilidad orientados a favorecer la reproducibilidad: temperatura $T = 0{,}0$, muestreo $\text{top-}p = 0{,}90$ y semilla $\text{seed} = 42$. El proceso opera bajo un esquema de evaluación ciega respecto al perfil generador y a las evaluaciones humanas:
 \begin{enumerate}
     \item El prompt estructurado del juez (\texttt{judge\_prompt\_v1}) incluye el caso de prueba, la respuesta discente, el \textit{ground truth} canónico, el criterio de fallo crítico y la matriz de rúbricas analíticas canónicas ($D_1 \dots D_7$, escala $0$ a $3$).
     \item Se omite deliberadamente la etiqueta del perfil generador (\textit{Asistente Base}, \textit{Tutor Directo}, \textit{Tutor Socrático}) y cualquier calificación humana previa.

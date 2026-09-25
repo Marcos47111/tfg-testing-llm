@@ -119,6 +119,35 @@ class TestLLMJudge(unittest.TestCase):
         self.assertEqual(len(eval_res["puntuaciones"]), 7)
         self.assertIn(eval_res["puntuaciones"]["D1_correccion_factual"], [0, 1, 2, 3])
 
+    def test_checkpoint_signature_mismatch(self):
+        from src.evaluador.evaluador_llm_judge import DEMO_SIMULADA_JUDGE_DIR, ejecutar_evaluacion_llm_judge
+        chk_file = DEMO_SIMULADA_JUDGE_DIR / ".checkpoint_evaluaciones_raw.json"
+        DEMO_SIMULADA_JUDGE_DIR.mkdir(parents=True, exist_ok=True)
+        fake_chk = {
+            "execution_signature": {
+                "provider": "MockJudgeProvider",
+                "model": "mismatched-model",
+                "temperature": 0.0,
+                "top_p": 0.9,
+                "seed": 42,
+                "prompt_version": "judge_prompt_v1",
+                "prompt_template_sha256": "fake_hash",
+                "rubric_version": "rubric_d1_d7_v1",
+                "rubric_sha256": "fake_hash"
+            },
+            "timestamp_actualizacion_utc": "2026-09-25T12:00:00Z",
+            "trazas": []
+        }
+        with open(chk_file, "w", encoding="utf-8") as f:
+            json.dump(fake_chk, f)
+
+        try:
+            with self.assertRaises(ValueError):
+                ejecutar_evaluacion_llm_judge(modo="mock", modelo="mock-judge-v1", reanudar=True)
+        finally:
+            if chk_file.exists():
+                chk_file.unlink()
+
 
 if __name__ == "__main__":
     unittest.main()

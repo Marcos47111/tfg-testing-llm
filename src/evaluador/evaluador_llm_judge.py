@@ -187,7 +187,7 @@ class JudgeProvider(abc.ABC):
 class OllamaJudgeProvider(JudgeProvider):
     """Proveedor para modelos locales servidos mediante Ollama API."""
 
-    def __init__(self, endpoint: str = "http://localhost:11434/api/chat", model: str = "qwen2.5:14b", temperature: float = 0.0, top_p: float = 0.9, seed: Optional[int] = 42, timeout: int = 180):
+    def __init__(self, endpoint: str = "http://localhost:11434/api/chat", model: str = "qwen2.5:14b-instruct", temperature: float = 0.0, top_p: float = 0.9, seed: Optional[int] = 42, timeout: int = 180):
         self.base_url = endpoint.rstrip("/")
         if self.base_url.endswith("/api/chat"):
             self.base_url = self.base_url[:-len("/api/chat")]
@@ -432,7 +432,7 @@ def parsear_y_validar_salida_juez(raw_text: str) -> Dict[str, Dict[str, Any]]:
 def ejecutar_evaluacion_llm_judge(
     modo: str = "ollama",
     endpoint: str = "http://localhost:11434/api/chat",
-    modelo: str = "qwen2.5:14b",
+    modelo: str = "qwen2.5:14b-instruct",
     temperatura: float = 0.0,
     top_p: float = 0.9,
     seed: Optional[int] = 42,
@@ -442,7 +442,7 @@ def ejecutar_evaluacion_llm_judge(
 ):
     """
     Ejecuta la evaluación sistemática de las 126 respuestas conversacionales mediante LLM-as-a-Judge.
-    Incorpora trazabilidad completa con hashes SHA-256, metadatos de API, reintentos y guardado incremental.
+    Incorpora trazabilidad completa con hashes SHA-256, metadatos de API, reintentos y guardado incremental con firma de ejecución.
     """
     es_simulado = modo in ["mock", "simulado"]
     dir_salida = DEMO_SIMULADA_JUDGE_DIR if es_simulado else LLM_JUDGE_DIR
@@ -477,6 +477,19 @@ def ejecutar_evaluacion_llm_judge(
         
     metadatos_proveedor = provider.obtener_metadatos_modelo()
     
+    # Firma canónica de la ejecución para garantizar compatibilidad estricta en checkpoints
+    firma_actual = {
+        "provider": provider.__class__.__name__,
+        "model": modelo,
+        "temperature": float(temperatura),
+        "top_p": float(top_p),
+        "seed": seed,
+        "prompt_version": PROMPT_VERSION,
+        "prompt_template_sha256": PROMPT_TEMPLATE_SHA256,
+        "rubric_version": RUBRIC_VERSION,
+        "rubric_sha256": RUBRIC_SHA256
+    }
+    
     print("=" * 70)
     print("  EJECUCIÓN DEL MÓDULO EXPERIMENTAL LLM-AS-A-JUDGE")
     print(f"  Proveedor: {provider.__class__.__name__} | Modelo: {modelo} | Temp: {temperatura}")
@@ -492,9 +505,47 @@ def ejecutar_evaluacion_llm_judge(
         try:
             with open(checkpoint_file, "r", encoding="utf-8") as f:
                 chk_data = json.load(f)
-                for t in chk_data:
-                    trazas_raw_map[(t["caso_id"], t["perfil"])] = t
-            print(f"  [*] Reanudando: {len(trazas_raw_map)} evaluaciones previas recuperadas del checkpoint.")
+            
+            if isinstance(chk_data, dict) and "execution_signature" in chk_data:
+                chk_sig = chk_data.get("execution_signature", {})
+                diffs = []
+                for k, v_esperado in firma_actual.items():
+                    v_chk = chk_sig.get(k)
+                    if v_chk != v_esperado:
+                        diffs.append(f"{k} (checkpoint={v_chk} vs actual={v_esperado})")
+                if diffs:
+                    raise ValueError(
+                        f"Incompatibilidad en la firma de ejecución del checkpoint ({checkpoint_file}): "
+                        f"{'; '.join(diffs)}. "
+                        f"Para evitar mezclar trazas de configuraciones distintas, use --no-resume o elimine el checkpoint."
+                    )
+                trazas_list = chk_data.get("trazas", [])
+            elif isinstance(chk_data, list):
+                # Formato heredado: comprobar primer registro si existe
+                if chk_data:
+                    first_t = chk_data[0]
+                    t_params = first_t.get("parameters", {})
+                    if (first_t.get("judge_model") != modelo or 
+                        first_t.get("provider") != provider.__class__.__name__ or
+                        t_params.get("temperature") != temperatura or 
+                        t_params.get("top_p") != top_p or 
+                        t_params.get("seed") != seed or
+                        first_t.get("prompt_template_sha256") != PROMPT_TEMPLATE_SHA256 or
+                        first_t.get("rubric_sha256") != RUBRIC_SHA256):
+                        raise ValueError(
+                            f"Checkpoint heredado sin firma pero con parámetros incompatibles respecto a la ejecución actual. "
+                            f"Use --no-resume para reiniciar."
+                        )
+                trazas_list = chk_data
+            else:
+                raise ValueError(f"Estructura de checkpoint no reconocida: {type(chk_data)}")
+                
+            for t in trazas_list:
+                trazas_raw_map[(t["caso_id"], t["perfil"])] = t
+            print(f"  [*] Reanudando: {len(trazas_raw_map)} evaluaciones previas compatibles recuperadas del checkpoint.")
+        except ValueError as ve:
+            print(f"\n[-] ERROR CRÍTICO AL REANUDAR: {ve}")
+            raise
         except Exception as e:
             print(f"  [!] Advertencia al leer checkpoint ({e}), comenzando desde cero.")
             trazas_raw_map = {}
@@ -584,9 +635,14 @@ def ejecutar_evaluacion_llm_judge(
             trazas_raw_map[clave_caso] = traza
             total_evaluados += 1
             
-            # Guardado incremental en checkpoint
+            # Guardado incremental en checkpoint con firma de ejecución
+            checkpoint_payload = {
+                "execution_signature": firma_actual,
+                "timestamp_actualizacion_utc": datetime.now(timezone.utc).isoformat(),
+                "trazas": list(trazas_raw_map.values())
+            }
             with open(checkpoint_file, "w", encoding="utf-8") as f:
-                json.dump(list(trazas_raw_map.values()), f, indent=2, ensure_ascii=False)
+                json.dump(checkpoint_payload, f, indent=2, ensure_ascii=False)
                 
             print(f"     [+] Evaluado {cid} ({perfil}) en {latencia}s [Completados: {len(trazas_raw_map)}/126]")
             
@@ -680,7 +736,7 @@ if __name__ == "__main__":
     parser.add_argument("--mode", choices=["ollama", "api", "openai", "mock", "simulado"], default="ollama",
                         help="Modo de ejecución del juez (por defecto: ollama)")
     parser.add_argument("--endpoint", default="http://localhost:11434/api/chat", help="Endpoint API del modelo juez")
-    parser.add_argument("--model", default="qwen2.5:14b-instruct", help="Identificador del modelo juez (ej: qwen2.5:14b-instruct o qwen2.5:14b)")
+    parser.add_argument("--model", default="qwen2.5:14b-instruct", help="Identificador del modelo juez (por defecto: qwen2.5:14b-instruct)")
     parser.add_argument("--temperature", type=float, default=0.0, help="Temperatura de inferencia del juez")
     parser.add_argument("--top-p", type=float, default=0.9, help="Top-p sampling")
     parser.add_argument("--seed", type=int, default=42, help="Semilla pseudoaleatoria")

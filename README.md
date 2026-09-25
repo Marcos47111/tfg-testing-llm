@@ -59,7 +59,7 @@ python3 src/visualizacion/generar_graficos.py
 ### 5. Extensión Experimental: Evaluación Automática (LLM-as-a-Judge)
 ```bash
 # 1. Ejecutar el evaluador automático a ciegas (vía Ollama con Qwen2.5-14B-Instruct o endpoint compatible):
-python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0
+python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0
 
 # (Opcional: modo mock para desarrollo local sin GPU / CI, aislado en results/demo_simulada/):
 python3 src/evaluador/evaluador_llm_judge.py --mode mock
@@ -156,7 +156,7 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 ### 2. Extensión Exploratoria LLM-as-a-Judge (Protocolo LLM-as-a-Judge -- pendiente de ejecución experimental real)
 Pipeline de evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicios pareados, $T=0.0$):
 
-- **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b` vía Ollama API / endpoint compatible).
+- **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct` vía Ollama API / endpoint compatible).
 - **Cegamiento estricto:** El juez no recibe la etiqueta del perfil ni las calificaciones humanas.
 - **Métricas de concordancia:** Cálculo automático de $\kappa$ de Cohen dimensional y global, $P_o$, $P_e$, $\text{MAE}$, matrices de confusión $4 \times 4$, distribución de deltas y sensibilidad en fallos críticos (*Safety-First*).
 - **Trazabilidad:** Almacenamiento en `data/evaluaciones/llm_judge/` con latencias y trazas de inferencia raw completas.

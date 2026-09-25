@@ -13,7 +13,7 @@ Investigar la viabilidad y fiabilidad de automatizar la aplicación de la rúbri
 ---
 
 ## Especificación Técnica del Protocolo del Juez
-* **Modelo Juez de Referencia:** Qwen2.5-14B-Instruct (`qwen2.5:14b` mediante API REST de Ollama o endpoints compatibles con OpenAI).
+* **Modelo Juez de Referencia:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct` mediante API REST de Ollama o endpoints compatibles con OpenAI).
 * **Parámetros de Inferencia:** Temperatura $T = 0{,}0$, configuración de baja variabilidad orientada a favorecer la reproducibilidad, $\text{top-}p = 0{,}90$, $\text{seed} = 42$.
 * **Cegamiento Metodológico:** Evaluación ciega respecto al perfil generador y a las evaluaciones humanas (el prompt no incluye la etiqueta del perfil conversacional ni calificaciones previas).
 * **Estructura del Prompt:** Inyección del prompt discente, respuesta generada, solución canónica (`ground_truth`), criterio crítico de fallo y matriz canónica de rúbricas $D_1 \dots D_7$ (versión `judge_prompt_v1`).
@@ -35,7 +35,7 @@ Investigar la viabilidad y fiabilidad de automatizar la aplicación de la rúbri
 
 Para ejecutar la inferencia experimental real con Qwen2.5-14B-Instruct:
 ```bash
-python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0
+python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0
 ```
 
 Para validar los datasets generados y calcular la concordancia estadistica:
