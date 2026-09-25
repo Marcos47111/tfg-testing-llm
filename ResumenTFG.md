@@ -3,7 +3,7 @@
 **Título:** Metodología para testing de IA Generativa de texto en educación  
 **Autor:** Marcos Tomás Jiménez Meléndez  
 **Grado:** Grado en Ingeniería Informática (UAM / EPS)  
-**Versión experimental de referencia:** **v1.0.12-tfg**
+**Versión experimental de referencia:** **v1.1.0-tfg**
 
 ---
 
@@ -628,7 +628,7 @@ El proyecto separa responsabilidades:
 - **src/visualizacion/generar_graficos_llm_judge.py:** generación de gráficos vectoriales del juez automático.
 - **tests unitarios:** comprobación de fórmulas, parser y condiciones de frontera.
 
-La automatización **no sustituye el juicio humano de la rúbrica**; automatiza la ejecución, validación, agregación, cálculo y visualización.
+En el experimento principal, la aplicación de la rúbrica continúa siendo humana. La extensión LLM-as-a-Judge estudia de forma separada su posible automatización parcial.
 
 ---
 
@@ -723,7 +723,7 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 
 ---
 
-## 27. Mensaje final
+## 28. Mensaje final
 
 El proyecto no pretende declarar que un determinado LLM es “bueno” o “malo” para educación de forma universal.
 

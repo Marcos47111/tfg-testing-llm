@@ -98,9 +98,13 @@ def analizar_distribucion_deltas(y_true: List[int], y_pred: List[int]) -> Dict[s
 
 def analizar_fallos_criticos_cruzados(
     evals_humano: List[Dict[str, Any]],
-    evals_juez: List[Dict[str, Any]]
+    evals_juez: List[Dict[str, Any]],
+    nombre_humano_ref: str = "E1"
 ) -> Dict[str, Any]:
-    """Evalúa la alineación en detección de fallos críticos (Safety-First) entre humano y juez."""
+    """
+    Evalúa la alineación en detección de fallos críticos (Safety-First: D1=0, D2=0 o D5=0)
+    entre el evaluador humano de referencia y el juez automático.
+    """
     total_casos = len(evals_humano)
     coinciden_critico = 0
     coinciden_no_critico = 0
@@ -122,25 +126,26 @@ def analizar_fallos_criticos_cruzados(
             falso_positivo_juez.append({
                 "caso_id": cid,
                 "perfil": perf,
-                "humano": h["puntuaciones"],
+                "humano_referencia": h["puntuaciones"],
                 "juez": j["puntuaciones"]
             })
         elif h_crit and not j_crit:
             falso_negativo_juez.append({
                 "caso_id": cid,
                 "perfil": perf,
-                "humano": h["puntuaciones"],
+                "humano_referencia": h["puntuaciones"],
                 "juez": j["puntuaciones"]
             })
             
     return {
+        "evaluador_humano_referencia": nombre_humano_ref,
         "total_respuestas_evaluadas": total_casos,
         "coincidencias_fallo_critico": coinciden_critico,
         "coincidencias_no_critico": coinciden_no_critico,
         "tasa_acuerdo_safety_first": round(((coinciden_critico + coinciden_no_critico) / total_casos) * 100, 2),
-        "falsos_positivos_juez_recuento": len(falso_positivo_juez),
+        "falsos_positivos_juez_respecto_a_referencia_recuento": len(falso_positivo_juez),
         "falsos_positivos_detalle": falso_positivo_juez,
-        "falsos_negativos_juez_recuento": len(falso_negativo_juez),
+        "falsos_negativos_juez_respecto_a_referencia_recuento": len(falso_negativo_juez),
         "falsos_negativos_detalle": falso_negativo_juez
     }
 
@@ -264,7 +269,8 @@ def ejecutar_analisis_concordancia_llm_judge():
     matriz_conf_global = calcular_matriz_confusion_4x4(scores_e1_global, scores_judge_global)
     
     # 5. Alineación de Fallos Críticos (Safety-First)
-    safety_first_j_e1 = analizar_fallos_criticos_cruzados(evals_e1, evals_judge)
+    safety_first_j_e1 = analizar_fallos_criticos_cruzados(evals_e1, evals_judge, nombre_humano_ref="Evaluador 1 (E1)")
+    safety_first_j_e2 = analizar_fallos_criticos_cruzados(evals_e2, evals_judge, nombre_humano_ref="Evaluador 2 (E2)")
     
     # 6. Compilar Informe Consolidado
     informe_completo = {
@@ -283,7 +289,10 @@ def ejecutar_analisis_concordancia_llm_judge():
         },
         "matriz_confusion_global_4x4_filas_e1_columnas_juez": matriz_conf_global,
         "matrices_confusion_por_dimension": matrices_confusion_dim,
-        "analisis_safety_first_fallos_criticos": safety_first_j_e1
+        "analisis_safety_first_fallos_criticos": {
+            "juez_vs_e1_referencia": safety_first_j_e1,
+            "juez_vs_e2_referencia": safety_first_j_e2
+        }
     }
     
     # Guardar Informe JSON

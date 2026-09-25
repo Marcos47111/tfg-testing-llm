@@ -1,0 +1,62 @@
+name: CI Testing & LaTeX Compilation
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  test-and-validate:
+    name: Tests Unitarios y Validación de Datos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: "pip"
+
+      - name: Instalar dependencias
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ejecutar suite de tests unitarios
+        run: |
+          python3 -m unittest discover -s src/analisis -p "test_*.py"
+          python3 -m unittest discover -s src/utils -p "test_*.py"
+
+      - name: Validar integridad de evaluaciones humanas
+        run: |
+          python3 src/analisis/validar_datos_evaluacion.py
+
+      - name: Validar pipeline analítico y cálculo de métricas
+        run: |
+          python3 src/analisis/analizador_experimentos.py
+          python3 src/analisis/calcular_concordancia_evaluadores.py
+          python3 src/visualizacion/generar_graficos.py
+
+  compile-latex:
+    name: Compilación Estricta de la Memoria (LaTeX)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar entorno TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-lang-spanish texlive-science poppler-utils
+
+      - name: Compilar memoria con script oficial
+        run: |
+          ./compilar_memoria.sh
+
+      - name: Verificar generación del PDF y número de páginas
+        run: |
+          test -f docs/memoria/main.pdf
+          pdfinfo docs/memoria/main.pdf

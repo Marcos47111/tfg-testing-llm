@@ -14,11 +14,11 @@ Investigar la viabilidad y fiabilidad de automatizar la aplicación de la rúbri
 
 ## Especificación Técnica del Protocolo del Juez
 * **Modelo Juez de Referencia:** Qwen2.5-14B-Instruct (`qwen2.5:14b` mediante API REST de Ollama o endpoints compatibles con OpenAI).
-* **Parámetros de Inferencia:** Temperatura $T = 0{,}0$ (búsqueda codiciosa/determinista), $\text{top-}p = 0{,}90$, $\text{seed} = 42$.
+* **Parámetros de Inferencia:** Temperatura $T = 0{,}0$, configuración de baja variabilidad orientada a favorecer la reproducibilidad, $\text{top-}p = 0{,}90$, $\text{seed} = 42$.
 * **Cegamiento Metodológico:** Evaluación ciega respecto al perfil generador y a las evaluaciones humanas (el prompt no incluye la etiqueta del perfil conversacional ni calificaciones previas).
 * **Estructura del Prompt:** Inyección del prompt discente, respuesta generada, solución canónica (`ground_truth`), criterio crítico de fallo y matriz canónica de rúbricas $D_1 \dots D_7$ (versión `judge_prompt_v1`).
 * **Formato de Salida:** JSON estructurado estricto con puntuaciones enteras en $\{0, 1, 2, 3\}$ y justificación cualitativa por dimensión.
-* **Volumen Evaluado:** 126 respuestas $\times$ 7 dimensiones = 882 juicios automáticos.
+* **Volumen previsto de evaluación:** 126 respuestas $\times$ 7 dimensiones = 882 puntuaciones automáticas.
 
 ---
 

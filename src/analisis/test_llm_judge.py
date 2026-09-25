@@ -60,6 +60,13 @@ class TestLLMJudge(unittest.TestCase):
         with self.assertRaises(ValueError):
             parsear_y_validar_salida_juez(json_missing)
 
+    def test_parsear_salida_dimension_extra_invalida(self):
+        evals_extra = {d: {"score": 2, "justificacion": "Ok"} for d in DIMENSIONES}
+        evals_extra["D8_dimension_inventada"] = {"score": 3, "justificacion": "Invalido"}
+        json_extra = json.dumps({"evaluaciones": evals_extra})
+        with self.assertRaises(ValueError):
+            parsear_y_validar_salida_juez(json_extra)
+
     def test_blind_prompt_no_incluye_perfil(self):
         caso = {
             "id": "FACT_001",
@@ -106,7 +113,8 @@ class TestLLMJudge(unittest.TestCase):
 
     def test_mock_judge_provider(self):
         provider = MockJudgeProvider()
-        raw_json = provider.evaluar(RUBRICA_SISTEMA, "dummy user prompt")
+        raw_json, raw_resp = provider.evaluar(RUBRICA_SISTEMA, "dummy user prompt")
+        self.assertIsInstance(raw_resp, dict)
         eval_res = parsear_y_validar_salida_juez(raw_json)
         self.assertEqual(len(eval_res["puntuaciones"]), 7)
         self.assertIn(eval_res["puntuaciones"]["D1_correccion_factual"], [0, 1, 2, 3])

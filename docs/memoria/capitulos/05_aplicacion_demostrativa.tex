@@ -114,7 +114,7 @@ El coeficiente global $\kappa = 0{,}982$ corresponde a un nivel de acuerdo clasi
 Siguiendo el diseño metodológico formalizado en la Sección~\ref{sec:extension_llm_judge}, el marco de testing incorpora un protocolo estructurado de evaluación automática mediante un modelo de lenguaje independiente que actúa como evaluador experimental (\textit{LLM-as-a-Judge}).
 
 \subsection{Configuración del entorno de inferencia del juez}
-Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo de arquitectura y escala superior: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}) o endpoints compatibles.
+Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo independiente, de distinta familia y mayor tamaño nominal que el modelo evaluado: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}) o endpoints compatibles.
 
 La inferencia se configura con parámetros orientados al determinismo y la reproducibilidad: temperatura $T = 0{,}0$, muestreo $\text{top-}p = 0{,}90$ y semilla $\text{seed} = 42$. El proceso opera bajo un esquema de evaluación ciega respecto al perfil generador y a las evaluaciones humanas:
 \begin{enumerate}

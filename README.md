@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.0.12-tfg`
+**Versión experimental de referencia:** `v1.1.0-tfg`
 
 ---
 
@@ -153,7 +153,7 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 * **Concordancia Inter-Evaluador Humana (Doble evaluación independiente):** $\kappa = 0{,}982$ ($P_o = 0{,}9932, P_e = 0{,}6260$).
 
-### 2. Extensión Exploratoria LLM-as-a-Judge (Qwen2.5-14B-Instruct vs Humanos)
+### 2. Extensión Exploratoria LLM-as-a-Judge (Protocolo LLM-as-a-Judge -- pendiente de ejecución experimental real)
 Pipeline de evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicios pareados, $T=0.0$):
 
 - **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b` vía Ollama API / endpoint compatible).

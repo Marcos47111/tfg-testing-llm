@@ -13,23 +13,39 @@ echo "=============================================="
 
 # 1. Primera pasada de pdflatex para registrar etiquetas y citas
 echo "[1/4] Ejecutando pdflatex (1ª pasada)..."
-pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1 || true
+pdflatex -interaction=nonstopmode -halt-on-error main.tex > pdflatex_pass1.log 2>&1 || {
+    echo "[-] Error en la 1ª pasada de pdflatex. Consulta docs/memoria/pdflatex_pass1.log"
+    tail -n 25 pdflatex_pass1.log
+    exit 1
+}
 
 # 2. Generación de bibliografía con BibTeX
 echo "[2/4] Procesando bibliografía con BibTeX..."
-bibtex main > /dev/null 2>&1 || true
+bibtex main > bibtex.log 2>&1 || {
+    echo "[-] Error al procesar BibTeX. Consulta docs/memoria/bibtex.log"
+    tail -n 25 bibtex.log
+    exit 1
+}
 
 # 3. Segunda pasada para resolver referencias
 echo "[3/4] Resolviendo referencias cruzadas (2ª pasada)..."
-pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1 || true
+pdflatex -interaction=nonstopmode -halt-on-error main.tex > pdflatex_pass2.log 2>&1 || {
+    echo "[-] Error en la 2ª pasada de pdflatex. Consulta docs/memoria/pdflatex_pass2.log"
+    tail -n 25 pdflatex_pass2.log
+    exit 1
+}
 
 # 4. Tercera pasada final para consolidar índices y numeración
 echo "[4/4] Generando documento final (3ª pasada)..."
-pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1 || true
+pdflatex -interaction=nonstopmode -halt-on-error main.tex > pdflatex_pass3.log 2>&1 || {
+    echo "[-] Error en la 3ª pasada de pdflatex. Consulta docs/memoria/pdflatex_pass3.log"
+    tail -n 25 pdflatex_pass3.log
+    exit 1
+}
 
 # 5. Limpieza automática de ficheros auxiliares temporales
 echo "[+] Limpiando ficheros auxiliares temporales..."
-rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy
+rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy pdflatex_pass1.log bibtex.log pdflatex_pass2.log pdflatex_pass3.log
 
 echo "=============================================="
 echo "[+] Memoria compilada con éxito:"

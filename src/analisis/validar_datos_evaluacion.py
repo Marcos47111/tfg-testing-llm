@@ -198,28 +198,65 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
 
 
 def validar_dataset_llm_judge() -> List[str]:
-    """Valida la integridad estructural del dataset generado por LLM-as-a-Judge."""
+    """
+    Valida exhaustivamente la integridad estructural, criptográfica y metodológica
+    del dataset experimental generado por LLM-as-a-Judge.
+    """
     print("  [Opcional] Validando dataset experimental LLM-as-a-Judge...")
     judge_dir = EVAL_DIR / "llm_judge"
     raw_dir = judge_dir / "raw"
     errores = []
     
+    # Cargar pares canónicos de referencia desde Evaluador 1
+    e1_file = EVAL_DIR / "evaluacion_evaluador_1.json"
+    pares_esperados = set()
+    if e1_file.exists():
+        with open(e1_file, "r", encoding="utf-8") as f:
+            pares_esperados = {(x["caso_id"], x["perfil"]) for x in json.load(f)}
+    
+    raw_data = None
+    norm_data = None
+    
     # 1. Validar trazas raw
     raw_file = raw_dir / "evaluaciones_llm_judge_raw.json"
     if not raw_file.exists():
-        errores.append(f"Archivo raw del juez no encontrado ({raw_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0")
+        errores.append(f"Archivo raw del juez no encontrado ({raw_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0")
     else:
         with open(raw_file, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
         if len(raw_data) != 126:
             errores.append(f"[raw_judge] Número de trazas incorrecto: {len(raw_data)} (esperados: 126).")
         else:
-            print(f"    [+] {raw_file.name}: 126 trazas raw de inferencia validadas.")
+            # Validar consistencia interna del dataset raw
+            modelos = {t.get("judge_model") for t in raw_data}
+            proveedores = {t.get("provider") for t in raw_data}
+            prompt_vers = {t.get("prompt_version") for t in raw_data}
+            prompt_hashes = {t.get("prompt_template_sha256", t.get("judge_prompt_sha256")) for t in raw_data}
+            rubric_vers = {t.get("rubric_version") for t in raw_data}
+            rubric_hashes = {t.get("rubric_sha256") for t in raw_data}
+            pares_raw = {(t.get("caso_id"), t.get("perfil")) for t in raw_data}
             
+            if "MockJudgeProvider" in proveedores:
+                errores.append("[raw_judge] Error de procedencia: El dataset canónico contiene trazas de 'MockJudgeProvider'. Las simulaciones deben aislarse en results/demo_simulada/.")
+            if len(modelos) > 1:
+                errores.append(f"[raw_judge] Múltiples modelos juez detectados en el mismo dataset: {modelos}")
+            if len(proveedores) > 1:
+                errores.append(f"[raw_judge] Múltiples proveedores detectados en el mismo dataset: {proveedores}")
+            if len(prompt_vers) > 1 or len(prompt_hashes) > 1:
+                errores.append(f"[raw_judge] Discrepancia en versiones/hashes del prompt: versiones={prompt_vers}, hashes={prompt_hashes}")
+            if len(rubric_vers) > 1 or len(rubric_hashes) > 1:
+                errores.append(f"[raw_judge] Discrepancia en versiones/hashes de la rúbrica: versiones={rubric_vers}, hashes={rubric_hashes}")
+            if pares_esperados and pares_raw != pares_esperados:
+                diff = pares_esperados ^ pares_raw
+                errores.append(f"[raw_judge] Los pares (caso_id, perfil) en raw no coinciden con la referencia humana E1: discrepancias={len(diff)}")
+                
+            if not errores:
+                print(f"    [+] {raw_file.name}: 126 trazas raw validadas (Proveedor: {list(proveedores)[0]}, Modelo: {list(modelos)[0]}).")
+                
     # 2. Validar JSON normalizado
     norm_file = judge_dir / "evaluacion_llm_judge.json"
     if not norm_file.exists():
-        errores.append(f"Archivo normalizado del juez no encontrado ({norm_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0")
+        errores.append(f"Archivo normalizado del juez no encontrado ({norm_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0")
     else:
         with open(norm_file, "r", encoding="utf-8") as f:
             norm_data = json.load(f)
@@ -227,9 +264,39 @@ def validar_dataset_llm_judge() -> List[str]:
             errores.append(f"[norm_judge] Número de registros incorrecto: {len(norm_data)} (esperados: 126).")
         errs = validar_dataset_evaluacion(norm_data, norm_file.name, evaluador_esperado="LLM_JUDGE")
         errores.extend(errs)
-        if not errs:
-            print(f"    [+] {norm_file.name}: 126 registros normalizados validados (LLM_JUDGE).")
+        
+        # 3. Validar correspondencia biunívoca raw <-> normalizado
+        if raw_data and norm_data and len(raw_data) == 126 and len(norm_data) == 126:
+            map_raw = {(t["caso_id"], t["perfil"]): t for t in raw_data}
+            map_norm = {(n["caso_id"], n["perfil"]): n for n in norm_data}
             
+            for clave in pares_esperados:
+                if clave not in map_raw or clave not in map_norm:
+                    errores.append(f"[judge_sync] Clave {clave} ausente en raw o normalizado.")
+                    continue
+                r_item = map_raw[clave]
+                n_item = map_norm[clave]
+                
+                # Comprobar puntuaciones idénticas
+                raw_scores = r_item.get("puntuaciones_extraidas", {})
+                norm_scores = n_item.get("puntuaciones", {})
+                if raw_scores != norm_scores:
+                    errores.append(f"[judge_sync] Discrepancia raw vs normalizado en {clave}: raw={raw_scores} vs norm={norm_scores}")
+                    
+            if not errs and not [e for e in errores if "[judge_sync]" in e]:
+                print(f"    [+] {norm_file.name}: 126 registros normalizados validados (Correspondencia exacta raw <-> JSON).")
+                
+    # 4. Validar particiones por perfil del juez
+    for perfil in PERFILES:
+        p_file = judge_dir / f"evaluacion_llm_judge_{perfil}.json"
+        if p_file.exists():
+            with open(p_file, "r", encoding="utf-8") as f:
+                p_data = json.load(f)
+            if len(p_data) != 42:
+                errores.append(f"[particion_judge] Longitud incorrecta para {p_file.name}: {len(p_data)} (esperados: 42).")
+            else:
+                print(f"    [+] {p_file.name}: 42 casos del perfil '{perfil}' validados.")
+                
     return errores
 
 

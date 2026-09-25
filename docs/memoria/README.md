@@ -15,7 +15,7 @@ Estructura modular en LaTeX para la redacción y compilación de la memoria acad
 
 ## Bibliografía
 
-* `referencias.bib`: Fichero BibTeX con las 34 referencias bibliográficas utilizadas en el documento.
+* `referencias.bib`: Fichero BibTeX con las 36 referencias bibliográficas utilizadas en el documento.
 
 ## Compilación
 
