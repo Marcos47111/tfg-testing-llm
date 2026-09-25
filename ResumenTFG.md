@@ -622,14 +622,43 @@ El proyecto separa responsabilidades:
 - **src/analisis/calcular_concordancia_evaluadores.py:** Kappa global y por dimensión.
 - **src/analisis/importar_evaluaciones_humanas.py:** normalización de anotaciones.
 - **src/analisis/validar_datos_evaluacion.py:** validación de integridad.
-- **src/visualizacion/generar_graficos.py:** generación de gráficos.
-- **tests unitarios:** comprobación de fórmulas y condiciones de frontera.
+- **src/evaluador/evaluador_llm_judge.py:** motor independiente de evaluación automática LLM-as-a-Judge.
+- **src/analisis/analizar_concordancia_llm_judge.py:** pipeline estadístico de concordancia Humano-IA.
+- **src/visualizacion/generar_graficos.py:** generación de gráficos principales.
+- **src/visualizacion/generar_graficos_llm_judge.py:** generación de gráficos vectoriales del juez automático.
+- **tests unitarios:** comprobación de fórmulas, parser y condiciones de frontera.
 
 La automatización **no sustituye el juicio humano de la rúbrica**; automatiza la ejecución, validación, agregación, cálculo y visualización.
 
 ---
 
-## 24. Aportaciones principales
+## 24. Extensión experimental: Evaluación automática mediante LLM-as-a-Judge
+
+### Motivación y cuello de botella humano
+En el marco principal del TFG, la generación de respuestas, almacenamiento y cálculo de métricas están automatizados, pero la aplicación de la rúbrica $D_1$--$D_7$ requiere evaluación manual. Para estudiar la escalabilidad de la metodología frente a baterías masivas de pruebas, se incorporó una extensión experimental basada en **LLM-as-a-Judge**.
+
+### Arquitectura y salvaguardas metodológicas
+1. **Evaluación a ciegas**: El juez recibe el prompt discente, ground truth, criterio de fallo crítico y la rúbrica completa 0–3, pero **no conoce el perfil** que generó la respuesta (Base, Directo o Socrático) para evitar sesgos pedagógicos preconcebidos.
+2. **Aislamiento de datos**: El juez **nunca recibe las calificaciones de E1 ni E2**. Sus salidas se custodian en `data/evaluaciones/llm_judge/` (separando trazas raw y JSON normalizado), manteniendo intactos los datos humanos de referencia.
+3. **Prompt congelado**: Se utiliza `judge_prompt_v1`, congelado antes del análisis para evitar optimizar el prompt contra el conjunto de validación.
+4. **Modelo juez independiente**: Se empleó `Qwen2.5-14B-Instruct` (configuración de baja variabilidad, $T=0.0$, top-p=0.9, seed=42) para evitar autopreferencia con el evaluado `Meta-Llama-3-8B-Instruct`.
+
+### Resultados de concordancia Humano--IA
+- **Kappa Global ($N_\kappa=882$):** $\kappa(\text{Juez}, E_1) = 0{,}829$ (Acuerdo casi perfecto según Landis & Koch) con $\text{MAE} = 0{,}088$ puntos. Frente a $E_2$: $\kappa = 0{,}849$.
+- **Acuerdo exacto ($|\Delta|=0$):** $94{,}1\,\%$ (830 de 882 juicios). Discrepancias $\ge 2$ puntos: solo $2{,}6\,\%$.
+- **Automatabilidad dimensional:**
+  - *Alta automatabilidad:* $D_2$ Alucinaciones ($\kappa=0{,}913$), $D_6$ Adaptación al nivel ($\kappa=0{,}982$) y $D_4$ Feedback pedagógico ($\kappa=0{,}876$).
+  - *Moderada / sensible:* $D_7$ Directrices ($\kappa=0{,}650$), $D_5$ Seguridad ($\kappa=0{,}579$) y $D_1$ Factualidad ($\kappa=0{,}570$).
+  - *Paradoja de Kappa en $D_3$ Claridad:* acuerdo observado del $91{,}3\,\%$, pero $\kappa \approx 0$ debido a la alta prevalencia del Nivel 3 en la muestra.
+- **Safety-First:** Coincidencia del $97{,}62\,\%$ en la clasificación de fallos críticos, con **0 falsos negativos en $D_2$ y $D_5$** (el juez detectó el 100% de los fallos críticos de alucinación y vulneración de seguridad ética identificados por los humanos).
+
+### Propuesta futura: Sistema híbrido Humano-in-the-Loop
+El juez automático no reemplaza la supervisión humana, sino que actúa como **filtro de triaje masivo de primer nivel**:
+$$\text{LLM Judge (100\% pruebas)} \longrightarrow \begin{cases} \text{Aprobación directa}, & \text{si cumple todas las dimensiones con alta certidumbre} \\ \text{Auditoría Humana}, & \text{si detecta fallo crítico ($S_d=0$), baja confianza o discrepancias} \end{cases}$$
+
+---
+
+## 25. Aportaciones principales
 
 ### Aportación metodológica
 
@@ -649,7 +678,7 @@ No tratar un tutor educativo como un simple sistema de question answering: se ev
 
 ### Aportación experimental
 
-Una batería real aplicada a 126 interacciones de un modelo ejecutado localmente.
+Una batería real aplicada a 126 interacciones de un modelo ejecutado localmente, complementada con una extensión experimental de LLM-as-a-Judge sobre las 882 evaluaciones transversales.
 
 ### Aportación software
 
@@ -657,14 +686,16 @@ Una implementación reproducible y versionada para repetir el análisis y extend
 
 ### Aportación de datos
 
-Casos, respuestas, anotaciones y resultados disponibles para inspección.
+Casos, respuestas, anotaciones humanas y evaluaciones del juez automático disponibles para inspección y réplica.
 
 ---
 
-## 25. Trabajo futuro derivado de las decisiones actuales
+## 26. Trabajo futuro derivado de las decisiones actuales
 
 Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 
+- sistemas híbridos de triaje Humano-in-the-Loop;
+- ensambles de jueces automáticos y especialización de modelos por dimensión;
 - paneles multidisciplinares de evaluadores;
 - más modelos y materias;
 - múltiples semillas por caso;
@@ -680,11 +711,11 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 
 ---
 
-## 26. Cómo explicar el TFG en una defensa
+## 27. Cómo explicar el TFG en una defensa
 
 ### En 20 segundos
 
-> El trabajo aborda un problema de testing: un chatbot basado en LLM no tiene una única salida correcta y, en educación, una respuesta puede ser fluida pero falsa, insegura o pedagógicamente inadecuada. Por eso diseño una metodología multidimensional con rúbricas, casos de prueba, métricas de calidad y un criterio Safety-First, y la valido sobre tres configuraciones del mismo Llama 3.
+> El trabajo aborda un problema de testing: un chatbot basado en LLM no tiene una única salida correcta y, en educación, una respuesta puede ser fluida pero falsa, insegura o pedagógicamente inadecuada. Por eso diseño una metodología multidimensional con rúbricas, casos de prueba, métricas de calidad y un criterio Safety-First, la valido sobre tres configuraciones del mismo Llama 3, y demuestro experimentalmente la viabilidad de automatizar la rúbrica mediante LLM-as-a-Judge con $\kappa=0{,}829$.
 
 ### En una frase
 

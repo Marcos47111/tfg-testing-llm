@@ -197,8 +197,44 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
     return errores
 
 
-def ejecutar_auditoria_completa_evaluaciones():
-    """Ejecuta la validación exhaustiva de todos los archivos de evaluación humana."""
+def validar_dataset_llm_judge() -> List[str]:
+    """Valida la integridad estructural del dataset generado por LLM-as-a-Judge."""
+    print("  [Opcional] Validando dataset experimental LLM-as-a-Judge...")
+    judge_dir = EVAL_DIR / "llm_judge"
+    raw_dir = judge_dir / "raw"
+    errores = []
+    
+    # 1. Validar trazas raw
+    raw_file = raw_dir / "evaluaciones_llm_judge_raw.json"
+    if not raw_file.exists():
+        errores.append(f"Archivo raw del juez no encontrado: {raw_file}")
+    else:
+        with open(raw_file, "r", encoding="utf-8") as f:
+            raw_data = json.load(f)
+        if len(raw_data) != 126:
+            errores.append(f"[raw_judge] Número de trazas incorrecto: {len(raw_data)} (esperados: 126).")
+        else:
+            print(f"    ✅ {raw_file.name}: 126 trazas raw de inferencia validadas.")
+            
+    # 2. Validar JSON normalizado
+    norm_file = judge_dir / "evaluacion_llm_judge.json"
+    if not norm_file.exists():
+        errores.append(f"Archivo normalizado del juez no encontrado: {norm_file}")
+    else:
+        with open(norm_file, "r", encoding="utf-8") as f:
+            norm_data = json.load(f)
+        if len(norm_data) != 126:
+            errores.append(f"[norm_judge] Número de registros incorrecto: {len(norm_data)} (esperados: 126).")
+        errs = validar_dataset_evaluacion(norm_data, norm_file.name, evaluador_esperado="LLM_JUDGE")
+        errores.extend(errs)
+        if not errs:
+            print(f"    ✅ {norm_file.name}: 126 registros normalizados validados (LLM_JUDGE).")
+            
+    return errores
+
+
+def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
+    """Ejecuta la validación exhaustiva de todos los archivos de evaluación humana y opcionalmente LLM-as-a-Judge."""
     print("=" * 65)
     print("  AUDITORÍA Y VALIDACIÓN DE INTEGRIDAD DE EVALUACIONES HUMANAS")
     print("=" * 65)
@@ -269,6 +305,11 @@ def ejecutar_auditoria_completa_evaluaciones():
         if not errs:
             print(f"    ✅ {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
             
+    # 5. Opcional: Validar LLM Judge
+    if incluir_judge:
+        errs_j = validar_dataset_llm_judge()
+        total_errores.extend(errs_j)
+            
     # Resumen final
     print("-" * 65)
     if total_errores:
@@ -277,13 +318,22 @@ def ejecutar_auditoria_completa_evaluaciones():
             print(f"   - {e}")
         if len(total_errores) > 20:
             print(f"   ... y {len(total_errores)-20} errores más.")
-        sys.exit(1)
+            return False
     else:
         print("🎉 TODOS LOS CONJUNTOS DE EVALUACIÓN CUMPLEN EL ESTÁNDAR METODOLÓGICO.")
         print(f"   Trazabilidad completa: raw CSV -> normalizado JSON -> métricas.")
         print(f"   Total de pares evaluados pareados: 126 casos x 7 dimensiones = 882 puntuaciones.")
     print("=" * 65)
+    return len(total_errores) == 0
 
 
 if __name__ == "__main__":
-    ejecutar_auditoria_completa_evaluaciones()
+    import argparse
+    parser = argparse.ArgumentParser(description="Validador de Integridad de Evaluaciones")
+    parser.add_argument("--incluir-judge", action="store_true", help="Incluir validación del dataset LLM-as-a-Judge")
+    args = parser.parse_args()
+    
+    exito = ejecutar_auditoria_completa_evaluaciones(incluir_judge=args.incluir_judge)
+    if not exito:
+        sys.exit(1)
+

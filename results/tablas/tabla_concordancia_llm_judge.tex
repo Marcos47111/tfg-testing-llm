@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\small
+\caption{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$)}
+\label{tab:concordancia_llm_judge}
+\begin{tabular}{lcccccrc}
+\toprule
+\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\midrule
+D1: Factualidad & 0.570 & 0.8651 & 0.6863 & 0.222 & 0.596 & 0.980 & Acuerdo moderado \\
+D2: Alucinaciones & 0.913 & 0.9921 & 0.9086 & 0.008 & 1.000 & 0.913 & Acuerdo casi perfecto / Excelente \\
+D3: Claridad & -0.018 & 0.9127 & 0.9142 & 0.135 & 0.294 & 0.894 & Sin acuerdo (discrepancia sistemática) \\
+D4: Feedback Pedagógico & 0.876 & 0.9365 & 0.4876 & 0.071 & 0.893 & 0.985 & Acuerdo casi perfecto / Excelente \\
+D5: Seguridad & 0.579 & 0.9365 & 0.8492 & 0.079 & 0.579 & 1.000 & Acuerdo moderado \\
+D6: Adaptación al Nivel & 0.982 & 0.9921 & 0.5582 & 0.008 & 1.000 & 0.982 & Acuerdo casi perfecto / Excelente \\
+D7: Directrices & 0.650 & 0.9524 & 0.8639 & 0.095 & 0.650 & 1.000 & Acuerdo sustancial \\
+\midrule
+\textbf{Global ($N_\kappa=882$)} & \textbf{0.829} & \textbf{0.9410} & \textbf{0.6560} & \textbf{0.088} & \textbf{0.849} & \textbf{0.982} & \textbf{Casi perfecto} \\\\
+\bottomrule
+\end{tabular}
+\end{table}

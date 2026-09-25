@@ -9,7 +9,9 @@ La primera conclusión es que la ausencia de un oráculo determinista clásico p
 
 La segunda conclusión concierne a la influencia del diseño de directivas de sistema (\textit{system prompts}). En los ensayos realizados, la configuración de directrices pedagógicas basadas en el andamiaje socrático modificó el comportamiento observado del modelo: mientras que el Asistente Base incurrió en alucinaciones ($33{,}3\,\%$) y solucionismo directo, en varios de los casos diseñados para evaluar feedback y detección de errores, el Tutor Socrático aplicó preguntas orientadoras sin proporcionar directamente la solución, aunque mostró fallos de diagnóstico en determinados escenarios matemáticos, algorítmicos y gramaticales.
 
-Por último, el análisis de los casos de prueba pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
+La tercera conclusión pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
+
+Por último, la extensión experimental desarrollada demuestra la viabilidad prometedora de automatizar la aplicación de la rúbrica multidimensional mediante un modelo juez independiente (\textit{LLM-as-a-Judge}). El acuerdo casi perfecto alcanzado con los evaluadores humanos ($\kappa = 0{,}829$, con un $94{,}1\,\%$ de acuerdo exacto y detección plena de fallos críticos en seguridad y alucinaciones) sugiere que la evaluación automática estructurada puede actuar como un mecanismo eficiente de triaje continuo para mitigar el cuello de botella de la auditoría manual.
 
 \section{Grado de cumplimiento de objetivos}
 \label{sec:cumplimiento_objetivos}
@@ -35,19 +37,26 @@ Un banco estructurado de 42 casos de prueba (prompts de prueba) que cubre escena
 
 Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$ y la generación de gráficos vectoriales (radar y barras).
 
-Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas y las calificaciones de los evaluadores, disponible para su consulta y réplica.
+Un prototipo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} estructurado a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis de concordancia inter-evaluador humano--IA.
+
+Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas, las calificaciones de los evaluadores humanos y del juez automático, disponible para su consulta y réplica.
 
 \section{Líneas de trabajo futuro}
 \label{sec:trabajo_futuro}
 
 A partir de la metodología desarrollada, se identifican las siguientes líneas de trabajo futuro:
 
-Conformación de paneles de evaluación multidisciplinares con especialistas en cada área didáctica, fortaleciendo la validez de contenido y minimizando el riesgo de errores disciplinarios compartidos entre evaluadores.
+\paragraph{Sistemas híbridos de triaje Humano--IA (\textit{Human-in-the-Loop}):}
+Implementar flujos de auditoría continua donde el juez automático realice una evaluación masiva preliminar de primer nivel y derive automáticamente hacia paneles docentes humanos aquellos casos que presenten fallos críticos ($S_d = 0$), métricas de baja certidumbre probabilística o discrepancias inter-modelo.
 
-Formalización de esquemas de aplicabilidad condicional o pesos dinámicos por dimensión ($D_k$) según la naturaleza de cada caso de prueba, evitando la saturación de puntuaciones en dimensiones no directamente estresadas.
+\paragraph{Comités y ensambles de jueces con especialización dimensional:}
+Explorar arquitecturas de evaluación basadas en múltiples modelos juez (\textit{LLM Judge Ensembles}) y asignación de jueces especializados por dimensión (por ejemplo, modelos optimizados en razonamiento formal y código para $D_1$, clasificadores de seguridad dedicados para $D_5$ y modelos con alineamiento pedagógico para $D_4$ y $D_6$).
 
-Extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) en entornos educativos, evaluando la fidelidad de la recuperación y la precisión en la citación de fuentes curriculares.
+\paragraph{Paneles de evaluación multidisciplinares:}
+Conformación de paneles de evaluación con especialistas docentes en cada disciplina curricular, fortaleciendo la validez de contenido y minimizando el riesgo de errores disciplinarios compartidos.
 
-Incorporación de evaluación multimodal para auditar interacciones que incluyan diagramas técnicos, gráficas estadísticas o fórmulas manuscritas.
+\paragraph{Esquemas de aplicabilidad condicional y pesos dinámicos:}
+Formalizar esquemas de aplicabilidad condicional o ponderaciones dinámicas por dimensión ($D_k$) según la naturaleza de cada caso de prueba, evitando la saturación de puntuaciones en dimensiones no directamente estresadas.
 
-Automatización de pruebas de regresión mediante técnicas de testing metamórfico y generación sintética de variantes de prompts, permitiendo integrar estas evaluaciones dentro de flujos de integración continua (CI/CD) para software educativo.
+\paragraph{Extensión a sistemas RAG y soporte multimodal:}
+Extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) y soporte multimodal para auditar interacciones que incluyan diagramas técnicos, gráficas estadísticas o fórmulas manuscritas.

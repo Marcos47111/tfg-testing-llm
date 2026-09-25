@@ -110,4 +110,36 @@ donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz 
 \label{sec:arquitectura_software}
 El marco metodológico se acompaña de un paquete de software desarrollado en Python 3 (\path{src/}), cuya arquitectura modular automatiza las etapas de carga, inferencia, agregación/análisis y visualización:
 
-El módulo cargador (\path{src/utils/loader_prompts.py}) procesa los ficheros JSON con los casos de prueba. El ejecutor experimental (\path{src/evaluador/ejecutor_pruebas.py}) gestiona las sesiones de inferencia mediante la API REST de Ollama. El módulo de cálculo (\path{src/analisis/metricas_tfg.py}) computa las métricas $\bar{S}_d$, $CR_d$, $CFR$, $HR$, $IQE$ y el coeficiente $\kappa$, mientras que \path{src/analisis/analizador_experimentos.py} y \path{src/analisis/calcular_concordancia_evaluadores.py} automatizan la agregación comparativa y el estudio de consistencia inter-evaluador. Finalmente, el generador gráfico (\path{src/visualizacion/generar_graficos.py}) produce los diagramas de radar y de barras vectoriales. La suite cuenta con tests unitarios automatizados (\path{src/analisis/test_metricas.py}) bajo \texttt{unittest} que verifican las ecuaciones y condiciones de frontera.
+El módulo cargador (\path{src/utils/loader_prompts.py}) procesa los ficheros JSON con los casos de prueba. El ejecutor experimental (\path{src/evaluador/ejecutor_pruebas.py}) gestiona las sesiones de inferencia mediante la API REST de Ollama. El módulo de cálculo (\path{src/analisis/metricas_tfg.py}) computa las métricas $\bar{S}_d$, $CR_d$, $CFR$, $HR$, $IQE$ y el coeficiente $\kappa$, mientras que \path{src/analisis/analizador_experimentos.py} y \path{src/analisis/calcular_concordancia_evaluadores.py} automatizan la agregación comparativa y el estudio de consistencia inter-evaluador. Por su parte, el generador gráfico (\path{src/visualizacion/generar_graficos.py}) produce los diagramas de radar y de barras vectoriales. La suite cuenta con tests unitarios automatizados (\path{src/analisis/test_metricas.py}) bajo \texttt{unittest} que verifican las ecuaciones y condiciones de frontera.
+
+\section{Extensión experimental: Evaluación automática mediante LLM-as-a-Judge}
+\label{sec:extension_llm_judge}
+Si bien la generación de respuestas, la gestión de prompts, el almacenamiento y el cálculo estadístico de métricas se encuentran plenamente automatizados en la suite de software, la aplicación de la rúbrica multidimensional $D_1$--$D_7$ descrita en la Sección~\ref{sec:rubrica_escalas} requiere anotación experta manual. Esta fase humana constituye el principal factor limitante para escalar la metodología de testing a bancos de pruebas con cientos o miles de casos. Para abordar esta limitación, se plantea como extensión experimental exploratoria la incorporación de un evaluador automático basado en el paradigma \textit{LLM-as-a-Judge} \cite{zheng2023judging}.
+
+El objetivo de este módulo es investigar en qué medida un modelo de lenguaje de alta capacidad puede aplicar de forma sistemática y estructurada la rúbrica multidimensional del TFG sobre las 126 respuestas previamente generadas, y cuantificar el grado de concordancia de sus juicios frente a las evaluaciones de los evaluadores humanos independientes ($E_1$ y $E_2$).
+
+El flujo operacional de la extensión se formaliza según el siguiente esquema secuencial:
+
+\begin{equation}[EQ:FLUJO_LLM_JUDGE]{Flujo operacional de la evaluación automática mediante LLM-as-a-Judge}
+    \text{Respuesta } (\hat{Y}) \xrightarrow{P_{\mathcal{J}} + \text{Rúbrica } D_1\text{--}D_7} \text{LLM Juez } \mathcal{J}_\theta \xrightarrow{\text{JSON tipado}} \{s_d, \text{just}_d\}_{d=1}^7 \xrightarrow{\text{Validación}} \text{Concordancia } \kappa(\mathcal{J}, E)
+\end{equation}
+
+donde la arquitectura se articula en cinco fases:
+
+\begin{enumerate}
+    \item \textbf{Ingesta de respuestas generadas}: Carga de las 126 respuestas del corpus experimental producidas por los tres perfiles conversacionales.
+    \item \textbf{Construcción del prompt de evaluación a ciegas ($P_{\mathcal{J}}$)}: Inyección del enunciado original discente, solución canónica (\textit{ground truth}), criterio crítico de fallo (Nivel 0) y descripción exhaustiva de la rúbrica multidimensional $D_1$--$D_7$ con las definiciones de los niveles $0, 1, 2$ y $3$.
+    \item \textbf{Inferencia del modelo juez}: Ejecución de inferencia bajo configuración de baja variabilidad ($T=0{,}0$) exigiendo un esquema de salida JSON estrictamente tipado.
+    \item \textbf{Validación estructural y aislamiento}: Comprobación de integridad de las siete dimensiones, validación de puntuaciones $s_d \in \{0, 1, 2, 3\}$, presencia de justificaciones cualitativas y persistencia aislada en \path{data/evaluaciones/llm_judge/}.
+    \item \textbf{Análisis de concordancia y consistencia Humano--IA}: Cálculo de coeficientes $\kappa$ de Cohen globales y dimensionales, matrices de confusión $4 \times 4$, error absoluto medio (MAE), distribución de deltas $|\Delta|$ y alineación con el criterio \textit{Safety-First}.
+\end{enumerate}
+
+Para garantizar el rigor metodológico, el diseño del evaluador automático se rige por los siguientes principios:
+
+\begin{enumerate}
+    \item \textbf{Evaluación a ciegas}: Para evitar sesgos de predisposición hacia un perfil concreto (por ejemplo, calificar sistemáticamente más alto en pedagogía al Tutor Socrático), el prompt de evaluación suministrado al juez no contiene en ningún momento la etiqueta del perfil generador (\texttt{asistente\_base}, \texttt{tutor\_directo}, \texttt{tutor\_socratico}).
+    \item \textbf{Aislamiento e independencia de datos}: El juez automático nunca recibe las puntuaciones ni las justificaciones cualitativas de $E_1$ o $E_2$ durante el proceso de juicio. Las evaluaciones humanas originales se mantienen intactas en \path{data/evaluaciones/}, y los datos del juez se custodian en un directorio independiente (\path{data/evaluaciones/llm_judge/}), distinguiendo entre trazas de inferencia sin procesar (\textit{raw}) y datasets normalizados.
+    \item \textbf{Congelación previa del prompt}: Para evitar el sobreajuste del juez contra el conjunto de validación (fenómeno análogo a optimizar un prompt iterativamente para maximizar $\kappa$ de forma espuria), la plantilla del prompt (\texttt{judge\_prompt\_v1}) y la especificación de la rúbrica (\texttt{rubric\_d1\_d7\_v1}) se definen a priori a partir de las definiciones operacionales del marco y se congelan antes de la ejecución experimental.
+    \item \textbf{Salida estrictamente tipada y validada}: El juez debe emitir obligatoriamente un objeto JSON estructurado con las 7 dimensiones analíticas, donde cada dimensión contiene una puntuación discreta $s \in \{0, 1, 2, 3\}$ y una justificación textual explicativa. Si la salida no cumple el esquema, se invalida el registro.
+    \item \textbf{Carácter exploratorio complementario}: El juez automático se formula como un tercer evaluador experimental para estudiar la viabilidad y limitaciones de la automatización. No sustituye a los evaluadores humanos, y el cálculo de los índices principales del TFG ($IQE$, $CFR$, $HR$, $\kappa_{\text{humano}} = 0{,}982$) permanece fundamentado exclusivamente en la evaluación humana de $E_1$ y $E_2$.
+\end{enumerate}
