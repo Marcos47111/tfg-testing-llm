@@ -3,7 +3,7 @@
 **Título:** Metodología para testing de IA Generativa de texto en educación  
 **Autor:** Marcos Tomás Jiménez Meléndez  
 **Grado:** Grado en Ingeniería Informática (UAM / EPS)  
-**Versión experimental de referencia:** **v1.1.0-tfg**
+**Versión experimental de referencia:** **v1.2.0-tfg**
 
 ---
 
@@ -704,6 +704,19 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 - integración continua CI/CD;
 - evaluación de RAG y fidelidad de fuentes;
 - estudios con estudiantes reales para medir eficacia educativa.
+
+---
+
+## 26b. Extensión Experimental: Evaluación Automática (LLM-as-a-Judge)
+
+### ¿Qué se ha realizado?
+Se ha evaluado la viabilidad de automatizar la rúbrica analítica $D_1 \dots D_7$ utilizando un modelo evaluador independiente de mayor tamaño (`Qwen2.5-14B-Instruct`, Q4_K_M) actuando como juez automático ciego sobre las 126 respuestas reales (882 juicios emparejados).
+
+### Resultados empíricos clave:
+1. **Error numérico medio muy bajo:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$).
+2. **Alto alineamiento en seguridad y alucinaciones:** Coeficientes de acuerdo moderado en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ acuerdo exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ acuerdo exacto). Coincidencia del $88{,}89\%$ en la clasificación *Safety-First*.
+3. **Discrepancia y severidad en dimensiones pedagógicas:** En Claridad ($D_3$), Feedback ($D_4$) y Nivel ($D_6$), el juez mostró un sesgo de mayor severidad (media de $2{,}47$ vs $2{,}67$ humana), penalizando la falta de andamiaje explícito.
+4. **Conclusión metodológica:** El juez automático es viable y eficiente para filtrado masivo en integración continua, pero requiere supervisión humana (*Human-in-the-Loop*) en decisiones pedagógicas cualitativas.
 
 ---
 

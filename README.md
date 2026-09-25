@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.1.0-tfg`
+**Versión experimental de referencia:** `v1.2.0-tfg`
 
 ---
 
@@ -30,7 +30,7 @@ Para compilar la memoria completa en formato LaTeX (plantilla oficial UAM/EPS) c
 ```bash
 ./compilar_memoria.sh
 ```
-El documento generado se ubica en `docs/memoria/main.pdf` (68 páginas).
+El documento generado se ubica en `docs/memoria/main.pdf` (70 páginas).
 
 ### 3. Ejecución de Tests Unitarios
 Para validar la suite completa de pruebas unitarias de métricas dimensionales, agregación $IQE$, detección de fallos críticos, consistencia inter-evaluador ($\kappa$) y validación del LLM Judge:
@@ -161,3 +161,9 @@ Pipeline de evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicio
 - **Métricas de concordancia:** Cálculo automático de $\kappa$ de Cohen dimensional y global, $P_o$, $P_e$, $\text{MAE}$, matrices de confusión $4 \times 4$, distribución de deltas y sensibilidad en fallos críticos (*Safety-First*).
 - **Trazabilidad:** Almacenamiento en `data/evaluaciones/llm_judge/` con latencias y trazas de inferencia raw completas.
 - **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.
+
+---
+
+## Licencia
+
+El código y los conjuntos de datos desarrollados específicamente para este Trabajo de Fin de Grado se distribuyen bajo licencia MIT (véase [LICENSE](LICENSE)). La plantilla LaTeX institucional de la Universidad Autónoma de Madrid, logotipos y demás recursos de terceros mantienen sus respectivos derechos y condiciones de uso.

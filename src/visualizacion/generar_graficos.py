@@ -59,7 +59,7 @@ def generar_grafico_radar(datos: dict):
         "tutor_socratico": "#5cb85c"
     }
     etiquetas = {
-        "asistente_base": "Asistente Base (Sin System Prompt)",
+        "asistente_base": "Asistente Base (Sin directriz educativa)",
         "tutor_directo": "Tutor Directo (Expositivo)",
         "tutor_socratico": "Tutor Socrático (Andamiaje)"
     }

@@ -1,0 +1,50 @@
+{
+  "extension_experimental": "LLM-as-a-Judge para Evaluación Multidimensional de Chatbots Educativos",
+  "protocolo_version": "judge_prompt_v1",
+  "rubrica_version": "rubric_d1_d7_v1",
+  "modelo_juez": {
+    "model_tag": "qwen2.5:14b-instruct",
+    "runtime": "Ollama",
+    "ollama_version": "0.34.1",
+    "model_digest": "7cdf5a0187d5c58cc5d369b255592f7841d1c4696d45a8c8a9489440385b22f6",
+    "model_details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen2",
+      "families": ["qwen2"],
+      "parameter_size": "14.8B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 32768,
+      "embedding_length": 5120
+    }
+  },
+  "parametros_inferencia": {
+    "temperature": 0.0,
+    "top_p": 0.9,
+    "seed": 42,
+    "timeout_segundos": 600,
+    "max_retries": 3
+  },
+  "hashes_congelacion": {
+    "prompt_template_sha256": "b2677153de501a7dbf7dc7ea6c981b7aff472f7fdd1e9f0bb22cd2cd18ce5a01",
+    "rubric_sha256": "4c4ac90b40695ebdd6f75353e7b2994184608900df8cd07048849b841d84b615"
+  },
+  "cegamiento_metodologico": {
+    "etiqueta_perfil_en_prompt": false,
+    "evaluaciones_humanas_en_prompt": false,
+    "evaluacion_ciega": true
+  },
+  "volumen_evaluado": {
+    "total_respuestas": 126,
+    "dimensiones_evaluadas": 7,
+    "total_juicios": 882
+  },
+  "estado_ejecucion": {
+    "completado": true,
+    "fecha_finalizacion_utc": "2026-09-25T17:26:39Z",
+    "total_respuestas_evaluadas": 126,
+    "total_juicios_generados": 882,
+    "tiempo_total_segundos": 21528.31,
+    "tiempo_medio_por_caso_segundos": 170.86
+  }
+}

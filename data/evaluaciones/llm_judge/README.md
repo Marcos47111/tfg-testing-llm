@@ -1,6 +1,6 @@
 # Evaluación Automática Experimental mediante LLM-as-a-Judge
 
-Este directorio está reservado para las evaluaciones experimentales generadas por el modelo de lenguaje actuando como juez automático (*LLM-as-a-Judge*). Los datasets se incorporarán en esta ubicación tras ejecutar la inferencia real mediante `Qwen2.5-14B-Instruct`.
+Este directorio contiene las evaluaciones experimentales reales generadas por el modelo de lenguaje actuando como juez automático (*LLM-as-a-Judge*). La inferencia fue ejecutada íntegramente mediante `Qwen2.5-14B-Instruct` (`qwen2.5:14b-instruct`, Q4_K_M) sobre las 126 respuestas reales del experimento principal.
 
 ---
 

@@ -28,7 +28,7 @@ Para favorecer la reproducibilidad de los ensayos sobre el modelo probabilístic
 Modelo base & Meta-Llama-3-8B-Instruct (\texttt{llama3:8b}, cuantización Q4\_0, digest \texttt{365c0bd3c000}) \\
 Licencia del modelo & Meta Llama 3 Community License \\
 Motor de inferencia / Runtime & Ollama v0.1.32 (API REST local \texttt{/api/chat}) \\
-Ventana de contexto utilizada & $\text{num\_ctx} = 2048$ tokens (capacidad arquitectural máxima: 8192 tokens) \\
+Ventana de contexto utilizada & $\text{num\_ctx} = 2048$ tokens (capacidad arquitectónica máxima: 8192 tokens) \\
 Temperatura ($T$) & 0.20 \\
 Muestreo de núcleo ($\text{top-}p$) & 0.90 \\
 Penalización por repetición & 1.10 \\
@@ -133,4 +133,38 @@ El software de análisis (\path{src/analisis/analizar_concordancia_llm_judge.py}
     \item \textbf{Sensibilidad Safety-First:} Evaluación de la tasa de falsos negativos en la detección de fallos críticos ($S_d = 0$ en $D_1$, $D_2$ y $D_5$), verificando que vulnerabilidades éticas o alucinaciones no sean catalogadas indebidamente como aptas.
 \end{itemize}
 
-La ejecución en vivo de este pipeline mediante \path{src/evaluador/evaluador_llm_judge.py} sobre el entorno Ollama permite registrar las trazas de inferencia con latencias reales y generar automáticamente los informes estructurados en \path{results/informes/concordancia_llm_judge.json}, asegurando la completa reproducibilidad y trazabilidad experimental del proceso evaluador.
+\subsection{Resultados empíricos de concordancia Humano--IA}
+\label{subsec:resultados_concordancia_juez}
+
+La ejecución del protocolo sobre las 126 respuestas reales mediante \texttt{Qwen2.5-14B-Instruct} generó un total de 882 asignaciones discretas pareadas. La Tabla~\ref{TB:CONCORDANCIA_JUDGE} recoge los coeficientes de concordancia ($\kappa$), acuerdos observados ($P_o$), acuerdos esperados ($P_e$) y errores absolutos medios ($\text{MAE}$) desglosados por dimensión y a nivel global frente a los evaluadores humanos de referencia. Asimismo, la Figura~\ref{FIG:CONCORDANCIA_JUDGE} ilustra la distribución del acuerdo dimensional.
+
+\begin{table}[Concordancia inter-evaluador LLM Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$).}
+\centering
+\begin{tabular}{l c c c c c c l}
+\hline
+\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\hline \hline
+D1: Factualidad & 0,261 & 0,5873 & 0,4413 & 0,540 & 0,246 & 0,980 & Aceptable \\
+D2: Alucinaciones & 0,327 & 0,8889 & 0,8350 & 0,262 & 0,326 & 0,913 & Aceptable \\
+D3: Claridad & 0,076 & 0,5159 & 0,4762 & 0,587 & 0,047 & 0,894 & Leve \\
+D4: Feedback Pedagógico & 0,066 & 0,3889 & 0,3455 & 0,754 & 0,069 & 0,985 & Leve \\
+D5: Seguridad & 0,421 & 0,9048 & 0,8356 & 0,159 & 0,421 & 1,000 & Moderado \\
+D6: Adaptación al Nivel & -0,026 & 0,4762 & 0,4894 & 0,627 & -0,015 & 0,982 & Sin acuerdo \\
+D7: Directrices & 0,086 & 0,6825 & 0,6527 & 0,532 & 0,086 & 1,000 & Leve \\
+\hline
+\textbf{Global ($N_\kappa=882$)} & \textbf{0,190} & \textbf{0,6349} & \textbf{0,5493} & \textbf{0,494} & \textbf{0,186} & \textbf{0,982} & \textbf{Acuerdo leve} \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[Concordancia dimensional del Juez Automático]{FIG:CONCORDANCIA_JUDGE}{Comparativa de concordancia observada ($P_o$), acuerdo esperado ($P_e$) y coeficiente $\kappa$ entre el Juez Automático y el Evaluador 1 ($E_1$).}
+  \image{9.2cm}{}{concordancia_llm_judge}
+\end{figure}
+
+A nivel agregado, el juez automático exhibió un error medio absoluto reducido ($\text{MAE} = 0{,}494$ puntos en escala $0$--$3$), con un $63{,}49\%$ de asignaciones idénticas ($|\Delta|=0$) y un $90{,}93\%$ dentro de una tolerancia de un único nivel de discrepancia ($|\Delta| \le 1$). La concordancia por dimensiones revela dos regímenes de comportamiento diferenciados:
+\begin{enumerate}
+    \item \textbf{Dimensiones objetivas y de seguridad crítica:} En Robustez y Seguridad ($D_5$, $\kappa = 0{,}421$, $P_o = 90{,}48\%$, $\text{MAE} = 0{,}159$) y Control de Alucinaciones ($D_2$, $\kappa = 0{,}327$, $P_o = 88{,}89\%$, $\text{MAE} = 0{,}262$), el modelo juez muestra una alta capacidad discriminativa y convergencia con el juicio humano, detectando fiablemente las vulnerabilidades adversariales y la invención de contenidos.
+    \item \textbf{Dimensiones pedagógicas y estilísticas:} En Claridad ($D_3$), Feedback Pedagógico ($D_4$) y Adaptación al Nivel ($D_6$), el valor de $\kappa$ disminuye significativamente. Este descenso se explica por la conjunción de dos factores: la conocida \textit{paradoja de prevalencia de Kappa} \cite{feinstein1990high} (debida a la alta concentración de calificaciones humanas en los niveles superiores $2$ y $3$) y un sesgo sistemático de mayor severidad por parte del juez automático (media global del juez de $2{,}47$ frente a $2{,}67$ en $E_1$).
+\end{enumerate}
+
+Por último, en la auditoría de seguridad prioritaria (\textit{Safety-First}), el juez automático coincidió con la clasificación del evaluador humano en el $88{,}89\%$ de los casos (112 de 126), registrando 8 falsos negativos y 6 falsos positivos en la detección de fallos críticos ($S_d = 0$). Estos resultados respaldan la viabilidad del juez automático para tareas de pre-filtrado masivo en pipelines de testing continuo, preservando la necesidad de supervisión humana en casos límite o decisiones pedagógicas sutiles.

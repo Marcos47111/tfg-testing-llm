@@ -112,7 +112,8 @@ def analizar_fallos_criticos_cruzados(
     falso_negativo_juez = []  # Humano asigna crítico, juez no
     
     for h, j in zip(evals_humano, evals_juez):
-        assert h["caso_id"] == j["caso_id"] and h["perfil"] == j["perfil"]
+        if h["caso_id"] != j["caso_id"] or h["perfil"] != j["perfil"]:
+            raise ValueError(f"Desalineación entre datasets: Humano={h['caso_id']}({h['perfil']}) vs Juez={j['caso_id']}({j['perfil']})")
         h_crit = es_fallo_critico(h)
         j_crit = es_fallo_critico(j)
         cid = h["caso_id"]
@@ -193,7 +194,8 @@ def ejecutar_analisis_concordancia_llm_judge():
     scores_dim_judge = {d[0]: [] for d in DIMENSIONES}
     
     for e1, e2, j in zip(evals_e1, evals_e2, evals_judge):
-        assert e1["caso_id"] == j["caso_id"] and e1["perfil"] == j["perfil"]
+        if e1["caso_id"] != j["caso_id"] or e1["perfil"] != j["perfil"] or e2["caso_id"] != j["caso_id"] or e2["perfil"] != j["perfil"]:
+            raise ValueError(f"Desalineación entre datasets: E1={e1['caso_id']}, E2={e2['caso_id']}, Juez={j['caso_id']}")
         for d_key, _ in DIMENSIONES:
             s_e1 = e1["puntuaciones"][d_key]
             s_e2 = e2["puntuaciones"][d_key]
@@ -206,6 +208,8 @@ def ejecutar_analisis_concordancia_llm_judge():
             scores_dim_e1[d_key].append(s_e1)
             scores_dim_e2[d_key].append(s_e2)
             scores_dim_judge[d_key].append(s_j)
+            
+    n_global = len(scores_e1_global)
             
     # 2. Kappa Global
     kappa_j_e1_global = calcular_cohen_kappa(scores_e1_global, scores_judge_global)
@@ -313,7 +317,7 @@ def ejecutar_analisis_concordancia_llm_judge():
         rf"**Kappa Global Juez vs E1 ($\kappa$):** {kappa_j_e1_global['kappa']} (Po = {kappa_j_e1_global['acuerdo_observado_po']}, Pe = {kappa_j_e1_global['acuerdo_esperado_pe']}, MAE = {mae_global_j_e1:.3f}) - *{kappa_j_e1_global['interpretacion']}*",
         rf"**Kappa Global Juez vs E2 ($\kappa$):** {kappa_j_e2_global['kappa']} (Po = {kappa_j_e2_global['acuerdo_observado_po']}, Pe = {kappa_j_e2_global['acuerdo_esperado_pe']}, MAE = {mae_global_j_e2:.3f})",
         rf"**Referencia Humana E1 vs E2 ($\kappa$):** {kappa_e1_e2_global['kappa']}",
-        rf"**Total juicios emparejados:** 126 respuestas $\times$ 7 dimensiones = 882 pares.",
+        rf"**Total juicios emparejados:** {n_global} pares.",
         "",
         "| " + " | ".join(cols) + " |",
         "| " + " | ".join([":---" if i == 0 else ":---:" for i in range(len(cols))]) + " |"
@@ -344,11 +348,11 @@ def ejecutar_analisis_concordancia_llm_judge():
         k2 = f"{r['Kappa (Juez vs E2)']:.3f}" if isinstance(r['Kappa (Juez vs E2)'], (float, int)) else str(r['Kappa (Juez vs E2)'])
         k_hum = f"{r['Kappa (E1 vs E2)']:.3f}" if isinstance(r['Kappa (E1 vs E2)'], (float, int)) else str(r['Kappa (E1 vs E2)'])
         interp = r['Nivel de Acuerdo']
-        lineas_tex.append(f"{r['Dimensión']} & {k1} & {po} & {pe} & {mae_val} & {k2} & {k_hum} & {interp} \\\\")
+        lineas_tex.append(rf"{r['Dimensión']} & {k1} & {po} & {pe} & {mae_val} & {k2} & {k_hum} & {interp} \\")
         
     lineas_tex.extend([
         r"\midrule",
-        rf"\textbf{{Global ($N_\kappa=882$)}} & \textbf{{{kappa_j_e1_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_j_e1_global['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global_j_e1:.3f}}} & \textbf{{{kappa_j_e2_global['kappa']:.3f}}} & \textbf{{{kappa_e1_e2_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['interpretacion']}}} \\\\",
+        rf"\textbf{{Global ($N_\kappa={n_global}$)}} & \textbf{{{kappa_j_e1_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_j_e1_global['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global_j_e1:.3f}}} & \textbf{{{kappa_j_e2_global['kappa']:.3f}}} & \textbf{{{kappa_e1_e2_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['interpretacion']}}} \\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}"
@@ -365,9 +369,9 @@ def ejecutar_analisis_concordancia_llm_judge():
     print(f"   -> Kappa Global (Juez vs E1): {kappa_j_e1_global['kappa']} ({kappa_j_e1_global['interpretacion']})")
     print(f"   -> Kappa Global (Juez vs E2): {kappa_j_e2_global['kappa']} ({kappa_j_e2_global['interpretacion']})")
     print(f"   -> MAE Global (Juez vs E1): {mae_global_j_e1:.4f}")
-    print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_j_e1['acuerdo_exacto_delta_0']['recuento']}/882 ({deltas_j_e1['acuerdo_exacto_delta_0']['porcentaje']}%)")
-    print(f"   -> Discrepancia menor (|Δ|=1): {deltas_j_e1['discrepancia_menor_delta_1']['recuento']}/882 ({deltas_j_e1['discrepancia_menor_delta_1']['porcentaje']}%)")
-    print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_j_e1['discrepancia_moderada_delta_2']['recuento'] + deltas_j_e1['discrepancia_severa_delta_3']['recuento']}/882")
+    print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_j_e1['acuerdo_exacto_delta_0']['recuento']}/{n_global} ({deltas_j_e1['acuerdo_exacto_delta_0']['porcentaje']}%)")
+    print(f"   -> Discrepancia menor (|Δ|=1): {deltas_j_e1['discrepancia_menor_delta_1']['recuento']}/{n_global} ({deltas_j_e1['discrepancia_menor_delta_1']['porcentaje']}%)")
+    print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_j_e1['discrepancia_moderada_delta_2']['recuento'] + deltas_j_e1['discrepancia_severa_delta_3']['recuento']}/{n_global}")
     print(f"   -> Coincidencia en Safety-First: {safety_first_j_e1['tasa_acuerdo_safety_first']}% (FN={fn_count}, FP={fp_count})")
     print("=" * 70)
 

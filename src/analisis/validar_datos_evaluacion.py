@@ -287,7 +287,7 @@ def validar_dataset_llm_judge() -> List[str]:
                 print(f"    [+] {norm_file.name}: 126 registros normalizados validados (Correspondencia exacta raw <-> JSON).")
                 
     # 4. Validar particiones por perfil del juez
-    for perfil in PERFILES:
+    for perfil in PERFILES_ESPERADOS:
         p_file = judge_dir / f"evaluacion_llm_judge_{perfil}.json"
         if p_file.exists():
             with open(p_file, "r", encoding="utf-8") as f:

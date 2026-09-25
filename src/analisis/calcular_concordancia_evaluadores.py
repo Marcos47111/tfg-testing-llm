@@ -49,7 +49,8 @@ def calcular_acuerdo_inter_evaluadores():
     scores_dim_2 = {d[0]: [] for d in dims}
 
     for e1, e2 in zip(evals_1, evals_2):
-        assert e1["caso_id"] == e2["caso_id"] and e1["perfil"] == e2["perfil"]
+        if e1["caso_id"] != e2["caso_id"] or e1["perfil"] != e2["perfil"]:
+            raise ValueError(f"Desalineación entre evaluaciones: E1={e1['caso_id']}({e1['perfil']}) vs E2={e2['caso_id']}({e2['perfil']})")
         for d_key, _ in dims:
             s1 = e1["puntuaciones"][d_key]
             s2 = e2["puntuaciones"][d_key]

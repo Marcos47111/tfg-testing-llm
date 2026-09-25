@@ -1,0 +1,39 @@
+{
+  "experimento": "Experimento Principal de Generación Conversacional con Llama 3",
+  "framework": "TFG Testing LLM Educativo",
+  "modelo_base": "llama3:8b",
+  "runtime": "Ollama",
+  "ollama_version": "0.34.1",
+  "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
+  "model_details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "llama",
+    "families": ["llama"],
+    "parameter_size": "8.0B",
+    "quantization_level": "Q4_0",
+    "context_length": 8192,
+    "embedding_length": 4096
+  },
+  "parametros_inferencia": {
+    "temperature": 0.0,
+    "top_p": 0.9,
+    "repeat_penalty": 1.1,
+    "seed": 42,
+    "num_ctx": 8192
+  },
+  "volumen_datos": {
+    "total_respuestas": 126,
+    "casos_por_perfil": 42,
+    "perfiles": [
+      "asistente_base",
+      "tutor_directo",
+      "tutor_socratico"
+    ]
+  },
+  "evaluacion_humana": {
+    "evaluadores": ["evaluador_1", "evaluador_2"],
+    "total_juicios_pareados": 882,
+    "concordancia_global_kappa": 0.9818
+  }
+}

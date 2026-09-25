@@ -187,7 +187,7 @@ class JudgeProvider(abc.ABC):
 class OllamaJudgeProvider(JudgeProvider):
     """Proveedor para modelos locales servidos mediante Ollama API."""
 
-    def __init__(self, endpoint: str = "http://localhost:11434/api/chat", model: str = "qwen2.5:14b-instruct", temperature: float = 0.0, top_p: float = 0.9, seed: Optional[int] = 42, timeout: int = 180):
+    def __init__(self, endpoint: str = "http://localhost:11434/api/chat", model: str = "qwen2.5:14b-instruct", temperature: float = 0.0, top_p: float = 0.9, seed: Optional[int] = 42, timeout: int = 600):
         self.base_url = endpoint.rstrip("/")
         if self.base_url.endswith("/api/chat"):
             self.base_url = self.base_url[:-len("/api/chat")]
@@ -206,10 +206,13 @@ class OllamaJudgeProvider(JudgeProvider):
         info = {
             "model_tag": self.model,
             "runtime": "Ollama",
-            "endpoint": self.chat_endpoint
+            "endpoint": self.chat_endpoint,
+            "ollama_version": "N/A",
+            "model_digest": "",
+            "model_details": {}
         }
         
-        # Intentar obtener versión de Ollama
+        # 1. Versión del servidor Ollama (/api/version)
         try:
             req_v = urllib.request.Request(f"{self.base_url}/api/version")
             with urllib.request.urlopen(req_v, timeout=5) as resp:
@@ -218,7 +221,23 @@ class OllamaJudgeProvider(JudgeProvider):
         except Exception:
             info["ollama_version"] = "no_disponible"
             
-        # Intentar obtener info detallada del modelo (digest, detalles de cuantización)
+        # 2. Obtener digest del modelo desde /api/tags
+        try:
+            req_tags = urllib.request.Request(f"{self.base_url}/api/tags")
+            with urllib.request.urlopen(req_tags, timeout=5) as resp:
+                tags_data = json.loads(resp.read().decode("utf-8"))
+                for m in tags_data.get("models", []):
+                    m_name = m.get("name", "")
+                    m_model = m.get("model", "")
+                    if m_name == self.model or m_model == self.model or m_name.startswith(self.model):
+                        info["model_digest"] = m.get("digest", "")
+                        if "details" in m and not info.get("model_details"):
+                            info["model_details"] = m.get("details", {})
+                        break
+        except Exception:
+            pass
+
+        # 3. Obtener detalles arquitectónicos adicionales (/api/show)
         try:
             req_show = urllib.request.Request(
                 f"{self.base_url}/api/show",
@@ -227,8 +246,10 @@ class OllamaJudgeProvider(JudgeProvider):
             )
             with urllib.request.urlopen(req_show, timeout=5) as resp:
                 show_data = json.loads(resp.read().decode("utf-8"))
-                info["model_digest"] = show_data.get("digest", "")
-                info["model_details"] = show_data.get("details", {})
+                if not info.get("model_digest") and "digest" in show_data:
+                    info["model_digest"] = show_data.get("digest", "")
+                if "details" in show_data:
+                    info["model_details"] = show_data.get("details", {})
         except Exception:
             pass
             
@@ -438,6 +459,7 @@ def ejecutar_evaluacion_llm_judge(
     seed: Optional[int] = 42,
     api_key: str = "EMPTY",
     max_reintentos: int = 3,
+    timeout: int = 600,
     reanudar: bool = True
 ):
     """
@@ -461,7 +483,8 @@ def ejecutar_evaluacion_llm_judge(
             model=modelo,
             temperature=temperatura,
             top_p=top_p,
-            seed=seed
+            seed=seed,
+            timeout=timeout
         )
     elif modo in ["api", "openai"]:
         provider = OpenAICompatibleJudgeProvider(
@@ -470,7 +493,8 @@ def ejecutar_evaluacion_llm_judge(
             api_key=api_key,
             temperature=temperatura,
             top_p=top_p,
-            seed=seed
+            seed=seed,
+            timeout=timeout
         )
     else:
         provider = MockJudgeProvider(model_name=modelo)
@@ -744,6 +768,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", type=int, default=42, help="Semilla pseudoaleatoria")
     parser.add_argument("--api-key", default="EMPTY", help="Clave de API para proveedores remotos")
     parser.add_argument("--max-retries", type=int, default=3, help="Número máximo de reintentos por caso")
+    parser.add_argument("--timeout", type=int, default=600, help="Timeout en segundos por petición de inferencia (por defecto: 600)")
     parser.add_argument("--no-resume", action="store_true", help="Ignorar checkpoints previos y comenzar desde cero")
     args = parser.parse_args()
 
@@ -756,5 +781,6 @@ if __name__ == "__main__":
         seed=args.seed,
         api_key=args.api_key,
         max_reintentos=args.max_retries,
+        timeout=args.timeout,
         reanudar=not args.no_resume
     )

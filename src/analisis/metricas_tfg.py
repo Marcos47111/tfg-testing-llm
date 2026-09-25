@@ -150,7 +150,7 @@ def calcular_cohen_kappa(
     # 1. Matriz de confusión con validación estricta de rango de puntuación
     matriz = [[0 for _ in range(niveles)] for _ in range(niveles)]
     for a, b in zip(evaluador_a, evaluador_b):
-        if not (isinstance(a, int) and isinstance(b, int) and 0 <= a < niveles and 0 <= b < niveles):
+        if not (type(a) is int and type(b) is int and 0 <= a < niveles and 0 <= b < niveles):
             raise ValueError(f"Puntuación fuera de rango [0, {niveles-1}] o tipo no entero: a={a}, b={b}")
         matriz[a][b] += 1
             

@@ -38,3 +38,5 @@ Thumbs.db
 
 # Demo / local runs
 results/demo_simulada/
+.checkpoint_*.json
+*.checkpoint_*.json
