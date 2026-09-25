@@ -207,7 +207,7 @@ def validar_dataset_llm_judge() -> List[str]:
     # 1. Validar trazas raw
     raw_file = raw_dir / "evaluaciones_llm_judge_raw.json"
     if not raw_file.exists():
-        errores.append(f"Archivo raw del juez no encontrado: {raw_file}")
+        errores.append(f"Archivo raw del juez no encontrado ({raw_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0")
     else:
         with open(raw_file, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
@@ -219,7 +219,7 @@ def validar_dataset_llm_judge() -> List[str]:
     # 2. Validar JSON normalizado
     norm_file = judge_dir / "evaluacion_llm_judge.json"
     if not norm_file.exists():
-        errores.append(f"Archivo normalizado del juez no encontrado: {norm_file}")
+        errores.append(f"Archivo normalizado del juez no encontrado ({norm_file.name}). Ejecuta primero: python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0")
     else:
         with open(norm_file, "r", encoding="utf-8") as f:
             norm_data = json.load(f)

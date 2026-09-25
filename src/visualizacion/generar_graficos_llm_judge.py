@@ -205,7 +205,12 @@ def generar_todos_los_graficos_llm_judge():
     print("=" * 65)
     print("  GENERACIÓN DE GRÁFICOS EXPERIMENTALES LLM-AS-A-JUDGE")
     print("=" * 65)
-    datos = cargar_informe_concordancia()
+    try:
+        datos = cargar_informe_concordancia()
+    except FileNotFoundError:
+        print(f"[-] Error: No se encontró el informe en {INFORMES_DIR / 'concordancia_llm_judge.json'}.")
+        print("    Ejecuta primero: python3 src/analisis/analizar_concordancia_llm_judge.py")
+        return
     generar_grafico_concordancia_dimensional(datos)
     generar_grafico_matriz_confusion(datos)
     generar_grafico_distribucion_discrepancias(datos)

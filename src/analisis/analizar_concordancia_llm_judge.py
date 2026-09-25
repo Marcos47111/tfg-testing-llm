@@ -151,11 +151,18 @@ def ejecutar_analisis_concordancia_llm_judge():
     TABLAS_DIR.mkdir(parents=True, exist_ok=True)
     
     # 1. Cargar datasets y alinear por clave canónica (caso_id, perfil)
+    judge_file = JUDGE_DIR / "evaluacion_llm_judge.json"
+    if not judge_file.exists():
+        print(f"[-] Error: No se encontró el dataset del juez en {judge_file}.")
+        print("    Para generarlo mediante inferencia real con Qwen2.5-14B-Instruct, ejecuta:")
+        print("    python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0")
+        return None
+
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "r", encoding="utf-8") as f:
         evals_e1_list = json.load(f)
     with open(EVAL_DIR / "evaluacion_evaluador_2.json", "r", encoding="utf-8") as f:
         evals_e2_list = json.load(f)
-    with open(JUDGE_DIR / "evaluacion_llm_judge.json", "r", encoding="utf-8") as f:
+    with open(judge_file, "r", encoding="utf-8") as f:
         evals_judge_list = json.load(f)
         
     map_e1 = {(x["caso_id"], x["perfil"]): x for x in evals_e1_list}

@@ -4,8 +4,8 @@ Aplica de forma sistemática y estructurada la rúbrica multidimensional D1-D7 (
 sobre las 126 respuestas conversacionales generadas por los chatbots educativos.
 
 Principios metodológicos fundamentales:
-1. Evaluación a ciegas (Double-blind): el juez automático NO recibe en su prompt la etiqueta
-   del perfil generador (Asistente Base, Tutor Directo, Tutor Socrático).
+1. Evaluación ciega respecto al perfil generador y a las evaluaciones humanas: el juez automático
+   NO recibe en su prompt la etiqueta del perfil generador (Asistente Base, Tutor Directo, Tutor Socrático).
 2. Aislamiento e independencia: el juez NUNCA recibe las puntuaciones ni justificaciones
    de los evaluadores humanos (E1 y E2).
 3. Congelación del prompt y correspondencia canónica: el prompt del juez (judge_prompt_v1)

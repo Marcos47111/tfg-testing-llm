@@ -638,15 +638,15 @@ La automatización **no sustituye el juicio humano de la rúbrica**; automatiza 
 En el marco principal del TFG, la generación de respuestas, almacenamiento y cálculo de métricas están automatizados, pero la aplicación de la rúbrica $D_1$--$D_7$ requiere evaluación manual. Para estudiar la escalabilidad de la metodología frente a baterías masivas de pruebas, se incorporó una extensión experimental basada en **LLM-as-a-Judge**.
 
 ### Arquitectura y salvaguardas metodológicas
-1. **Evaluación a ciegas**: El juez recibe el prompt discente, ground truth, criterio de fallo crítico y la rúbrica completa 0–3, pero **no conoce el perfil** que generó la respuesta (Base, Directo o Socrático) para evitar sesgos pedagógicos preconcebidos.
+1. **Evaluación ciega respecto al perfil generador y a las evaluaciones humanas**: El juez recibe el prompt discente, ground truth, criterio de fallo crítico y la rúbrica completa 0–3, pero **no conoce el perfil** que generó la respuesta (Base, Directo o Socrático) para evitar sesgos pedagógicos preconcebidos.
 2. **Aislamiento de datos**: El juez **nunca recibe las calificaciones de E1 ni E2**. Sus salidas se custodian en `data/evaluaciones/llm_judge/` (separando trazas raw y JSON normalizado), manteniendo intactos los datos humanos de referencia.
 3. **Prompt congelado**: Se utiliza `judge_prompt_v1`, congelado antes del análisis para evitar optimizar el prompt contra el conjunto de validación.
-4. **Modelo juez independiente**: Se empleó `Qwen2.5-14B-Instruct` (configuración de baja variabilidad, $T=0.0$, top-p=0.9, seed=42) para evitar autopreferencia con el evaluado `Meta-Llama-3-8B-Instruct`.
+4. **Modelo juez independiente**: Se establece como modelo de referencia `Qwen2.5-14B-Instruct` (configuración de baja variabilidad, $T=0.0$, top-p=0.9, seed=42) para evitar autopreferencia con el evaluado `Meta-Llama-3-8B-Instruct`.
 
-### Resultados y análisis de concordancia Humano--IA
+### Pipeline de análisis de concordancia Humano--IA
 - **Pipeline de concordancia ($N_\kappa=882$):** Cálculo de $\kappa(\text{Juez}, E_1)$ y $\kappa(\text{Juez}, E_2)$, acuerdo observado ($P_o$), acuerdo esperado ($P_e$) y $\text{MAE}$ por dimensión.
 - **Análisis de granularidad:** Desglose de distribución de deltas ($|\Delta| \in \{0, 1, 2, 3\}$), matrices de confusión $4 \times 4$ y análisis de discrepancias direccionales.
-- **Control de fallos críticos (Safety-First):** Verificación de sensibilidad en $D_1$, $D_2$ y $D_5$ para asegurar que el juez no apruebe respuestas con alucinaciones o vulneraciones de seguridad ética (0 falsos negativos).
+- **Control de fallos críticos (Safety-First):** Cálculo de la tasa de falsos negativos en $D_1$, $D_2$ y $D_5$ para verificar que el juez no apruebe respuestas con alucinaciones o vulneraciones de seguridad ética.
 
 ### Propuesta futura: Sistema híbrido Humano-in-the-Loop
 El juez automático no reemplaza la supervisión humana, sino que actúa como **filtro de triaje masivo de primer nivel**:
