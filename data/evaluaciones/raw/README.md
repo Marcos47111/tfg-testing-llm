@@ -4,13 +4,13 @@ Este directorio contiene las hojas de datos de anotación cualitativa y cuantita
 
 ---
 
-## 👥 Panel de Evaluadores
+## Panel de Evaluadores
 1. **Evaluador 1 (Anotador de Referencia / Autor):** Marcos Tomás Jiménez Meléndez.
 2. **Evaluador 2 (Anotador Independiente):** Graduado en Ingeniería Informática ajeno al diseño de las directivas de sistema (*system prompts*).
 
 ---
 
-## 🔒 Protocolo de Evaluación y Cegamiento
+## Protocolo de Evaluación y Cegamiento
 * **Cegamiento:** Los evaluadores dispusieron de las 126 respuestas conversacionales generadas por Meta-Llama-3-8B-Instruct presentadas sin la etiqueta explícita del perfil de procedencia (`asistente_base`, `tutor_directo`, `tutor_socratico`).
 * **Trazabilidad post-evaluación:** Los ficheros CSV publicados constituyen la exportación estructurada de las anotaciones de ambos evaluadores. La columna `perfil` se incorporó con posterioridad a la sesión de evaluación para restaurar la trazabilidad con el corpus experimental; dicha etiqueta no fue visible durante el proceso de calificación.
 * **Instrumento:** Rúbrica analítica multidimensional en escala discreta de cuatro niveles ($0, 1, 2, 3$) formalizada en `metodologia/rubricas/rubrica_general.md` y `metodologia/rubricas/guia_evaluador.md`.
@@ -19,13 +19,13 @@ Este directorio contiene las hojas de datos de anotación cualitativa y cuantita
 
 ---
 
-## 📁 Ficheros de Datos
+## Ficheros de Datos
 * `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones asignadas por el Evaluador 1.
 * `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones asignadas por el Evaluador 2.
 
 ---
 
-## 🔄 Flujo de Trazabilidad
+## Flujo de Trazabilidad
 El pipeline de ingestión y análisis procesa estos datos de la siguiente manera:
 ```
 data/evaluaciones/raw/*.csv

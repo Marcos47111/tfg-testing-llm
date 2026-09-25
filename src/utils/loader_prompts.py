@@ -48,4 +48,4 @@ def validar_esquema_casos(casos: List[Dict[str, Any]]) -> bool:
 if __name__ == "__main__":
     casos = cargar_todos_los_prompts()
     validar_esquema_casos(casos)
-    print(f"✅ Se han cargado y validado correctamente {len(casos)} casos de prueba estructurados.")
+    print(f"[+] Se han cargado y validado correctamente {len(casos)} casos de prueba estructurados.")

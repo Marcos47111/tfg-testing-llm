@@ -283,7 +283,7 @@ def ejecutar_analisis_concordancia_llm_judge():
     informe_path = INFORMES_DIR / "concordancia_llm_judge.json"
     with open(informe_path, "w", encoding="utf-8") as f:
         json.dump(informe_completo, f, indent=2, ensure_ascii=False)
-    print(f"  ✅ Informe JSON generado: {informe_path}")
+    print(f"  [+] Informe JSON generado: {informe_path}")
     
     # Guardar Tablas CSV, Markdown y LaTeX
     df_tab = pd.DataFrame(filas_tabla)
@@ -341,8 +341,8 @@ def ejecutar_analisis_concordancia_llm_judge():
     with open(TABLAS_DIR / "tabla_concordancia_llm_judge.tex", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_tex) + "\n")
         
-    print(f"  ✅ Tablas exportadas en {TABLAS_DIR}")
-    print("\n📊 Resumen de Resultados Principales:")
+    print(f"  [+] Tablas exportadas en {TABLAS_DIR}")
+    print("\n  Resumen de Resultados Principales:")
     print(f"   -> Kappa Global (Juez vs E1): {kappa_j_e1_global['kappa']} ({kappa_j_e1_global['interpretacion']})")
     print(f"   -> Kappa Global (Juez vs E2): {kappa_j_e2_global['kappa']} ({kappa_j_e2_global['interpretacion']})")
     print(f"   -> MAE Global (Juez vs E1): {mae_global_j_e1:.4f}")

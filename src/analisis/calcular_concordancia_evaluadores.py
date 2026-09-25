@@ -101,7 +101,7 @@ def calcular_acuerdo_inter_evaluadores():
     with open(TABLAS_DIR / "tabla_kappa_dimensiones.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_md) + "\n")
 
-    print(f"✅ Concordancia calculada exitosamente:")
+    print(f"[+] Concordancia calculada exitosamente:")
     print(f"   -> Kappa Global: {res_global['kappa']} ({res_global['interpretacion']})")
     for d_key, d_nombre in dims:
         print(f"   -> {d_nombre}: kappa = {res_dimensiones[d_key]['kappa']}")

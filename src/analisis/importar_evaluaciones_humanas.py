@@ -113,21 +113,21 @@ def ejecutar_importacion_y_normalizacion():
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "w", encoding="utf-8") as f:
         json.dump(eval_1, f, indent=2, ensure_ascii=False)
-    print(f"  ✅ Exportado: {EVAL_DIR / 'evaluacion_evaluador_1.json'} (126 registros)")
+    print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_evaluador_1.json'} (126 registros)")
     
     with open(EVAL_DIR / "evaluacion_evaluador_2.json", "w", encoding="utf-8") as f:
         json.dump(eval_2, f, indent=2, ensure_ascii=False)
-    print(f"  ✅ Exportado: {EVAL_DIR / 'evaluacion_evaluador_2.json'} (126 registros)")
+    print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_evaluador_2.json'} (126 registros)")
     
     # 4. Particiones por perfil (Evaluador 1 como referencia)
     for perfil in PERFILES:
         items_perfil = [item for item in eval_1 if item["perfil"] == perfil]
         with open(EVAL_DIR / f"evaluacion_{perfil}.json", "w", encoding="utf-8") as f:
             json.dump(items_perfil, f, indent=2, ensure_ascii=False)
-        print(f"  ✅ Exportado: {EVAL_DIR / f'evaluacion_{perfil}.json'} ({len(items_perfil)} casos)")
+        print(f"  [+] Exportado: {EVAL_DIR / f'evaluacion_{perfil}.json'} ({len(items_perfil)} casos)")
         
     print("-" * 65)
-    print("🎉 IMPORTACIÓN Y NORMALIZACIÓN COMPLETADA CON ÉXITO.")
+    print("  Importacion y normalizacion completada con exito.")
     print("=" * 65)
 
 

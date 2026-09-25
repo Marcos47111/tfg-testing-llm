@@ -197,10 +197,10 @@ def ejecutar_bateria_completa(
     if filtro_perfil:
         configs = {k: v for k, v in configs.items() if k == filtro_perfil}
         if not configs:
-            print(f"❌ Perfil '{filtro_perfil}' no encontrado.")
+            print(f"[-] Perfil '{filtro_perfil}' no encontrado.")
             return
 
-    print(f"🚀 Iniciando ejecución experimental ({modo}) de {len(prompts)} casos sobre {len(configs)} perfil(es)...")
+    print(f"[+] Iniciando ejecución experimental ({modo}) de {len(prompts)} casos sobre {len(configs)} perfil(es)...")
     
     for nombre_perfil, cfg in configs.items():
         print(f"  -> Procesando perfil: {nombre_perfil}...")
@@ -218,7 +218,7 @@ def ejecutar_bateria_completa(
         archivo_salida = dir_salida / f"respuestas_{nombre_perfil}.json"
         with open(archivo_salida, "w", encoding="utf-8") as f:
             json.dump(respuestas_perfil, f, indent=2, ensure_ascii=False)
-        print(f"     ✅ Guardadas {len(respuestas_perfil)} respuestas en {archivo_salida}")
+        print(f"     [+] Guardadas {len(respuestas_perfil)} respuestas en {archivo_salida}")
 
 
 if __name__ == "__main__":

@@ -34,7 +34,7 @@ def analizar_todos_los_experimentos() -> Dict[str, Any]:
     for perfil in PERFILES_CHATBOT:
         ar = EVALUACIONES_DIR / f"evaluacion_{perfil}.json"
         if not ar.exists():
-            print(f"⚠️ Archivo no encontrado: {ar.name}")
+            print(f"[!] Archivo no encontrado: {ar.name}")
             continue
         with open(ar, "r", encoding="utf-8") as f:
             evaluaciones = json.load(f)
@@ -77,7 +77,7 @@ def analizar_todos_los_experimentos() -> Dict[str, Any]:
     with open(TABLAS_DIR / "tabla_comparativa_modelos.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_md) + "\n")
         
-    print(f"📈 Análisis experimental completado con éxito. Resultados en {TABLAS_DIR} e {INFORMES_DIR}")
+    print(f"[+] Analisis experimental completado con exito. Resultados en {TABLAS_DIR} e {INFORMES_DIR}")
     return resumen_global
 
 

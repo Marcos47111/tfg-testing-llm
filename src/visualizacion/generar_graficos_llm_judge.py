@@ -110,7 +110,7 @@ def generar_grafico_concordancia_dimensional(datos: dict):
         fig.savefig(d / "concordancia_llm_judge.pdf", bbox_inches="tight")
         fig.savefig(d / "concordancia_llm_judge.png", dpi=300, bbox_inches="tight")
     plt.close()
-    print("  ✅ Gráfico de concordancia dimensional generado: concordancia_llm_judge.pdf / .png")
+    print("  [+] Grafico de concordancia dimensional generado: concordancia_llm_judge.pdf / .png")
 
 
 def generar_grafico_matriz_confusion(datos: dict):
@@ -154,7 +154,7 @@ def generar_grafico_matriz_confusion(datos: dict):
         fig.savefig(d / "matriz_confusion_llm_judge.pdf", bbox_inches="tight")
         fig.savefig(d / "matriz_confusion_llm_judge.png", dpi=300, bbox_inches="tight")
     plt.close()
-    print("  ✅ Gráfico de matriz de confusión generado: matriz_confusion_llm_judge.pdf / .png")
+    print("  [+] Grafico de matriz de confusion generado: matriz_confusion_llm_judge.pdf / .png")
 
 
 def generar_grafico_distribucion_discrepancias(datos: dict):
@@ -198,7 +198,7 @@ def generar_grafico_distribucion_discrepancias(datos: dict):
         fig.savefig(d / "distribucion_deltas_llm_judge.pdf", bbox_inches="tight")
         fig.savefig(d / "distribucion_deltas_llm_judge.png", dpi=300, bbox_inches="tight")
     plt.close()
-    print("  ✅ Gráfico de distribución de deltas generado: distribucion_deltas_llm_judge.pdf / .png")
+    print("  [+] Grafico de distribucion de deltas generado: distribucion_deltas_llm_judge.pdf / .png")
 
 
 def generar_todos_los_graficos_llm_judge():
@@ -209,7 +209,7 @@ def generar_todos_los_graficos_llm_judge():
     generar_grafico_concordancia_dimensional(datos)
     generar_grafico_matriz_confusion(datos)
     generar_grafico_distribucion_discrepancias(datos)
-    print("🎉 Todos los gráficos del Juez Automático han sido generados con éxito.")
+    print("  Todos los graficos del Juez Automatico han sido generados con exito.")
     print("=" * 65)
 
 

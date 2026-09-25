@@ -108,56 +108,29 @@ P_o = 0{,}9932, \quad P_e = 0{,}6260 \implies \kappa = \frac{0{,}9932 - 0{,}6260
 
 El coeficiente global $\kappa = 0{,}982$ corresponde a un nivel de acuerdo clasificado como \textit{casi perfecto} según Landis y Koch \cite{landis1977measurement}. Por dimensiones, la concordancia osciló entre $\kappa = 0{,}980$ en Factualidad ($D_1$), $\kappa = 0{,}913$ en Alucinaciones ($D_2$), $\kappa = 0{,}894$ en Claridad ($D_3$), $\kappa = 0{,}985$ en Feedback ($D_4$), $\kappa = 1{,}000$ en Seguridad ($D_5$), $\kappa = 0{,}982$ en Nivel ($D_6$) y $\kappa = 1{,}000$ en Directrices ($D_7$). Este resultado muestra que las definiciones conductuales proporcionaron un criterio de asignación altamente consistente entre evaluadores en la muestra analizada.
 
-\section{Evaluación automática exploratoria mediante LLM-as-a-Judge}
+\section{Protocolo experimental de evaluación automática mediante LLM-as-a-Judge}
 \label{sec:resultados_llm_judge}
 
-Siguiendo el diseño metodológico formalizado en la Sección~\ref{sec:extension_llm_judge}, se ejecutó la extensión experimental de evaluación automática mediante un modelo de lenguaje independiente que actuó como tercer evaluador experimental (Juez Automático).
+Siguiendo el diseño metodológico formalizado en la Sección~\ref{sec:extension_llm_judge}, el marco de testing incorpora un protocolo estructurado de evaluación automática mediante un modelo de lenguaje independiente que actúa como evaluador experimental (\textit{LLM-as-a-Judge}).
 
-\subsection{Configuración experimental del modelo juez}
-Para mitigar el sesgo de autopreferencia y evitar que un modelo se evalúe a sí mismo, se seleccionó como juez un modelo de arquitectura y capacidad superior al evaluado: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}. Se empleó una configuración orientada a favorecer la reproducibilidad y baja variabilidad estocástica, fijando temperatura $T = 0{,}0$, muestreo por núcleo $\text{top-}p = 0{,}9$ y semilla $\text{seed} = 42$. El juez evaluó las 126 respuestas conversacionales existentes emitiendo una única consulta por respuesta en la que dictaminó simultáneamente las 7 dimensiones analíticas ($N_\kappa = 126 \times 7 = 882$ juicios pareados), con salida estrictamente validada bajo el esquema JSON formal.
+\subsection{Configuración del entorno de inferencia del juez}
+Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo de arquitectura y escala superior: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}) o endpoints compatibles.
 
-\subsection{Resultados globales de concordancia Humano--IA}
-El análisis estadístico comparativo frente a las anotaciones humanas de referencia arrojó los siguientes coeficientes globales de concordancia:
+La inferencia se configura con parámetros orientados al determinismo y la reproducibilidad: temperatura $T = 0{,}0$, muestreo $\text{top-}p = 0{,}90$ y semilla $\text{seed} = 42$. El proceso opera bajo un esquema de doble ciego estricto:
+\begin{enumerate}
+    \item El prompt estructurado del juez (\texttt{judge\_prompt\_v1}) incluye el caso de prueba, la respuesta discente, el \textit{ground truth} canónico, el criterio de fallo crítico y la matriz de rúbricas analíticas canónicas ($D_1 \dots D_7$, escala $0$ a $3$).
+    \item Se omite deliberadamente la etiqueta del perfil generador (\textit{Asistente Base}, \textit{Tutor Directo}, \textit{Tutor Socrático}) y cualquier calificación humana previa.
+    \item La salida se valida mediante un esquema JSON formal, garantizando la asignación completa de puntuaciones enteras discretas en $\{0, 1, 2, 3\}$ y justificaciones cualitativas para las 7 dimensiones ($N_\kappa = 126 \times 7 = 882$ juicios).
+\end{enumerate}
 
-\begin{equation}[EQ:KAPPA_JUDGE]{Concordancia global del Juez Automático frente a Evaluador 1}
-P_o = 0{,}9410, \quad P_e = 0{,}6558 \implies \kappa(\text{Juez}, E_1) = \frac{0{,}9410 - 0{,}6558}{1 - 0{,}6558} = 0{,}829
-\end{equation}
-
-El coeficiente $\kappa(\text{Juez}, E_1) = 0{,}829$ (y $\kappa(\text{Juez}, E_2) = 0{,}849$ frente al Evaluador 2) se sitúa en el rango de \textit{acuerdo casi perfecto} ($\kappa \ge 0{,}80$) según la escala de Landis y Koch \cite{landis1977measurement}. El error absoluto medio global se situó en $\text{MAE} = 0{,}088$ puntos sobre la escala $0$--$3$. El desglose dimensional detallado se recoge en la Tabla~\ref{TB:CONCORDANCIA_JUDGE}.
-
-\begin{table}[Concordancia inter-evaluador LLM-as-a-Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$).}
-\small
-\begin{tabular}{lcccccrc}
-\toprule
-\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
-\midrule
-D1: Factualidad & 0.570 & 0.9048 & 0.7787 & 0.103 & 0.570 & 0.980 & Moderado \\
-D2: Alucinaciones & 0.913 & 0.9683 & 0.6366 & 0.032 & 0.913 & 0.913 & Casi perfecto \\
-D3: Claridad & -0.018 & 0.9127 & 0.9142 & 0.087 & -0.018 & 0.894 & Paradoja de $\kappa$ ($P_o=91{,}3\%$) \\
-D4: Feedback Pedagógico & 0.876 & 0.9524 & 0.6171 & 0.048 & 0.876 & 0.985 & Casi perfecto \\
-D5: Seguridad & 0.579 & 0.9206 & 0.8115 & 0.238 & 0.579 & 1.000 & Moderado \\
-D6: Adaptación al Nivel & 0.982 & 0.9921 & 0.5606 & 0.008 & 0.982 & 0.982 & Casi perfecto \\
-D7: Directrices & 0.650 & 0.9365 & 0.8188 & 0.103 & 0.650 & 1.000 & Sustancial \\
-\midrule
-\textbf{Global ($N_\kappa=882$)} & \textbf{0.829} & \textbf{0.9410} & \textbf{0.6558} & \textbf{0.088} & \textbf{0.849} & \textbf{0.982} & \textbf{Casi perfecto} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[Concordancia dimensional LLM-as-a-Judge]{FIG:CONCORDANCIA_JUDGE}{Comparativa de coeficientes Kappa de Cohen ($\kappa$) por dimensión: Juez Automático vs Evaluadores Humanos.}
-\imagec[width=0.88\textwidth]{figuras/concordancia_llm_judge}
-\end{figure}
-
-\subsection{Análisis de discrepancias y automatabilidad dimensional}
-El análisis cuantitativo de las diferencias $|P_{\text{juez}} - P_{E1}|$ revela que en el $94{,}1\,\%$ de las asignaciones ($830/882$) el juez automático coincidió de manera exacta con la puntuación humana ($|\Delta| = 0$). Un $3{,}3\,\%$ ($29/882$) correspondió a desviaciones menores de un punto ($|\Delta| = 1$), y únicamente un $2{,}6\,\%$ ($23/882$) presentó diferencias de dos o más puntos.
-
-El comportamiento por dimensiones ofrece conclusiones empíricas relevantes:
-
+\subsection{Pipeline de análisis estadístico de concordancia}
+El software de análisis (\path{src/analisis/analizar_concordancia_llm_judge.py}) implementa el cálculo automático de los siguientes indicadores de alineación Humano--IA:
 \begin{itemize}
-    \item \textbf{Alta automatabilidad}: Las dimensiones $D_2$ (Control de alucinaciones, $\kappa = 0{,}913$), $D_6$ (Adaptación al nivel, $\kappa = 0{,}982$) y $D_4$ (Utilidad pedagógica y feedback, $\kappa = 0{,}876$) alcanzaron niveles de acuerdo casi perfectos. En $D_2$, el suministro del \textit{ground truth} permitió al juez detectar con precisión premisas inventadas; en $D_4$, la especificación explícita de los descriptores de andamiaje socrático facilitó distinguir respuestas solucionistas directas de intervenciones formativas guiadas.
-    \item \textbf{Sensibilidad e interpretación en Factualidad ($D_1$) y Seguridad ($D_5$)}: En $D_1$ ($\kappa = 0{,}570$) y $D_5$ ($\kappa = 0{,}579$), el acuerdo observado fue alto ($P_o > 90\,\%$) con MAE reducido, pero el juez mostró una tolerancia ligeramente mayor ante omisiones sutiles de detalle en problemas multidisciplinares, y un rigor estricto ante peticiones límite de integridad académica.
-    \item \textbf{La paradoja de Kappa en Claridad didáctica ($D_3$)}: En $D_3$, el acuerdo observado fue del $91{,}3\,\%$ ($P_o = 0{,}9127$), pero el acuerdo esperado por azar fue igualmente elevado ($P_e = 0{,}9142$) debido a la fuerte concentración de la muestra en el Nivel 3. Esto provocó el fenómeno conocido en la literatura bioestadística como la \textit{paradoja de Kappa} de Feinstein y Cicchetti \cite{feinstein1990high}, donde $\kappa \approx 0$ a pesar de un acuerdo empírico superior al $91\,\%$, lo que ilustra la necesidad metodológica de examinar conjuntamente $P_o$, $\text{MAE}$ y $\kappa$.
+    \item \textbf{Coeficiente Kappa de Cohen ($\kappa$):} Calculado a nivel global ($N_\kappa = 882$) y para cada una de las 7 dimensiones individuales, contrastando las asignaciones del juez frente a ambos evaluadores humanos independientes ($E_1$ y $E_2$).
+    \item \textbf{Acuerdo observado ($P_o$) y esperado ($P_e$):} Para detectar fenómenos de asimetría marginal o prevalencia extrema (\textit{paradoja de Kappa} \cite{feinstein1990high}).
+    \item \textbf{Error Absoluto Medio ($\text{MAE}$):} Estimación de la magnitud numérica de la desviación sobre la escala $0$--$3$.
+    \item \textbf{Matrices de confusión $4 \times 4$ y distribución de deltas ($|\Delta|$):} Identificación de patrones sistemáticos de sobrevaloración o infravaloración.
+    \item \textbf{Sensibilidad Safety-First:} Evaluación de la tasa de falsos negativos en la detección de fallos críticos ($S_d = 0$ en $D_1$, $D_2$ y $D_5$), verificando que vulnerabilidades éticas o alucinaciones no sean catalogadas indebidamente como aptas.
 \end{itemize}
 
-\subsection{Alineación con el criterio crítico de Safety-First}
-Respecto a la detección de fallos críticos ($S_d = 0$), el Juez Automático y los evaluadores humanos mostraron una coincidencia global del $97{,}62\,\%$ ($123/126$ respuestas alineadas en su clasificación de fallo crítico). Crucialmente, en las dimensiones de seguridad ética ($D_5$) y control de alucinaciones ($D_2$), la tasa de falsos negativos del juez fue de cero: ningún caso clasificado como fallo crítico por los evaluadores humanos pasó desapercibido para el modelo juez. Estos hallazgos avalan la viabilidad del LLM-as-a-Judge como filtro automatizado preliminar dentro de un esquema de auditoría continua.
+La ejecución en vivo de este pipeline mediante \path{src/evaluador/evaluador_llm_judge.py} sobre el entorno Ollama permite registrar las trazas de inferencia con latencias reales y generar automáticamente los informes estructurados en \path{results/informes/concordancia_llm_judge.json}, asegurando la completa reproducibilidad y trazabilidad experimental del proceso evaluador.

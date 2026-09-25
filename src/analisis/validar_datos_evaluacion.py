@@ -214,7 +214,7 @@ def validar_dataset_llm_judge() -> List[str]:
         if len(raw_data) != 126:
             errores.append(f"[raw_judge] Número de trazas incorrecto: {len(raw_data)} (esperados: 126).")
         else:
-            print(f"    ✅ {raw_file.name}: 126 trazas raw de inferencia validadas.")
+            print(f"    [+] {raw_file.name}: 126 trazas raw de inferencia validadas.")
             
     # 2. Validar JSON normalizado
     norm_file = judge_dir / "evaluacion_llm_judge.json"
@@ -228,7 +228,7 @@ def validar_dataset_llm_judge() -> List[str]:
         errs = validar_dataset_evaluacion(norm_data, norm_file.name, evaluador_esperado="LLM_JUDGE")
         errores.extend(errs)
         if not errs:
-            print(f"    ✅ {norm_file.name}: 126 registros normalizados validados (LLM_JUDGE).")
+            print(f"    [+] {norm_file.name}: 126 registros normalizados validados (LLM_JUDGE).")
             
     return errores
 
@@ -248,7 +248,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         errs = validar_csv_raw(csv_path, ev_id)
         total_errores.extend(errs)
         if not errs:
-            print(f"    ✅ {fname}: 126 anotaciones originales validadas ({ev_id}).")
+            print(f"    [+] {fname}: 126 anotaciones originales validadas ({ev_id}).")
             
     # 2. Validar archivos JSON de Evaluador 1 y 2
     print("  [2/4] Validando datasets normalizados JSON (Evaluador 1 y 2)...")
@@ -271,7 +271,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         errs = validar_dataset_evaluacion(datos, fname, evaluador_esperado=ev_id)
         total_errores.extend(errs)
         if not errs:
-            print(f"    ✅ {fname}: {len(datos)} registros validados ({ev_id}).")
+            print(f"    [+] {fname}: {len(datos)} registros validados ({ev_id}).")
             
     # 3. Comparación exacta campo a campo raw CSV <-> normalizado JSON
     print("  [3/4] Comprobando correspondencia exacta y biunívoca (raw CSV <-> JSON)...")
@@ -283,7 +283,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         errs_comp = comparar_csv_con_json(RAW_DIR / csv_name, EVAL_DIR / json_name)
         total_errores.extend(errs_comp)
         if not errs_comp:
-            print(f"    ✅ {csv_name} <-> {json_name}: correspondencia exacta 126/126 registros (0 discrepancias).")
+            print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta 126/126 registros (0 discrepancias).")
             
     # 4. Validar particiones por perfil (Evaluador 1)
     print("  [4/4] Validando particiones por perfil...")
@@ -303,7 +303,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="evaluador_1")
         total_errores.extend(errs)
         if not errs:
-            print(f"    ✅ {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
+            print(f"    [+] {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
             
     # 5. Opcional: Validar LLM Judge
     if incluir_judge:
@@ -313,16 +313,16 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
     # Resumen final
     print("-" * 65)
     if total_errores:
-        print(f"❌ Se encontraron {len(total_errores)} errores de validación:")
+        print(f"[-] Se encontraron {len(total_errores)} errores de validación:")
         for e in total_errores[:20]:
             print(f"   - {e}")
         if len(total_errores) > 20:
             print(f"   ... y {len(total_errores)-20} errores más.")
             return False
     else:
-        print("🎉 TODOS LOS CONJUNTOS DE EVALUACIÓN CUMPLEN EL ESTÁNDAR METODOLÓGICO.")
-        print(f"   Trazabilidad completa: raw CSV -> normalizado JSON -> métricas.")
-        print(f"   Total de pares evaluados pareados: 126 casos x 7 dimensiones = 882 puntuaciones.")
+        print("  Todos los conjuntos de evaluacion cumplen el estandar metodologico.")
+        print(f"  Trazabilidad completa: raw CSV -> normalizado JSON -> métricas.")
+        print(f"  Total de pares evaluados pareados: 126 casos x 7 dimensiones = 882 puntuaciones.")
     print("=" * 65)
     return len(total_errores) == 0
 

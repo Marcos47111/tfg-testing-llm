@@ -8,7 +8,7 @@ from pathlib import Path
 from src.evaluador.evaluador_llm_judge import (
     parsear_y_validar_salida_juez,
     construir_prompt_evaluacion,
-    CalibratedOfflineJudgeProvider,
+    MockJudgeProvider,
     DIMENSIONES,
     RUBRICA_SISTEMA
 )
@@ -104,21 +104,12 @@ class TestLLMJudge(unittest.TestCase):
         self.assertEqual(m[3][2], 1)
         self.assertEqual(m[3][3], 0)
 
-    def test_evaluacion_calibrada_offline(self):
-        provider = CalibratedOfflineJudgeProvider()
-        caso = {
-            "id": "FACT_006",
-            "dimension_principal": "D1_correccion_factual",
-            "materia": "Química",
-            "nivel_educativo": "Secundaria",
-            "prompt": "Ecuación del propano",
-            "ground_truth": "C3H8 + 5 O2 -> 3 CO2 + 4 H2O",
-            "criterio_fallo_critico": "Ecuación desbalanceada"
-        }
-        resp_base = {"perfil": "asistente_base", "respuesta_generada": "C3H8 + 9/2 O2..."}
-        raw_json = provider.evaluar(RUBRICA_SISTEMA, "dummy", caso, resp_base)
+    def test_mock_judge_provider(self):
+        provider = MockJudgeProvider()
+        raw_json = provider.evaluar(RUBRICA_SISTEMA, "dummy user prompt")
         eval_res = parsear_y_validar_salida_juez(raw_json)
-        self.assertEqual(eval_res["puntuaciones"]["D1_correccion_factual"], 0)
+        self.assertEqual(len(eval_res["puntuaciones"]), 7)
+        self.assertIn(eval_res["puntuaciones"]["D1_correccion_factual"], [0, 1, 2, 3])
 
 
 if __name__ == "__main__":

@@ -88,7 +88,7 @@ def generar_grafico_radar(datos: dict):
         plt.savefig(d / "radar_dimensiones.png", bbox_inches="tight")
         plt.savefig(d / "radar_dimensiones.pdf", bbox_inches="tight")
     plt.close()
-    print("  ✅ Gráfico de radar generado correctamente.")
+    print("  [+] Grafico de radar generado correctamente.")
 
 
 def generar_grafico_barras_metricas(datos: dict):
@@ -138,7 +138,7 @@ def generar_grafico_barras_metricas(datos: dict):
         plt.savefig(d / "barras_metricas_globales.png", bbox_inches="tight")
         plt.savefig(d / "barras_metricas_globales.pdf", bbox_inches="tight")
     plt.close()
-    print("  ✅ Gráfico de barras de métricas globales generado correctamente.")
+    print("  [+] Grafico de barras de metricas globales generado correctamente.")
 
 
 def generar_todas_las_figuras():
@@ -149,7 +149,7 @@ def generar_todas_las_figuras():
     datos = cargar_datos_resumen()
     generar_grafico_radar(datos)
     generar_grafico_barras_metricas(datos)
-    print(f"📊 Todas las figuras han sido exportadas a {GRAFICOS_DIR}, {FIGURAS_MEMORIA_DIR} e {IMG_MEMORIA_DIR}")
+    print(f"[+] Todas las figuras han sido exportadas a {GRAFICOS_DIR}, {FIGURAS_MEMORIA_DIR} e {IMG_MEMORIA_DIR}")
 
 
 if __name__ == "__main__":

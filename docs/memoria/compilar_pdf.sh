@@ -32,7 +32,7 @@ echo "[+] Limpiando ficheros auxiliares temporales..."
 rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy
 
 echo "=============================================="
-echo "✅ Memoria compilada con éxito:"
+echo "[+] Memoria compilada con éxito:"
 echo "   $DIR/main.pdf"
 echo "   Páginas: $(pdfinfo main.pdf 2>/dev/null | grep Pages | awk '{print $2}' || echo 'OK')"
 echo "=============================================="

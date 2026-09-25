@@ -51,7 +51,7 @@ def generar_tabla_latex_comparativa():
     with open(TABLAS_DIR / "tabla_comparativa_modelos.tex", "w", encoding="utf-8") as f:
         f.write(codigo_latex)
         
-    print("  ✅ Tabla LaTeX generada en results/tablas/tabla_comparativa_modelos.tex")
+    print("  [+] Tabla LaTeX generada en results/tablas/tabla_comparativa_modelos.tex")
     return codigo_latex
 
 

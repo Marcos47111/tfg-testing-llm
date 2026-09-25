@@ -10,14 +10,14 @@
 
 ---
 
-## 🎯 Objetivo del Proyecto
+## Objetivo del Proyecto
 Diseñar, formalizar y evaluar una metodología sistemática y reproducible de **testing de calidad, fiabilidad, seguridad y utilidad pedagógica** para chatbots y asistentes conversacionales basados en Modelos de Lenguaje de Gran Tamaño (LLMs) aplicados a entornos educativos.
 
 El marco se fundamenta en los atributos de calidad de producto de la norma **ISO/IEC 25010:2023**, la teoría de la **Zona de Desarrollo Próximo y Andamiaje** de Vygotsky, Wood, Bruner & Ross, y los modelos de retroalimentación formativa de Hattie & Timperley.
 
 ---
 
-## 🚀 Guía Rápida de Uso y Reproducibilidad
+## Guía Rápida de Uso y Reproducibilidad
 
 ### 1. Entorno Python e Instalación de Dependencias
 Se recomienda utilizar Python 3.10 o superior:
@@ -58,8 +58,11 @@ python3 src/visualizacion/generar_graficos.py
 
 ### 5. Extensión Experimental: Evaluación Automática (LLM-as-a-Judge)
 ```bash
-# 1. Ejecutar el evaluador automático a ciegas (modo calibrado offline o vía API Ollama/OpenAI):
-python3 src/evaluador/evaluador_llm_judge.py --mode calibrado
+# 1. Ejecutar el evaluador automático a ciegas (vía Ollama con Qwen2.5-14B-Instruct o endpoint compatible):
+python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b --temperature 0
+
+# (Opcional: modo mock para desarrollo local sin GPU / CI, aislado en results/demo_simulada/):
+python3 src/evaluador/evaluador_llm_judge.py --mode mock
 
 # 2. Validar integridad de los datasets incluyendo el juez automático:
 python3 src/analisis/validar_datos_evaluacion.py --incluir-judge
@@ -79,7 +82,7 @@ python3 src/evaluador/ejecutor_pruebas.py --mode ollama --model llama3:8b --endp
 
 ---
 
-## 📁 Estructura del Repositorio
+## Estructura del Repositorio
 
 ```text
 TFG/
@@ -137,7 +140,7 @@ TFG/
 
 ---
 
-## 📊 Resumen de Resultados Experimentales
+## Resumen de Resultados Experimentales
 
 ### 1. Evaluación Principal (Evaluadores Humanos de Referencia $E_1$ y $E_2$)
 Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B-Instruct** (`Q4_0`, `num_ctx=2048`, `seed=42`, $N_\kappa=882$, $\kappa_{\text{humano}} = 0{,}982$):
@@ -151,10 +154,10 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 * **Concordancia Inter-Evaluador Humana (Doble evaluación independiente):** $\kappa = 0{,}982$ ($P_o = 0{,}9932, P_e = 0{,}6260$).
 
 ### 2. Extensión Exploratoria LLM-as-a-Judge (Qwen2.5-14B-Instruct vs Humanos)
-Evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicios pareados, $T=0.0$):
+Pipeline de evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicios pareados, $T=0.0$):
 
-- **Kappa Global Juez vs $E_1$:** $\kappa = 0{,}829$ (Acuerdo casi perfecto / Excelente), $\text{MAE} = 0{,}088$ puntos.
-- **Kappa Global Juez vs $E_2$:** $\kappa = 0{,}849$.
-- **Acuerdo Exacto ($|\Delta|=0$):** $94{,}1\,\%$ (830 / 882 pares).
-- **Sensibilidad Safety-First:** $97{,}62\,\%$ coincidencia en fallos críticos ($0$ falsos negativos en Alucinaciones y Seguridad).
-- **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON de `data/respuestas_obtenidas/raw/` se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.
+- **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b` vía Ollama API / endpoint compatible).
+- **Cegamiento estricto:** El juez no recibe la etiqueta del perfil ni las calificaciones humanas.
+- **Métricas de concordancia:** Cálculo automático de $\kappa$ de Cohen dimensional y global, $P_o$, $P_e$, $\text{MAE}$, matrices de confusión $4 \times 4$, distribución de deltas y sensibilidad en fallos críticos (*Safety-First*).
+- **Trazabilidad:** Almacenamiento en `data/evaluaciones/llm_judge/` con latencias y trazas de inferencia raw completas.
+- **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.

@@ -65,7 +65,7 @@ def ejecutar_demo_heuristica():
         with open(archivo_salida, "w", encoding="utf-8") as f:
             json.dump(evals, f, indent=2, ensure_ascii=False)
             
-    print(f"✅ Demo heurística generada en {DEMO_OUTPUT_DIR}")
+    print(f"[+] Demo heurística generada en {DEMO_OUTPUT_DIR}")
 
 
 if __name__ == "__main__":
