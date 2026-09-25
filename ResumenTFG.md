@@ -710,13 +710,13 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 ## 26b. Extensión Experimental: Evaluación Automática (LLM-as-a-Judge)
 
 ### ¿Qué se ha realizado?
-Se ha evaluado la viabilidad de automatizar la rúbrica analítica $D_1 \dots D_7$ utilizando un modelo evaluador independiente de mayor tamaño (`Qwen2.5-14B-Instruct`, Q4_K_M) actuando como juez automático ciego sobre las 126 respuestas reales (882 juicios emparejados).
+Se ha evaluado experimentalmente la viabilidad de automatizar la rúbrica analítica $D_1 \dots D_7$ utilizando un modelo evaluador independiente (`Qwen2.5-14B-Instruct`, Q4_K_M) en modo ciego sobre las 126 respuestas reales (882 juicios emparejados).
 
 ### Resultados empíricos clave:
-1. **Error numérico medio muy bajo:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$).
-2. **Alto alineamiento en seguridad y alucinaciones:** Coeficientes de acuerdo moderado en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ acuerdo exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ acuerdo exacto). Coincidencia del $88{,}89\%$ en la clasificación *Safety-First*.
-3. **Discrepancia y severidad en dimensiones pedagógicas:** En Claridad ($D_3$), Feedback ($D_4$) y Nivel ($D_6$), el juez mostró un sesgo de mayor severidad (media de $2{,}47$ vs $2{,}67$ humana), penalizando la falta de andamiaje explícito.
-4. **Conclusión metodológica:** El juez automático es viable y eficiente para filtrado masivo en integración continua, pero requiere supervisión humana (*Human-in-the-Loop*) en decisiones pedagógicas cualitativas.
+1. **Error numérico medio:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$).
+2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$).
+3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}89\%$ (112/126), la sensibilidad para detectar respuestas con fallos críticos fue del $50{,}00\%$ (omitiendo 8 de las 16 respuestas críticas, $\text{FNR} = 50{,}00\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$), pero sólo el $60{,}0\%$ de alucinaciones ($D_2$) y el $30{,}0\%$ de errores factuales ($D_1$).
+4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia limitada ($\kappa = 0{,}190$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
 
 ---
 

@@ -93,7 +93,7 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
                 errores.append(f"{prefijo} Falta la dimensión '{dim}' en 'puntuaciones'.")
             else:
                 score = puntuaciones[dim]
-                if not isinstance(score, int) or score not in [0, 1, 2, 3]:
+                if type(score) is not int or score not in [0, 1, 2, 3]:
                     errores.append(f"{prefijo} Puntuación inválida en '{dim}': {score} (debe ser entero en [0, 3]).")
                     
             if dim not in justificaciones:

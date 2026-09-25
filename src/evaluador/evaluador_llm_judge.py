@@ -54,9 +54,7 @@ PERFILES = ["asistente_base", "tutor_directo", "tutor_socratico"]
 PROMPT_VERSION = "judge_prompt_v1"
 RUBRIC_VERSION = "rubric_d1_d7_v1"
 
-# -------------------------------------------------------------------------
-# DESCRIPCIÓN DE LA RÚBRICA CANÓNICA (CONCORDANTE CON ANEXO A.1 Y RÚBRICA GENERAL)
-# -------------------------------------------------------------------------
+# Rúbrica de evaluación multidimensional utilizada por el juez
 RUBRICA_SISTEMA = """
 Eres un juez evaluador experto en calidad de software educativo e Inteligencia Artificial Generativa.
 Tu tarea es auditar y calificar una respuesta emitida por un asistente conversacional (chatbot educativo) ante una consulta discente, aplicando con el máximo rigor la matriz de rúbricas analíticas en 7 dimensiones (escala discreta 0 a 3).
@@ -164,9 +162,7 @@ def construir_prompt_evaluacion(caso: Dict[str, Any], respuesta_generada: str) -
     )
 
 
-# -------------------------------------------------------------------------
-# PROVEEDORES DEL MODELO JUEZ (INTERFAZ CONFIGURABLE)
-# -------------------------------------------------------------------------
+# Proveedores del modelo juez (interfaz configurable)
 class JudgeProvider(abc.ABC):
     """Interfaz abstracta para proveedores de inferencia del LLM Juez."""
 

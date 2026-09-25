@@ -3,7 +3,7 @@
   "framework": "TFG Testing LLM Educativo",
   "modelo_base": "llama3:8b",
   "runtime": "Ollama",
-  "ollama_version": "0.34.1",
+  "ollama_version": "0.1.32",
   "model_digest": "365c0bd3c000a25d28ddbf732fe1c6add414de7275464c4e4d1c3b5fcb5d8ad1",
   "model_details": {
     "parent_model": "",
@@ -16,11 +16,11 @@
     "embedding_length": 4096
   },
   "parametros_inferencia": {
-    "temperature": 0.0,
+    "temperature": 0.2,
     "top_p": 0.9,
     "repeat_penalty": 1.1,
     "seed": 42,
-    "num_ctx": 8192
+    "num_ctx": 2048
   },
   "volumen_datos": {
     "total_respuestas": 126,

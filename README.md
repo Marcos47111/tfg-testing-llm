@@ -153,14 +153,32 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 * **Concordancia Inter-Evaluador Humana (Doble evaluación independiente):** $\kappa = 0{,}982$ ($P_o = 0{,}9932, P_e = 0{,}6260$).
 
-### 2. Extensión Exploratoria LLM-as-a-Judge (Protocolo LLM-as-a-Judge -- pendiente de ejecución experimental real)
-Pipeline de evaluación a ciegas sobre las 126 respuestas ($N_\kappa=882$ juicios pareados, $T=0.0$):
+### 2. Extensión Exploratoria LLM-as-a-Judge (Resultados Experimentales con Qwen2.5-14B-Instruct)
+Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$ juicios pareados, $T=0.0$, $\text{seed}=42$):
 
-- **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct` vía Ollama API / endpoint compatible).
-- **Cegamiento estricto:** El juez no recibe la etiqueta del perfil ni las calificaciones humanas.
-- **Métricas de concordancia:** Cálculo automático de $\kappa$ de Cohen dimensional y global, $P_o$, $P_e$, $\text{MAE}$, matrices de confusión $4 \times 4$, distribución de deltas y sensibilidad en fallos críticos (*Safety-First*).
-- **Trazabilidad:** Almacenamiento en `data/evaluaciones/llm_judge/` con latencias y trazas de inferencia raw completas.
-- **Nota sobre metadatos de inferencia:** Los campos `latencia_segundos` registrados en los ficheros JSON se conservan únicamente a título de metadato operacional de contexto de la ejecución y no forman parte del cálculo de métricas de calidad ($IQE$, $CFR$, $HR$) ni constituyen un benchmark de rendimiento computacional del modelo.
+* **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct`, Q4_K_M, SHA-256: `7cdf5a0187d5...`).
+* **Cegamiento estricto:** El juez no recibe la etiqueta del perfil generador ni calificaciones humanas previas.
+* **Métricas de concordancia global:**
+  * $\kappa$ de Cohen (Juez vs. $E_1$): **$0{,}1900$** (*Acuerdo leve*).
+  * $\kappa$ de Cohen (Juez vs. $E_2$): **$0{,}1856$** (*Acuerdo leve*).
+  * Error Absoluto Medio (MAE): **$0{,}4943$** puntos (en escala $0$--$3$).
+  * Acuerdo exacto ($|\Delta|=0$): **$63{,}49\%$** (560 / 882 juicios idénticos).
+  * Tolerancia en $\pm 1$ nivel ($|\Delta| \le 1$): **$90{,}93\%$** (802 / 882 juicios).
+* **Concordancia dimensional ($\kappa$ Juez vs. $E_1$):**
+  * $D_5$ Seguridad: $\kappa = 0{,}4207$ ($P_o = 90{,}48\%$, MAE = $0{,}159$) -- *Acuerdo moderado*.
+  * $D_2$ Alucinaciones: $\kappa = 0{,}3265$ ($P_o = 88{,}89\%$, MAE = $0{,}262$) -- *Acuerdo aceptable*.
+  * $D_1$ Factualidad: $\kappa = 0{,}2613$ ($P_o = 58{,}73\%$, MAE = $0{,}540$) -- *Acuerdo aceptable*.
+  * $D_7$ Directrices: $\kappa = 0{,}0860$ ($P_o = 68{,}25\%$, MAE = $0{,}532$) -- *Acuerdo leve*.
+  * $D_3$ Claridad: $\kappa = 0{,}0758$ ($P_o = 51{,}59\%$, MAE = $0{,}587$) -- *Acuerdo leve*.
+  * $D_4$ Feedback: $\kappa = 0{,}0663$ ($P_o = 38{,}89\%$, MAE = $0{,}754$) -- *Acuerdo leve*.
+  * $D_6$ Nivel: $\kappa = -0{,}0259$ ($P_o = 47{,}62\%$, MAE = $0{,}627$) -- *Sin acuerdo*.
+* **Auditoría Safety-First (Matriz de confusión de respuestas críticas):**
+  * Exactitud global: **$88{,}89\%$** (112 / 126 respuestas coincidentes).
+  * Sensibilidad ante respuestas críticas (Recall crítico): **$50{,}00\%$** (detecta 8 de 16 respuestas críticas, FN = 8).
+  * Especificidad: **$94{,}55\%$** (104 de 110 respuestas conformes, FP = 6).
+  * Tasa de Falsos Negativos (FNR): **$50{,}00\%$**.
+  * Detección de ceros críticos ($S_d = 0$): $D_5$ Seguridad ($100{,}0\%$, 5/5), $D_2$ Alucinaciones ($60{,}0\%$, 3/5), $D_1$ Factualidad ($30{,}0\%$, 3/10).
+* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa = 0{,}982$), pero su automatización con un LLM juez generalista presenta una concordancia limitada y omite la mitad de los fallos críticos de seguridad pedagógica (sensibilidad del $50{,}0\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
 
 ---
 

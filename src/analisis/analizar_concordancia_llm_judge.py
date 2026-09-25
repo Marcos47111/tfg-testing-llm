@@ -138,15 +138,45 @@ def analizar_fallos_criticos_cruzados(
                 "juez": j["puntuaciones"]
             })
             
+    # Detección por dimensión crítica individual (D1, D2, D5 con puntuación 0)
+    det_por_dim = {}
+    for dim_crit in ["D1_correccion_factual", "D2_control_alucinaciones", "D5_robustez_seguridad"]:
+        h_ceros = sum(1 for h in evals_humano if h["puntuaciones"].get(dim_crit) == 0)
+        j_coincide_cero = sum(1 for h, j in zip(evals_humano, evals_juez) if h["puntuaciones"].get(dim_crit) == 0 and j["puntuaciones"].get(dim_crit) == 0)
+        tasa_det = round((j_coincide_cero / h_ceros * 100), 2) if h_ceros > 0 else 100.0
+        det_por_dim[dim_crit] = {
+            "ceros_humano_referencia": h_ceros,
+            "ceros_detectados_por_juez": j_coincide_cero,
+            "tasa_deteccion_sensibilidad_pct": tasa_det
+        }
+
+    tp = coinciden_critico
+    tn = coinciden_no_critico
+    fp = len(falso_positivo_juez)
+    fn = len(falso_negativo_juez)
+    
+    sensibilidad = round((tp / (tp + fn)) * 100, 2) if (tp + fn) > 0 else 0.0
+    especificidad = round((tn / (tn + fp)) * 100, 2) if (tn + fp) > 0 else 0.0
+    fnr = round((fn / (tp + fn)) * 100, 2) if (tp + fn) > 0 else 0.0
+    fpr = round((fp / (tn + fp)) * 100, 2) if (tn + fp) > 0 else 0.0
+    accuracy = round(((tp + tn) / total_casos) * 100, 2)
+            
     return {
         "evaluador_humano_referencia": nombre_humano_ref,
         "total_respuestas_evaluadas": total_casos,
-        "coincidencias_fallo_critico": coinciden_critico,
-        "coincidencias_no_critico": coinciden_no_critico,
-        "tasa_acuerdo_safety_first": round(((coinciden_critico + coinciden_no_critico) / total_casos) * 100, 2),
-        "falsos_positivos_juez_respecto_a_referencia_recuento": len(falso_positivo_juez),
+        "matriz_confusion_2x2": {
+            "verdaderos_positivos_TP": tp,
+            "falsos_negativos_FN": fn,
+            "falsos_positivos_FP": fp,
+            "verdaderos_negativos_TN": tn
+        },
+        "exactitud_accuracy_pct": accuracy,
+        "sensibilidad_recall_critico_pct": sensibilidad,
+        "especificidad_pct": especificidad,
+        "tasa_falsos_negativos_fnr_pct": fnr,
+        "tasa_falsos_positivos_fpr_pct": fpr,
+        "deteccion_fallos_criticos_por_dimension": det_por_dim,
         "falsos_positivos_detalle": falso_positivo_juez,
-        "falsos_negativos_juez_respecto_a_referencia_recuento": len(falso_negativo_juez),
         "falsos_negativos_detalle": falso_negativo_juez
     }
 
@@ -361,8 +391,15 @@ def ejecutar_analisis_concordancia_llm_judge():
     with open(TABLAS_DIR / "tabla_concordancia_llm_judge.tex", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_tex) + "\n")
         
-    fn_count = safety_first_j_e1["falsos_negativos_juez_respecto_a_referencia_recuento"]
-    fp_count = safety_first_j_e1["falsos_positivos_juez_respecto_a_referencia_recuento"]
+    tp = safety_first_j_e1["matriz_confusion_2x2"]["verdaderos_positivos_TP"]
+    fn = safety_first_j_e1["matriz_confusion_2x2"]["falsos_negativos_FN"]
+    fp = safety_first_j_e1["matriz_confusion_2x2"]["falsos_positivos_FP"]
+    tn = safety_first_j_e1["matriz_confusion_2x2"]["verdaderos_negativos_TN"]
+    acc = safety_first_j_e1["exactitud_accuracy_pct"]
+    sens = safety_first_j_e1["sensibilidad_recall_critico_pct"]
+    esp = safety_first_j_e1["especificidad_pct"]
+    
+    det_dim = safety_first_j_e1["deteccion_fallos_criticos_por_dimension"]
     
     print(f"  [+] Tablas exportadas en {TABLAS_DIR}")
     print("\n  Resumen de Resultados Principales:")
@@ -372,7 +409,12 @@ def ejecutar_analisis_concordancia_llm_judge():
     print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_j_e1['acuerdo_exacto_delta_0']['recuento']}/{n_global} ({deltas_j_e1['acuerdo_exacto_delta_0']['porcentaje']}%)")
     print(f"   -> Discrepancia menor (|Δ|=1): {deltas_j_e1['discrepancia_menor_delta_1']['recuento']}/{n_global} ({deltas_j_e1['discrepancia_menor_delta_1']['porcentaje']}%)")
     print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_j_e1['discrepancia_moderada_delta_2']['recuento'] + deltas_j_e1['discrepancia_severa_delta_3']['recuento']}/{n_global}")
-    print(f"   -> Coincidencia en Safety-First: {safety_first_j_e1['tasa_acuerdo_safety_first']}% (FN={fn_count}, FP={fp_count})")
+    print(f"   -> Safety-First Accuracy: {acc}% (TP={tp}, TN={tn}, FP={fp}, FN={fn})")
+    print(f"   -> Safety-First Sensibilidad (Recall Crítico): {sens}% (detecta {tp}/{tp+fn} respuestas críticas)")
+    print(f"   -> Safety-First Especificidad: {esp}% (detecta {tn}/{tn+fp} respuestas conformes)")
+    print(f"   -> Detección Ceros D1 Factualidad: {det_dim['D1_correccion_factual']['ceros_detectados_por_juez']}/{det_dim['D1_correccion_factual']['ceros_humano_referencia']} ({det_dim['D1_correccion_factual']['tasa_deteccion_sensibilidad_pct']}%)")
+    print(f"   -> Detección Ceros D2 Alucinaciones: {det_dim['D2_control_alucinaciones']['ceros_detectados_por_juez']}/{det_dim['D2_control_alucinaciones']['ceros_humano_referencia']} ({det_dim['D2_control_alucinaciones']['tasa_deteccion_sensibilidad_pct']}%)")
+    print(f"   -> Detección Ceros D5 Seguridad: {det_dim['D5_robustez_seguridad']['ceros_detectados_por_juez']}/{det_dim['D5_robustez_seguridad']['ceros_humano_referencia']} ({det_dim['D5_robustez_seguridad']['tasa_deteccion_sensibilidad_pct']}%)")
     print("=" * 70)
 
 

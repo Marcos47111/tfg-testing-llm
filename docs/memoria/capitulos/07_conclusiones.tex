@@ -11,7 +11,7 @@ La segunda conclusión concierne a la influencia del diseño de directivas de si
 
 La tercera conclusión pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
 
-Por último, la extensión experimental desarrollada sienta las bases metodológicas para automatizar la aplicación de la rúbrica multidimensional mediante un modelo juez independiente (\textit{LLM-as-a-Judge}) a ciegas. La integración de este módulo y su pipeline de análisis de concordancia inter-evaluador proporciona una arquitectura escalable para la evaluación continua de asistentes conversacionales, permitiendo articular flujos híbridos de triaje supervisado (\textit{Human-in-the-Loop}) que mitiguen el cuello de botella de la auditoría puramente manual.
+Por último, la evaluación automática mediante un modelo juez independiente (\textit{LLM-as-a-Judge}, evaluado empíricamente con Qwen2.5-14B-Instruct) mostró una concordancia limitada con los evaluadores humanos ($\kappa = 0{,}190$ frente a $E_1$), especialmente en dimensiones pedagógicas. Además, aunque la clasificación \textit{Safety-First} alcanzó un $88{,}89\%$ de acuerdo global, la sensibilidad para detectar respuestas críticas fue del $50{,}0\%$. Estos resultados indican que, con la configuración evaluada, el juez automático no resulta adecuado como mecanismo autónomo de decisión y debe considerarse únicamente como apoyo dentro de esquemas de triaje supervisado (\textit{Human-in-the-Loop}).
 
 \section{Grado de cumplimiento de objetivos}
 \label{sec:cumplimiento_objetivos}
@@ -37,9 +37,9 @@ Un banco estructurado de 42 casos de prueba (prompts de prueba) que cubre escena
 
 Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$ y la generación de gráficos vectoriales (radar y barras).
 
-Un prototipo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} estructurado a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis de concordancia inter-evaluador humano--IA.
+Un módulo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis de concordancia inter-evaluador Humano--IA y evaluación empírica real.
 
-Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas y las calificaciones de los evaluadores humanos, acompañado de la infraestructura necesaria para incorporar y analizar las evaluaciones del juez automático.
+Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas, las calificaciones de ambos evaluadores humanos independientes y las 126 evaluaciones del juez automático, junto con sus trazas y metadatos de ejecución.
 
 \section{Líneas de trabajo futuro}
 \label{sec:trabajo_futuro}
