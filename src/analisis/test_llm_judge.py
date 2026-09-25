@@ -127,6 +127,8 @@ class TestLLMJudge(unittest.TestCase):
             "execution_signature": {
                 "provider": "MockJudgeProvider",
                 "model": "mismatched-model",
+                "model_digest": "mock_digest_00000000",
+                "ollama_version": None,
                 "temperature": 0.0,
                 "top_p": 0.9,
                 "seed": 42,

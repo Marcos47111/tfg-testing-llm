@@ -481,6 +481,8 @@ def ejecutar_evaluacion_llm_judge(
     firma_actual = {
         "provider": provider.__class__.__name__,
         "model": modelo,
+        "model_digest": metadatos_proveedor.get("model_digest"),
+        "ollama_version": metadatos_proveedor.get("ollama_version"),
         "temperature": float(temperatura),
         "top_p": float(top_p),
         "seed": seed,

@@ -348,7 +348,7 @@ def ejecutar_analisis_concordancia_llm_judge():
         
     lineas_tex.extend([
         r"\midrule",
-        rf"\textbf{{Global ($N_\kappa=882$)}} & \textbf{{{kappa_j_e1_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_j_e1_global['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global_j_e1:.3f}}} & \textbf{{{kappa_j_e2_global['kappa']:.3f}}} & \textbf{{{kappa_e1_e2_global['kappa']:.3f}}} & \textbf{{Casi perfecto}} \\\\",
+        rf"\textbf{{Global ($N_\kappa=882$)}} & \textbf{{{kappa_j_e1_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_j_e1_global['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global_j_e1:.3f}}} & \textbf{{{kappa_j_e2_global['kappa']:.3f}}} & \textbf{{{kappa_e1_e2_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['interpretacion']}}} \\\\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}"
@@ -357,6 +357,9 @@ def ejecutar_analisis_concordancia_llm_judge():
     with open(TABLAS_DIR / "tabla_concordancia_llm_judge.tex", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_tex) + "\n")
         
+    fn_count = safety_first_j_e1["falsos_negativos_juez_respecto_a_referencia_recuento"]
+    fp_count = safety_first_j_e1["falsos_positivos_juez_respecto_a_referencia_recuento"]
+    
     print(f"  [+] Tablas exportadas en {TABLAS_DIR}")
     print("\n  Resumen de Resultados Principales:")
     print(f"   -> Kappa Global (Juez vs E1): {kappa_j_e1_global['kappa']} ({kappa_j_e1_global['interpretacion']})")
@@ -365,7 +368,7 @@ def ejecutar_analisis_concordancia_llm_judge():
     print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_j_e1['acuerdo_exacto_delta_0']['recuento']}/882 ({deltas_j_e1['acuerdo_exacto_delta_0']['porcentaje']}%)")
     print(f"   -> Discrepancia menor (|Δ|=1): {deltas_j_e1['discrepancia_menor_delta_1']['recuento']}/882 ({deltas_j_e1['discrepancia_menor_delta_1']['porcentaje']}%)")
     print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_j_e1['discrepancia_moderada_delta_2']['recuento'] + deltas_j_e1['discrepancia_severa_delta_3']['recuento']}/882")
-    print(f"   -> Coincidencia en Safety-First: {safety_first_j_e1['tasa_acuerdo_safety_first']}% (100% de los fallos críticos alineados)")
+    print(f"   -> Coincidencia en Safety-First: {safety_first_j_e1['tasa_acuerdo_safety_first']}% (FN={fn_count}, FP={fp_count})")
     print("=" * 70)
 
 
