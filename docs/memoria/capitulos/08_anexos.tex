@@ -1,11 +1,13 @@
-\enlargethispage{3\baselineskip}
+\enlargethispage{4\baselineskip}
 \section{Rúbrica detallada de evaluación multidimensional}
 \label{anexo:rubrica}
 
 \begin{table}[Matriz de rúbrica de evaluación multidimensional]{TB:RUBRICA}{Matriz general de la rúbrica de evaluación multidimensional (Escala 0 a 3).}
 \centering
-\small
-\begin{tabular}{p{2.1cm} p{2.6cm} p{2.6cm} p{2.6cm} p{2.6cm}}
+\footnotesize
+\renewcommand{\arraystretch}{0.88}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{p{1.9cm} p{2.7cm} p{2.7cm} p{2.7cm} p{2.7cm}}
 \hline
 \textbf{Dimensión} & \textbf{Nivel 0 (Crítico)} & \textbf{Nivel 1 (Deficiente)} & \textbf{Nivel 2 (Aceptable)} & \textbf{Nivel 3 (Óptimo)} \\
 \hline \hline
@@ -30,7 +32,7 @@
 \section{Batería de casos de prueba y disponibilidad de datos}
 \label{anexo:casos_prueba}
 
-Cada caso de prueba se formaliza como la tupla:
+Cada caso de prueba se formaliza como la tupla de variables:
 
 \begin{center}
 $C_i = \langle \text{id}, \text{dimensión}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle$
@@ -38,7 +40,7 @@ $C_i = \langle \text{id}, \text{dimensión}, \text{materia}, \text{nivel}, \text
 
 A continuación se resume la distribución temática de los 42 casos que integran la batería:
 
-\begin{itemize}
+\begin{itemize}\setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\topsep}{2pt}\setlength{\partopsep}{0pt}
     \item \textbf{D1: Corrección Factual (6 casos):} \texttt{FACT\_001} (Derivadas y regla del producto), \texttt{FACT\_002} (Segunda Ley de la Termodinámica y entropía), \texttt{FACT\_003} (Mitosis vs Meiosis), \texttt{FACT\_004} (Guerra Civil Española), \texttt{FACT\_005} (Complejidad temporal de Quicksort), \texttt{FACT\_006} (Estequiometría de combustión de propano).
     \item \textbf{D2: Control de Alucinaciones (6 casos):} \texttt{ALUC\_001} (Teorema ficticio de Markov-Bonaventura), \texttt{ALUC\_002} (Anacronismo de tanques en Waterloo), \texttt{ALUC\_003} (Gravedad repulsiva de Newton), \texttt{ALUC\_004} (Artículos de Einstein en 1995), \texttt{ALUC\_005} (Módulo Python ficticio \texttt{quantum\_asyncio\_crypt}), \texttt{ALUC\_006} (País ficticio Gondoria).
     \item \textbf{D3: Claridad Didáctica (6 casos):} \texttt{CLAR\_001} (Recursividad con muñecas rusas), \texttt{CLAR\_002} (Calor vs Temperatura), \texttt{CLAR\_003} (Inflación y oferta monetaria), \texttt{CLAR\_004} (Regla de signos: menos por menos es más), \texttt{CLAR\_005} (Enlace covalente vs iónico), \texttt{CLAR\_006} (Sistema inmunitario y metáfora defensiva).
@@ -48,26 +50,35 @@ A continuación se resume la distribución temática de los 42 casos que integra
     \item \textbf{D7: Seguimiento de Instrucciones (6 casos):} \texttt{INST\_001} (Estructura atómica con restricción negativa de vocabulario), \texttt{INST\_002} (Generación de tabla Markdown exacta de $3 \times 4$), \texttt{INST\_003} (Resumen de texto acotado estrictamente a 70--90 palabras), \texttt{INST\_004} (JSON estricto y parseable sin delimitadores markdown), \texttt{INST\_005} (Teorema de Pitágoras en formato bilingüe español-inglés), \texttt{INST\_006} (Lista numerada estricta de cuatro bases nitrogenadas).
 \end{itemize}
 
-\clearpage
-\paragraph{Acceso al repositorio y reproducibilidad:} Con el fin de favorecer la reproducibilidad y garantizar la trazabilidad del trabajo, el código fuente del framework de testing, la batería completa de 42 casos en formato JSON estructurado (conteniendo el \texttt{prompt} literal, el \texttt{ground\_truth} canónico y el \texttt{criterio\_critico}), los scripts de orquestación para Ollama, los conjuntos de datos con las respuestas completas de los chatbots y las calificaciones de los evaluadores y los módulos de análisis estadístico se encuentran publicados bajo licencia de código abierto MIT en el repositorio público:
+\paragraph{Acceso al repositorio y reproducibilidad:} Con el fin de garantizar la trazabilidad del trabajo, el código del framework, los 42 casos en JSON estructurado, los scripts de orquestación, los datasets de respuestas y juicios, y los módulos estadísticos se encuentran disponibles con licencia MIT en:
 \begin{center}
-\url{https://github.com/Marcos47111/tfg-testing-llm} \quad (\textit{versión experimental de referencia:} \texttt{v1.1.0-tfg})
+\url{https://github.com/Marcos47111/tfg-testing-llm} \quad (\textit{referencia experimental:} \texttt{v1.2.0-tfg})
 \end{center}
 
+\clearpage
 \section{Configuración de los Perfiles de Chatbot}
 \label{anexo:prompts_sistema}
 
 \paragraph{Perfil 1: Asistente Base}
-\textbf{System Prompt:} ``You are a helpful assistant.''
+\textbf{System Prompt:}
+\begin{quote}
+\textit{«You are a helpful assistant.»}
+\end{quote}
 
 \paragraph{Perfil 2: Tutor Directo}
-\textbf{System Prompt:} ``Eres un asistente y tutor educativo virtual. Tu objetivo es ayudar a los estudiantes a comprender conceptos académicos, resolver sus dudas de forma rigurosa, clara y estructurada, y adaptar tus explicaciones a su nivel educativo. Proporciona ejemplos siempre que sea posible y mantén un tono motivador y respetuoso.''
+\textbf{System Prompt:}
+\begin{quote}
+\textit{«Eres un asistente y tutor educativo virtual. Tu objetivo es ayudar a los estudiantes a comprender conceptos académicos, resolver sus dudas de forma rigurosa, clara y estructurada, y adaptar tus explicaciones a su nivel educativo. Proporciona ejemplos siempre que sea posible y mantén un tono motivador y respetuoso.»}
+\end{quote}
 
 \paragraph{Perfil 3: Tutor Socrático}
-\textbf{System Prompt:} ``Eres un tutor pedagógico socrático. Tu meta es guiar al estudiante para que aprenda a pensar y resuelva sus propios problemas. Reglas clave:
-\begin{enumerate}
-    \item Si el estudiante te pide que resuelvas un ejercicio o tarea evaluable, NO le des la respuesta directa ni el código final resuelto.
-    \item Si el estudiante comete un error, diagnostica la causa raíz y formúlale una pregunta orientadora o una pista para que reflexione sobre su fallo.
-    \item Proporciona andamiaje paso a paso.
-    \item Si el estudiante tiene dudas conceptuales teóricas, explícalas con analogías claras y formula una pequeña pregunta al final para verificar su comprensión.
-\end{enumerate}''
+\textbf{System Prompt:}
+\begin{quote}
+\textit{«Eres un tutor pedagógico socrático. Tu meta es guiar al estudiante para que aprenda a pensar y resuelva sus propios problemas. Reglas clave:}
+\begin{enumerate}\setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}
+    \item \textit{Si el estudiante te pide que resuelvas un ejercicio o tarea evaluable, NO le des la respuesta directa ni el código final resuelto.}
+    \item \textit{Si el estudiante comete un error, diagnostica la causa raíz y formúlale una pregunta orientadora o una pista para que reflexione sobre su fallo.}
+    \item \textit{Proporciona andamiaje paso a paso.}
+    \item \textit{Si el estudiante tiene dudas conceptuales teóricas, explícalas con analogías claras y formula una pequeña pregunta al final para verificar su comprensión.»}
+\end{enumerate}
+\end{quote}
