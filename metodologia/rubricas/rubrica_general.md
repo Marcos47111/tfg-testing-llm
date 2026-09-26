@@ -25,6 +25,7 @@ Esta rúbrica estandarizada define los criterios homogéneos para evaluar cualqu
 ---
 
 ## Fundamentación Metodológica y Psicométrica
-* **Eliminación del Sesgo de Tendencia Central:** Se utiliza una escala forzada par de 4 niveles ($0, 1, 2, 3$) que evita la neutralidad ambigua de las escalas impares de 5 puntos (*Likert*) y divide nítidamente la zona de inaceptabilidad ($0-1$) de la zona de aptitud educativa ($2-3$).
-* **Principio de Evaluación Multidimensional de LLMs (*Zheng et al., 2023*):** La descomposición en rúbricas analíticas con descriptores conductuales concretos minimiza la variabilidad inter-evaluador y permite la reproducibilidad tanto en evaluación humana como mediante *LLM-as-a-judge*.
+* **Reducción del Sesgo de Tendencia Central:** Se utiliza una escala par de 4 niveles ($0, 1, 2, 3$) que busca reducir el recurso al punto medio neutral propio de las escalas impares de 5 puntos y delimita la zona de no conformidad ($0-1$) de la zona de suficiencia educativa ($2-3$).
+* **Evaluación Multidimensional y Rúbricas Analíticas:** La descomposición en rúbricas analíticas con descriptores operacionales concretos favorece la consistencia inter-evaluador y sienta las bases para auditorías reproducibles, tanto en evaluación humana como mediante paradigmas de juez automático (*LLM-as-a-judge*, Zheng et al., 2023).
 * **Principio de Daño Asimétrico (*Safety-First*):** La definición de fallo crítico impide que una buena forma estética (D3=3) compense una vulneración de seguridad (D5=0) o un error factual inductivo (D1=0).
+

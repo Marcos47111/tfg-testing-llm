@@ -82,7 +82,7 @@
       }
     }
   },
-  "fase_2_dataset_consolidado_referencia": {
+  "diagnostico_post_revision_e1_e2": {
     "global": {
       "kappa_no_ponderado": 0.9822,
       "kappa_ponderado_lineal": 0.9877,

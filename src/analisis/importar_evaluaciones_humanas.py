@@ -109,27 +109,67 @@ def ejecutar_importacion_y_normalizacion():
                 if not item["nivel_educativo"]:
                     item["nivel_educativo"] = p_info["nivel_educativo"]
                     
-    # 3. Construir Dataset Unificado Gold Standard
+    # 3. Cargar Adjudicaciones Formales del Gold Standard
+    adjudicaciones_csv = EVAL_DIR / "adjudicaciones_gold_standard.csv"
+    adjudicaciones = {}
+    if adjudicaciones_csv.exists():
+        with open(adjudicaciones_csv, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                clave = (row["caso_id"].strip(), row["perfil"].strip(), row["dimension"].strip())
+                adjudicaciones[clave] = {
+                    "score_gold": int(row["score_gold"]),
+                    "criterio": row.get("criterio_adjudicacion", "").strip(),
+                    "justificacion": row.get("justificacion_adjudicacion", "").strip()
+                }
+
+    # 4. Construir Dataset Unificado Gold Standard mediante Adjudicación Explícita
+    map_e2 = {(item["caso_id"], item["perfil"]): item for item in eval_2}
     eval_gold_standard = []
-    for item in eval_1:
+    
+    for item_e1 in eval_1:
+        cid = item_e1["caso_id"]
+        perf = item_e1["perfil"]
+        item_e2 = map_e2.get((cid, perf))
+        
+        puntuaciones_gold = {}
+        justificaciones_gold = {}
+        
+        for d in DIMENSIONES:
+            s_e1 = item_e1["puntuaciones"][d]
+            s_e2 = item_e2["puntuaciones"][d] if item_e2 else s_e1
+            j_e1 = item_e1["justificaciones"][d]
+            
+            if s_e1 == s_e2:
+                puntuaciones_gold[d] = s_e1
+                justificaciones_gold[d] = j_e1
+            else:
+                clave_adj = (cid, perf, d)
+                if clave_adj in adjudicaciones:
+                    adj = adjudicaciones[clave_adj]
+                    puntuaciones_gold[d] = adj["score_gold"]
+                    justificaciones_gold[d] = adj["justificacion"] if adj["justificacion"] else j_e1
+                else:
+                    raise ValueError(f"Discrepancia sin adjudicar en {cid} ({perf}, {d}): E1={s_e1} vs E2={s_e2}")
+                    
         gold_item = {
-            "caso_id": item["caso_id"],
-            "perfil": item["perfil"],
+            "caso_id": cid,
+            "perfil": perf,
             "evaluador_id": "gold_standard",
-            "dimension_principal": item["dimension_principal"],
-            "categoria": item["categoria"],
-            "materia": item["materia"],
-            "nivel_educativo": item["nivel_educativo"],
-            "puntuaciones": dict(item["puntuaciones"]),
-            "justificaciones": dict(item["justificaciones"])
+            "dimension_principal": item_e1["dimension_principal"],
+            "categoria": item_e1["categoria"],
+            "materia": item_e1["materia"],
+            "nivel_educativo": item_e1["nivel_educativo"],
+            "puntuaciones": puntuaciones_gold,
+            "justificaciones": justificaciones_gold
         }
         eval_gold_standard.append(gold_item)
 
-    # 4. Guardar JSONs canónicos
+    # 5. Guardar JSONs canónicos
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
     with open(EVAL_DIR / "evaluacion_gold_standard.json", "w", encoding="utf-8") as f:
         json.dump(eval_gold_standard, f, indent=2, ensure_ascii=False)
-    print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_gold_standard.json'} (126 registros - Gold Standard Canónico)")
+    print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_gold_standard.json'} (126 registros - Gold Standard Canónico Adjudicado)")
 
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "w", encoding="utf-8") as f:
         json.dump(eval_1, f, indent=2, ensure_ascii=False)
@@ -139,7 +179,7 @@ def ejecutar_importacion_y_normalizacion():
         json.dump(eval_2, f, indent=2, ensure_ascii=False)
     print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_evaluador_2.json'} (126 registros)")
     
-    # 5. Exportar CSV raw del Gold Standard
+    # 6. Exportar CSV raw del Gold Standard
     gold_csv = RAW_DIR / "anotaciones_gold_standard_raw.csv"
     with open(gold_csv, "w", encoding="utf-8", newline="") as f:
         fieldnames = ["caso_id", "perfil", "evaluador_id", "dimension_principal", "categoria", "materia", "nivel_educativo"]
@@ -166,7 +206,7 @@ def ejecutar_importacion_y_normalizacion():
             writer.writerow(row)
     print(f"  [+] Exportado: {gold_csv} (126 registros)")
 
-    # 6. Particiones por perfil (derivadas formalmente del Gold Standard)
+    # 7. Particiones por perfil (derivadas formalmente del Gold Standard)
     for perfil in PERFILES:
         items_perfil = [item for item in eval_gold_standard if item["perfil"] == perfil]
         with open(EVAL_DIR / f"evaluacion_{perfil}.json", "w", encoding="utf-8") as f:

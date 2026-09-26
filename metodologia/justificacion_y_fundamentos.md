@@ -69,9 +69,9 @@ Cada una de las 7 dimensiones ha sido seleccionada para evaluar facetas observab
 ### 3.1. Elección de la Escala Par de 4 Niveles (0 a 3)
 Se ha seleccionado deliberadamente una escala de **4 niveles discretos** ($0, 1, 2, 3$) en lugar de la tradicional escala Likert de 5 puntos por razones metodológicas bien documentadas:
 
-1. **Eliminación del Sesgo de Tendencia Central (*Central Tendency Bias*):**
+1. **Reducción del Sesgo de Tendencia Central (*Central Tendency Bias*):**
    * En escalas de 5 puntos con valor medio neutro (ej. 3 = "regular" o "neutro"), los evaluadores humanos y automáticos tienden a concentrar sus respuestas en el punto central ante cualquier mínima duda.
-   * Una escala par de 4 niveles **fuerza una decisión cualitativa binaria fundamental**:
+   * Una escala par de 4 niveles **reduce el recurso a la indeterminación y estructura la decisión**:
      * **Zona de Insuficiencia (0 y 1):** La respuesta NO es apta para su uso educativo autónomo.
      * **Zona de Suficiencia (2 y 3):** La respuesta SÍ es apta para su uso educativo.
 2. **Significado Semántico Riguroso:**

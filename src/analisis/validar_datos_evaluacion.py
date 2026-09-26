@@ -412,6 +412,41 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         total_errores.extend(errs_comp)
         if not errs_comp:
             print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta {total_evaluaciones_esperadas}/{total_evaluaciones_esperadas} (0 discrepancias).")
+
+    # Validar tabla de adjudicaciones del Gold Standard
+    adj_csv = EVAL_DIR / "adjudicaciones_gold_standard.csv"
+    if adj_csv.exists():
+        with open(adj_csv, "r", encoding="utf-8") as f:
+            r_adj = list(csv.DictReader(f))
+        map_adj = {(r["caso_id"].strip(), r["perfil"].strip(), r["dimension"].strip()): int(r["score_gold"]) for r in r_adj}
+        
+        with open(EVAL_DIR / "evaluacion_evaluador_1.json", "r", encoding="utf-8") as f:
+            e1_data = { (x["caso_id"], x["perfil"]): x["puntuaciones"] for x in json.load(f) }
+        with open(EVAL_DIR / "evaluacion_evaluador_2.json", "r", encoding="utf-8") as f:
+            e2_data = { (x["caso_id"], x["perfil"]): x["puntuaciones"] for x in json.load(f) }
+        with open(EVAL_DIR / "evaluacion_gold_standard.json", "r", encoding="utf-8") as f:
+            gold_data = { (x["caso_id"], x["perfil"]): x["puntuaciones"] for x in json.load(f) }
+            
+        discrepancias_detectadas = 0
+        for k, p1 in e1_data.items():
+            p2 = e2_data[k]
+            pg = gold_data[k]
+            cid, perf = k
+            for d in DIMENSIONES_ESPERADAS:
+                if p1[d] != p2[d]:
+                    discrepancias_detectadas += 1
+                    clave_d = (cid, perf, d)
+                    if clave_d not in map_adj:
+                        total_errores.append(f"[adjudicacion_gold] Discrepancia no registrada en {adj_csv.name}: {clave_d}")
+                    else:
+                        if pg[d] != map_adj[clave_d]:
+                            total_errores.append(f"[adjudicacion_gold] Puntuación en Gold Standard no coincide con adjudicación en {clave_d}: Gold={pg[d]} vs Adj={map_adj[clave_d]}")
+                else:
+                    if pg[d] != p1[d]:
+                        total_errores.append(f"[adjudicacion_gold] En caso de acuerdo unánime {k}/{d}, Gold Standard difiere de evaluadores: Gold={pg[d]} vs E1/E2={p1[d]}")
+        print(f"    [+] {adj_csv.name}: {len(r_adj)} adjudicaciones explícitas auditadas sobre {discrepancias_detectadas} discrepancias inter-evaluador.")
+    else:
+        total_errores.append(f"Archivo crítico no encontrado: {adj_csv}")
             
     # 4. Validar particiones por perfil (derivadas del Gold Standard)
     print("  [4/5] Validando particiones por perfil (derivadas del Gold Standard)...")

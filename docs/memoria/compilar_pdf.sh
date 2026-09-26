@@ -43,7 +43,14 @@ pdflatex -interaction=nonstopmode -halt-on-error main.tex > pdflatex_pass3.log 2
     exit 1
 }
 
-# 5. Limpieza automática de ficheros auxiliares temporales
+# 5. Verificación estricta de advertencias críticas (referencias o citas indefinidas)
+echo "[+] Verificando ausencia de referencias y citas indefinidas..."
+if grep -E "LaTeX Warning: Reference .* undefined|LaTeX Warning: Citation .* undefined|LaTeX Warning: There were undefined references" pdflatex_pass3.log; then
+    echo "[-] ERROR CRÍTICO: Se detectaron referencias o citas indefinidas en el documento LaTeX."
+    exit 1
+fi
+
+# 6. Limpieza automática de ficheros auxiliares temporales
 echo "[+] Limpiando ficheros auxiliares temporales..."
 rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy pdflatex_pass1.log bibtex.log pdflatex_pass2.log pdflatex_pass3.log
 

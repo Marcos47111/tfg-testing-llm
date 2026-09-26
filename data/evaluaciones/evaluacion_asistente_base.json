@@ -344,7 +344,7 @@
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D4_utilidad_pedagogica": "Proporciona una explicación directa y correcta del paso a paso algebraico de la regla del producto sin guiar socráticamente pero resolviendo la duda técnica.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -940,7 +940,7 @@
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Lenguaje y dificultad técnica adecuados para educación secundaria obligatoria (13 años) aunque asume precios unitarios elevados sin contextualizar el coste real.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },

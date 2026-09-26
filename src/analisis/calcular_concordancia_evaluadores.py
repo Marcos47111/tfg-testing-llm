@@ -110,18 +110,19 @@ def calcular_acuerdo_inter_evaluadores():
         print(f"      -> Kappa Ponderado Lineal: {informe_fase1['global']['kappa_ponderado_lineal']}")
         print(f"      -> Kappa Ponderado Cuadrático: {informe_fase1['global']['kappa_ponderado_cuadratico']}")
 
-    # 2. Fase 2: Dataset consolidado
+    # 2. Diagnóstico complementario: E1 revisado vs E2 revisado
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "r", encoding="utf-8") as f:
         evals_cons_1 = json.load(f)
     with open(EVAL_DIR / "evaluacion_evaluador_2.json", "r", encoding="utf-8") as f:
         evals_cons_2 = json.load(f)
-    informe_fase2 = calcular_acuerdo_pares(evals_cons_1, evals_cons_2)
-    print(f"\n  [+] Fase 2 (Dataset de referencia post-adjudicación):")
-    print(f"      -> Kappa No Ponderado: {informe_fase2['global']['kappa_no_ponderado']} (Po = {informe_fase2['global']['po']})")
+    informe_diag_post_rev = calcular_acuerdo_pares(evals_cons_1, evals_cons_2)
+    print(f"\n  [+] Diagnóstico complementario post-revisión (E1 vs E2):")
+    print(f"      -> Kappa No Ponderado: {informe_diag_post_rev['global']['kappa_no_ponderado']} (Po = {informe_diag_post_rev['global']['po']})")
+    print(f"      (Nota: La fiabilidad del instrumento se fundamenta exclusivamente en la Fase 1 independiente: kappa = 0.9742)")
 
     informe_completo = {
         "fase_1_evaluacion_independiente_original": informe_fase1,
-        "fase_2_dataset_consolidado_referencia": informe_fase2
+        "diagnostico_post_revision_e1_e2": informe_diag_post_rev
     }
 
     # Guardar informe JSON

@@ -6,7 +6,7 @@
 **Centro:** Escuela Politécnica Superior -- Universidad Autónoma de Madrid  
 **Fecha de entrega:** Octubre de 2026  
 **Licencia:** MIT (Código abierto)  
-**Versión experimental de referencia:** `v1.2.0-tfg`
+**Versión experimental de referencia:** `v1.3.1-tfg`
 
 ---
 
@@ -40,10 +40,10 @@ python3 -m unittest discover -s src/analisis -p "test_*.py" && python3 -m unitte
 
 ### 4. Pipeline de Ingestión, Validación, Análisis y Concordancia Humana
 ```bash
-# 1. (Opcional) Importar y normalizar anotaciones humanas originales (raw CSV -> JSON):
+# 1. Importar y normalizar anotaciones humanas y consolidar Gold Standard adjudicado (raw CSV -> JSON):
 python3 src/analisis/importar_evaluaciones_humanas.py
 
-# 2. Validar integridad y esquemas de los datasets de evaluación (Evaluador 1 y 2):
+# 2. Validar integridad y esquemas de los datasets de evaluación (Gold Standard, E1 y E2):
 python3 src/analisis/validar_datos_evaluacion.py
 
 # 3. Ejecutar análisis comparativo global de los 3 perfiles de chatbot:
@@ -67,7 +67,7 @@ python3 src/evaluador/evaluador_llm_judge.py --mode mock
 # 2. Validar integridad de los datasets incluyendo el juez automático:
 python3 src/analisis/validar_datos_evaluacion.py --incluir-judge
 
-# 3. Ejecutar análisis estadístico de concordancia Humano-IA (Kappa, MAE, Deltas, Fallos Críticos):
+# 3. Ejecutar análisis estadístico de concordancia Humano-IA (Kappa, MAE, Deltas, Fallos Críticos vs Gold Standard):
 python3 src/analisis/analizar_concordancia_llm_judge.py
 
 # 4. Generar gráficos vectoriales específicos del juez automático:
@@ -88,12 +88,12 @@ python3 src/evaluador/ejecutor_pruebas.py --mode ollama --model llama3:8b --endp
 TFG/
 ├── LICENSE                                 # Licencia de código abierto MIT
 ├── README.md                               # Documentación principal del repositorio
-├── compilar_memoria.sh                     # Script para compilar la memoria en PDF
+├── compilar_memoria.sh                     # Script para compilar la memoria en PDF (estricto)
 │
 ├── docs/                                   # Documentación académica
 │   └── memoria/                            # Memoria en LaTeX (Plantilla oficial UAM / EPS)
 │       ├── main.tex                        # Documento principal
-│       ├── main.pdf                        # Documento final compilado (68 págs.)
+│       ├── main.pdf                        # Documento final compilado (70 págs.)
 │       ├── tfgtfmthesisuam.cls             # Clase oficial UAM (EPS)
 │       ├── referencias.bib                 # Bibliografía en formato BibTeX
 │       ├── inicio/                         # Resumen, abstract, agradecimientos, prefacio
@@ -112,11 +112,13 @@ TFG/
 │   ├── respuestas_obtenidas/raw/           # 126 trazas de respuesta conversacional completas
 │   └── evaluaciones/                       # Datasets de evaluación normalizados y anotaciones raw
 │       ├── raw_independientes/             # Anotaciones independientes Fase 1 (reconstruidas con SHA de commit)
-│       ├── raw/                            # Hojas de anotaciones consolidadas Fase 2 - Gold Standard (CSV)
+│       ├── raw/                            # Hojas de anotaciones consolidadas Fase 2 (CSV)
+│       ├── adjudicaciones_gold_standard.csv # Registro formal de adjudicación de discrepancias del Gold Standard
+│       ├── evaluacion_gold_standard.json   # Dataset canónico Gold Standard unificado (126 registros)
 │       ├── llm_judge/                      # Extensión experimental LLM-as-a-Judge
 │       │   ├── raw/                        # Trazas de inferencia raw del juez automático (JSON)
 │       │   └── ...                         # Datasets normalizados del juez pareados (JSON)
-│       └── ...                             # Evaluaciones estructuradas pareadas en JSON (E1 y E2)
+│       └── ...                             # Evaluaciones estructuradas pareadas en JSON (E1, E2 y particiones)
 │
 ├── src/                                    # Código fuente y herramientas en Python
 │   ├── evaluador/                          # Motores de ejecución de pruebas y LLM-as-a-Judge
@@ -126,8 +128,8 @@ TFG/
 │   │   ├── metricas_tfg.py                 # Fórmulas de IQE, CFR, HR y Cohen's Kappa
 │   │   ├── analizador_experimentos.py      # Agregación global comparativa
 │   │   ├── calcular_concordancia_evaluadores.py # Concordancia humana E1 vs E2 (Fase 1: κ = 0.974, κ_w = 0.981)
-│   │   ├── analizar_concordancia_llm_judge.py  # Concordancia Humano-IA (Judge vs E1/E2)
-│   │   └── validar_datos_evaluacion.py     # Validador exhaustivo de integridad y esquemas
+│   │   ├── analizar_concordancia_llm_judge.py  # Concordancia Humano-IA (Judge vs Gold Standard y E1/E2)
+│   │   └── validar_datos_evaluacion.py     # Validador exhaustivo de integridad y esquemas (5 fases)
 │   ├── utils/                              # Loader de casos y exportadores de tablas
 │   └── visualizacion/                      # Generadores de gráficos vectoriales (radar, barras, matrices)
 │       ├── generar_graficos.py             # Gráficos del experimento principal
@@ -143,7 +145,7 @@ TFG/
 
 ## Resumen de Resultados Experimentales
 
-### 1. Evaluación Principal (Evaluadores Humanos de Referencia $E_1$ y $E_2$)
+### 1. Evaluación Principal (Evaluadores Humanos y Gold Standard Canónico)
 Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B-Instruct** (`Q4_0`, `num_ctx=2048`, `seed=42`, $N_\kappa=882$, $\kappa_{\text{humano}} = 0{,}974$):
 
 | Perfil de Chatbot | IQE (0--100) | CFR (%) | HR (%) | D1 (Factual) | D2 (Aluc.) | D3 (Claridad) | D4 (Feedback) | D5 (Seguridad) | D6 (Nivel) | D7 (Directriz) |
@@ -154,7 +156,7 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 * **Protocolo de Evaluación Humana en Dos Fases:**
   * **Fase 1 (Doble evaluación independiente y a ciegas):** $\kappa_{\text{no-ponderado}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$, $\kappa_{\text{cuadrático}} = 0{,}9884$ ($P_o = 99{,}55\%$, 878 / 882 coincidencias exactas, 4 discrepancias menores de un nivel, 0 severas).
-  * **Fase 2 (Revisión, calibración y consolidación del Gold Standard):** Consolidación del conjunto canónico de referencia en `data/evaluaciones/` tras la auditoría técnica frente a rúbricas formales y soluciones canónicas.
+  * **Fase 2 (Revisión, calibración y consolidación del Gold Standard):** Consolidación del conjunto canónico de referencia en `data/evaluaciones/evaluacion_gold_standard.json` tras la auditoría técnica y adjudicación explícita registrada en `adjudicaciones_gold_standard.csv`.
 * **Análisis de Sensibilidad (Efecto Techo):** En Seguridad ($D_5$), la media transversal del Asistente Base es $2{,}76$ frente a $1{,}33$ en su subbatería primaria de tensión ($\Delta = +1{,}43$). En Feedback ($D_4$), el Tutor Socrático alcanza $2{,}81$ transversal frente a $1{,}67$ en casos de fallo discente ($\Delta = +1{,}14$).
 
 ### 2. Extensión Exploratoria LLM-as-a-Judge (Resultados Experimentales con Qwen2.5-14B-Instruct)
@@ -163,13 +165,13 @@ Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$
 * **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct`, Q4_K_M, SHA-256: `7cdf5a0187d5...`).
 * **Cegamiento estricto:** El juez no recibe la etiqueta del perfil generador ni calificaciones humanas previas.
 * **Métricas de concordancia global:**
-  * $\kappa$ de Cohen no ponderado (Juez vs. $E_1$): **$0{,}1858$** (*Acuerdo leve*).
-  * $\kappa$ Ponderado Lineal (Juez vs. $E_1$): **$0{,}2803$**.
-  * $\kappa$ Ponderado Cuadrático (Juez vs. $E_1$): **$0{,}3685$**.
+  * $\kappa$ de Cohen no ponderado (Juez vs. Gold Standard): **$0{,}1858$** (*Acuerdo leve*).
+  * $\kappa$ Ponderado Lineal (Juez vs. Gold Standard): **$0{,}2803$**.
+  * $\kappa$ Ponderado Cuadrático (Juez vs. Gold Standard): **$0{,}3685$**.
   * Error Absoluto Medio (MAE): **$0{,}4977$** puntos (en escala $0$--$3$).
   * Acuerdo exacto ($|\Delta|=0$): **$63{,}04\%$** (556 / 882 juicios idénticos).
   * Tolerancia en $\pm 1$ nivel ($|\Delta| \le 1$): **$91{,}04\%$** (803 / 882 juicios).
-* **Concordancia dimensional ($\kappa$ Juez vs. $E_1$):**
+* **Concordancia dimensional ($\kappa$ Juez vs. Gold Standard):**
   * $D_5$ Seguridad: $\kappa = 0{,}4207$ ($P_o = 90{,}48\%$, MAE = $0{,}159$) -- *Acuerdo moderado*.
   * $D_2$ Alucinaciones: $\kappa = 0{,}3265$ ($P_o = 88{,}89\%$, MAE = $0{,}262$) -- *Acuerdo aceptable*.
   * $D_1$ Factualidad: $\kappa = 0{,}2354$ ($P_o = 56{,}35\%$, MAE = $0{,}571$) -- *Acuerdo aceptable*.
@@ -183,10 +185,11 @@ Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$
   * Especificidad: **$94{,}50\%$** (103 de 109 respuestas conformes, FP = 6).
   * Tasa de Falsos Negativos (FNR): **$52{,}94\%$**.
   * Detección de ceros críticos ($S_d = 0$): $D_5$ Seguridad ($100{,}0\%$, 5/5), $D_2$ Alucinaciones ($60{,}0\%$, 3/5), $D_1$ Factualidad ($27{,}27\%$, 3/11).
-* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa = 0{,}974$ inicial, $\kappa = 0{,}982$ post-consenso), pero su automatización con un LLM juez generalista presenta una concordancia no ponderada moderada/leve ($\kappa = 0{,}186$) y omite más de la mitad de los fallos críticos de seguridad y factualidad (sensibilidad del $47{,}06\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
+* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa_{\text{Fase 1}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$) y permite consolidar un Gold Standard de referencia para el cómputo de métricas, pero su automatización con un LLM juez generalista presenta una concordancia no ponderada leve ($\kappa = 0{,}1858$) y omite más de la mitad de los fallos críticos de seguridad y factualidad (sensibilidad del $47{,}06\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
 
 ---
 
 ## Licencia
 
 El código y los conjuntos de datos desarrollados específicamente para este Trabajo de Fin de Grado se distribuyen bajo licencia MIT (véase [LICENSE](LICENSE)). La plantilla LaTeX institucional de la Universidad Autónoma de Madrid, logotipos y demás recursos de terceros mantienen sus respectivos derechos y condiciones de uso.
+
