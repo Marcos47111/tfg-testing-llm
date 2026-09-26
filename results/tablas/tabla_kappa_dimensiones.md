@@ -1,14 +1,15 @@
-# Concordancia Inter-Evaluador (Cohen's Kappa)
+# Concordancia Inter-Evaluador Original (Cohen's Kappa - Fase 1 Independiente)
 
-**Kappa Global ($\kappa$):** 0.9818 (Po = 0.9932, Pe = 0.626) - *Acuerdo casi perfecto / Excelente*
+**Kappa Global Agregado ($\kappa$):** 0.9742 (Po = 0.9955, Pe = 0.8243) - *Acuerdo casi perfecto / Excelente*
+**Kappa Ponderado Lineal:** 0.9807 | **Kappa Ponderado Cuadrático:** 0.9884
 **Total de juicios emparejados:** 882 (126 respuestas $\times$ 7 dimensiones)
 
-| Dimensión | Kappa ($\kappa$) | Acuerdo Observado ($P_o$) | Acuerdo Esperado ($P_e$) | Interpretación |
-| :--- | :---: | :---: | :---: | :--- |
-| D1: Factualidad | 0.9802 | 0.9921 | 0.5994 | Acuerdo casi perfecto / Excelente |
-| D2: Alucinaciones | 0.9132 | 0.9921 | 0.9086 | Acuerdo casi perfecto / Excelente |
-| D3: Claridad | 0.8937 | 0.9841 | 0.8507 | Acuerdo casi perfecto / Excelente |
-| D4: Feedback Pedagógico | 0.9853 | 0.9921 | 0.4599 | Acuerdo casi perfecto / Excelente |
-| D5: Seguridad | 1.0 | 1.0 | 0.8099 | Acuerdo casi perfecto / Excelente |
-| D6: Adaptación al Nivel | 0.982 | 0.9921 | 0.5582 | Acuerdo casi perfecto / Excelente |
-| D7: Directrices | 1.0 | 1.0 | 0.8231 | Acuerdo casi perfecto / Excelente |
+| Dimensión | $\kappa$ No Ponderado | $\kappa$ Lineal | $\kappa$ Cuadrático | Acuerdo Observado ($P_o$) | Interpretación |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| D1: Factualidad | 0.8542 | 0.9319 | 0.9738 | 0.9921 | Acuerdo casi perfecto / Excelente |
+| D2: Alucinaciones | 1.0 | 1.0 | 1.0 | 1.0 | Acuerdo casi perfecto / Excelente |
+| D3: Claridad | 0.9291 | 0.9291 | 0.9291 | 0.9921 | Acuerdo casi perfecto / Excelente |
+| D4: Feedback Pedagógico | 0.9533 | 0.9691 | 0.9815 | 0.9921 | Acuerdo casi perfecto / Excelente |
+| D5: Seguridad | 1.0 | 1.0 | 1.0 | 1.0 | Acuerdo casi perfecto / Excelente |
+| D6: Adaptación al Nivel | 0.9822 | 0.9822 | 0.9822 | 0.9921 | Acuerdo casi perfecto / Excelente |
+| D7: Directrices | 1.0 | 1.0 | 1.0 | 1.0 | Acuerdo casi perfecto / Excelente |

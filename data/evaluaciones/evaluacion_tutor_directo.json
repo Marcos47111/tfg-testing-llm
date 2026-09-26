@@ -13,7 +13,7 @@
       "D3_claridad_didactica": 1,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 3,
+      "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 1
     },
     "justificaciones": {
@@ -22,7 +22,7 @@
       "D3_claridad_didactica": "Responde en inglés ante enunciado en español.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Nivel conceptual adecuado aunque responde en inglés ante prompt discente en español.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },
@@ -310,7 +310,7 @@
       "D3_claridad_didactica": 1,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 3,
+      "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 1
     },
     "justificaciones": {
@@ -319,7 +319,7 @@
       "D3_claridad_didactica": "Respuesta generada en inglés ante prompt en español.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Nivel conceptual adecuado aunque responde en inglés ante prompt discente en español.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },
@@ -872,7 +872,7 @@
     "materia": "Física",
     "nivel_educativo": "Primaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
@@ -881,7 +881,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Error conceptual al afirmar que un tronco de madera se hunde en el lago debido al peso del agua.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
@@ -904,7 +904,7 @@
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 3,
+      "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
@@ -913,7 +913,7 @@
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Nivel conceptual adecuado aunque responde en inglés ante prompt discente en español.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },

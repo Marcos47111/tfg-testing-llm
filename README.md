@@ -147,11 +147,14 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 | Perfil de Chatbot | IQE (0--100) | CFR (%) | HR (%) | D1 (Factual) | D2 (Aluc.) | D3 (Claridad) | D4 (Feedback) | D5 (Seguridad) | D6 (Nivel) | D7 (Directriz) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Asistente Base** | **84.13** | 11.90% | 33.33% | 2.55 | 2.86 | 2.83 | 1.86 | 2.76 | 2.00 | 2.71 |
-| **Tutor Directo** | **87.94** | 14.29% | 33.33% | 2.52 | 2.86 | 2.88 | 1.93 | 2.76 | 3.00 | 2.76 |
-| **Tutor Socrático** | **92.98** | 11.90% | 16.67% | 2.48 | 2.88 | 2.93 | 2.81 | 2.93 | 3.00 | 2.81 |
+| **Asistente Base** | **83.49** | 14.29% | 33.33% | 2.43 | 2.86 | 2.83 | 1.88 | 2.76 | 2.07 | 2.71 |
+| **Tutor Directo** | **87.30** | 14.29% | 33.33% | 2.48 | 2.86 | 2.88 | 1.93 | 2.76 | 2.93 | 2.76 |
+| **Tutor Socrático** | **92.62** | 11.90% | 16.67% | 2.45 | 2.88 | 2.93 | 2.81 | 2.93 | 2.95 | 2.81 |
 
-* **Concordancia Inter-Evaluador Humana (Doble evaluación independiente):** $\kappa = 0{,}982$ ($P_o = 0{,}9932, P_e = 0{,}6260$).
+* **Protocolo de Evaluación Humana en Dos Fases:**
+  * **Fase 1 (Doble evaluación independiente y a ciegas):** $\kappa_{\text{no-ponderado}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$, $\kappa_{\text{cuadrático}} = 0{,}9884$ ($P_o = 99{,}55\%$, 878 / 882 coincidencias exactas, 4 discrepancias menores de un nivel, 0 severas).
+  * **Fase 2 (Adjudicación colegiada / Gold Standard):** $\kappa = 0{,}9822$ ($P_o = 0{,}9932, P_e = 0{,}6174$).
+* **Análisis de Sensibilidad (Efecto Techo):** En Seguridad ($D_5$), la media transversal del Asistente Base es $2{,}76$ frente a $1{,}33$ en su subbatería primaria de tensión ($\Delta = +1{,}43$). En Feedback ($D_4$), el Tutor Socrático alcanza $2{,}81$ transversal frente a $1{,}67$ en casos de fallo discente ($\Delta = +1{,}14$).
 
 ### 2. Extensión Exploratoria LLM-as-a-Judge (Resultados Experimentales con Qwen2.5-14B-Instruct)
 Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$ juicios pareados, $T=0.0$, $\text{seed}=42$):
@@ -159,26 +162,27 @@ Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$
 * **Modelo evaluador:** Qwen2.5-14B-Instruct (`qwen2.5:14b-instruct`, Q4_K_M, SHA-256: `7cdf5a0187d5...`).
 * **Cegamiento estricto:** El juez no recibe la etiqueta del perfil generador ni calificaciones humanas previas.
 * **Métricas de concordancia global:**
-  * $\kappa$ de Cohen (Juez vs. $E_1$): **$0{,}1900$** (*Acuerdo leve*).
-  * $\kappa$ de Cohen (Juez vs. $E_2$): **$0{,}1856$** (*Acuerdo leve*).
-  * Error Absoluto Medio (MAE): **$0{,}4943$** puntos (en escala $0$--$3$).
-  * Acuerdo exacto ($|\Delta|=0$): **$63{,}49\%$** (560 / 882 juicios idénticos).
-  * Tolerancia en $\pm 1$ nivel ($|\Delta| \le 1$): **$90{,}93\%$** (802 / 882 juicios).
+  * $\kappa$ de Cohen no ponderado (Juez vs. $E_1$): **$0{,}1858$** (*Acuerdo leve*).
+  * $\kappa$ Ponderado Lineal (Juez vs. $E_1$): **$0{,}2803$**.
+  * $\kappa$ Ponderado Cuadrático (Juez vs. $E_1$): **$0{,}3685$**.
+  * Error Absoluto Medio (MAE): **$0{,}4977$** puntos (en escala $0$--$3$).
+  * Acuerdo exacto ($|\Delta|=0$): **$63{,}04\%$** (556 / 882 juicios idénticos).
+  * Tolerancia en $\pm 1$ nivel ($|\Delta| \le 1$): **$91{,}04\%$** (803 / 882 juicios).
 * **Concordancia dimensional ($\kappa$ Juez vs. $E_1$):**
   * $D_5$ Seguridad: $\kappa = 0{,}4207$ ($P_o = 90{,}48\%$, MAE = $0{,}159$) -- *Acuerdo moderado*.
   * $D_2$ Alucinaciones: $\kappa = 0{,}3265$ ($P_o = 88{,}89\%$, MAE = $0{,}262$) -- *Acuerdo aceptable*.
-  * $D_1$ Factualidad: $\kappa = 0{,}2613$ ($P_o = 58{,}73\%$, MAE = $0{,}540$) -- *Acuerdo aceptable*.
+  * $D_1$ Factualidad: $\kappa = 0{,}2354$ ($P_o = 56{,}35\%$, MAE = $0{,}571$) -- *Acuerdo aceptable*.
+  * $D_4$ Feedback: $\kappa = 0{,}0863$ ($P_o = 40{,}48\%$, MAE = $0{,}730$) -- *Acuerdo leve*.
   * $D_7$ Directrices: $\kappa = 0{,}0860$ ($P_o = 68{,}25\%$, MAE = $0{,}532$) -- *Acuerdo leve*.
   * $D_3$ Claridad: $\kappa = 0{,}0758$ ($P_o = 51{,}59\%$, MAE = $0{,}587$) -- *Acuerdo leve*.
-  * $D_4$ Feedback: $\kappa = 0{,}0663$ ($P_o = 38{,}89\%$, MAE = $0{,}754$) -- *Acuerdo leve*.
-  * $D_6$ Nivel: $\kappa = -0{,}0259$ ($P_o = 47{,}62\%$, MAE = $0{,}627$) -- *Sin acuerdo*.
+  * $D_6$ Nivel: $\kappa = -0{,}0636$ ($P_o = 45{,}24\%$, MAE = $0{,}643$) -- *Sin acuerdo*.
 * **Auditoría Safety-First (Matriz de confusión de respuestas críticas):**
-  * Exactitud global: **$88{,}89\%$** (112 / 126 respuestas coincidentes).
-  * Sensibilidad ante respuestas críticas (Recall crítico): **$50{,}00\%$** (detecta 8 de 16 respuestas críticas, FN = 8).
-  * Especificidad: **$94{,}55\%$** (104 de 110 respuestas conformes, FP = 6).
-  * Tasa de Falsos Negativos (FNR): **$50{,}00\%$**.
-  * Detección de ceros críticos ($S_d = 0$): $D_5$ Seguridad ($100{,}0\%$, 5/5), $D_2$ Alucinaciones ($60{,}0\%$, 3/5), $D_1$ Factualidad ($30{,}0\%$, 3/10).
-* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa = 0{,}982$), pero su automatización con un LLM juez generalista presenta una concordancia limitada y omite la mitad de los fallos críticos de seguridad pedagógica (sensibilidad del $50{,}0\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
+  * Exactitud global: **$88{,}10\%$** (111 / 126 respuestas coincidentes).
+  * Sensibilidad ante respuestas críticas (Recall crítico): **$47{,}06\%$** (detecta 8 de 17 respuestas críticas, FN = 9).
+  * Especificidad: **$94{,}50\%$** (103 de 109 respuestas conformes, FP = 6).
+  * Tasa de Falsos Negativos (FNR): **$52{,}94\%$**.
+  * Detección de ceros críticos ($S_d = 0$): $D_5$ Seguridad ($100{,}0\%$, 5/5), $D_2$ Alucinaciones ($60{,}0\%$, 3/5), $D_1$ Factualidad ($27{,}27\%$, 3/11).
+* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa = 0{,}974$ inicial, $\kappa = 0{,}982$ post-consenso), pero su automatización con un LLM juez generalista presenta una concordancia no ponderada moderada/leve ($\kappa = 0{,}186$) y omite más de la mitad de los fallos críticos de seguridad y factualidad (sensibilidad del $47{,}06\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
 
 ---
 

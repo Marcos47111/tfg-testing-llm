@@ -115,9 +115,10 @@ def generar_grafico_concordancia_dimensional(datos: dict):
 
 def generar_grafico_matriz_confusion(datos: dict):
     """
-    Genera un mapa de calor para la matriz de confusión 4x4 (E1 vs Juez, N=882).
+    Genera un mapa de calor para la matriz de confusión 4x4 (E1 vs Juez).
     """
     matriz = np.array(datos["matriz_confusion_global_4x4_filas_e1_columnas_juez"])
+    total_pares = datos["concordancia_global"]["total_pares_comparados"]
     
     fig, ax = plt.subplots(figsize=(6.5, 5.5), dpi=300)
     
@@ -135,7 +136,7 @@ def generar_grafico_matriz_confusion(datos: dict):
     
     ax.set_xlabel("Puntuación Juez Automático (LLM-as-a-Judge)", fontsize=11, fontweight="bold", labelpad=8)
     ax.set_ylabel(r"Puntuación Evaluador Humano $E_1$", fontsize=11, fontweight="bold", labelpad=8)
-    ax.set_title(r"Matriz de Confusión Global: $E_1$ vs LLM-as-a-Judge ($N_\kappa=882$)", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_title(rf"Matriz de Confusión Global: $E_1$ vs LLM-as-a-Judge ($N_\kappa={total_pares}$)", fontsize=11.5, fontweight="bold", pad=12)
     
     # Anotar recuentos
     threshold = matriz.max() / 2.0
@@ -143,7 +144,7 @@ def generar_grafico_matriz_confusion(datos: dict):
         for j in range(4):
             val = matriz[i, j]
             color = "white" if val > threshold else "black"
-            pct = (val / 882.0) * 100
+            pct = (val / total_pares) * 100 if total_pares > 0 else 0
             txt = f"{val}\n({pct:.1f}%)" if val > 0 else "0"
             ax.text(j, i, txt, ha="center", va="center", color=color, fontsize=9.5, fontweight="bold" if i==j else "normal")
             
@@ -159,9 +160,10 @@ def generar_grafico_matriz_confusion(datos: dict):
 
 def generar_grafico_distribucion_discrepancias(datos: dict):
     """
-    Genera un gráfico circular o de barras con la distribución deltas (|Δ| in {0, 1, 2, 3}).
+    Genera un gráfico de barras horizontales con la distribución de deltas (|Δ| in {0, 1, 2, 3}).
     """
     deltas = datos["analisis_discrepancias_deltas"]["juez_vs_e1"]
+    total_pares = datos["concordancia_global"]["total_pares_comparados"]
     
     etiquetas = [
         r"Acuerdo Exacto ($|\Delta| = 0$)",
@@ -180,15 +182,15 @@ def generar_grafico_distribucion_discrepancias(datos: dict):
     fig, ax = plt.subplots(figsize=(7.5, 4.5), dpi=300)
     
     bars = ax.barh(etiquetas, recuentos, color=colores, edgecolor="#333333", height=0.55)
-    ax.set_xlabel("Número de Juicios Pareados ($N=882$)", fontsize=10.5, fontweight="bold")
+    ax.set_xlabel(rf"Número de Juicios Pareados ($N={total_pares}$)", fontsize=10.5, fontweight="bold")
     ax.set_title(r"Distribución de la Magnitud de Discrepancias ($|P_{juez} - P_{E1}|$)", fontsize=11.5, fontweight="bold", pad=12)
     ax.grid(axis="x", linestyle="--", alpha=0.5)
-    ax.set_xlim(0, 950)
+    ax.set_xlim(0, max(recuentos) * 1.25)
     
     for bar in bars:
         w = bar.get_width()
-        pct = (w / 882.0) * 100
-        ax.text(w + 12, bar.get_y() + bar.get_height()/2, f"{w} ({pct:.1f}%)",
+        pct = (w / total_pares) * 100 if total_pares > 0 else 0
+        ax.text(w + 10, bar.get_y() + bar.get_height()/2, f"{w} ({pct:.1f}%)",
                 va="center", fontsize=9.5, fontweight="bold")
                 
     plt.tight_layout()

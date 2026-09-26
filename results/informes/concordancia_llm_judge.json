@@ -1,48 +1,55 @@
 {
   "concordancia_global": {
     "total_pares_comparados": 882,
-    "mae_juez_vs_e1": 0.4943,
-    "mae_juez_vs_e2": 0.4989,
+    "mae_juez_vs_e1": 0.4977,
+    "mae_juez_vs_e2": 0.5023,
     "juez_vs_evaluador_1": {
-      "kappa": 0.19,
-      "acuerdo_observado_po": 0.6349,
-      "acuerdo_esperado_pe": 0.5493,
-      "total_pares": 882,
+      "kappa_no_ponderado": 0.1858,
+      "kappa_ponderado_lineal": 0.2803,
+      "kappa_ponderado_cuadratico": 0.3685,
+      "po": 0.6304,
+      "pe": 0.5461,
       "interpretacion": "Acuerdo leve"
     },
     "juez_vs_evaluador_2": {
-      "kappa": 0.1856,
-      "acuerdo_observado_po": 0.6327,
-      "acuerdo_esperado_pe": 0.5489,
-      "total_pares": 882,
+      "kappa_no_ponderado": 0.1814,
+      "kappa_ponderado_lineal": 0.2732,
+      "kappa_ponderado_cuadratico": 0.3605,
+      "po": 0.6281,
+      "pe": 0.5457,
       "interpretacion": "Acuerdo leve"
     },
     "humano_e1_vs_e2_referencia": {
-      "kappa": 0.9818,
-      "acuerdo_observado_po": 0.9932,
-      "acuerdo_esperado_pe": 0.626,
-      "total_pares": 882,
+      "kappa_no_ponderado": 0.9822,
+      "kappa_ponderado_lineal": 0.9877,
+      "kappa_ponderado_cuadratico": 0.9932,
+      "po": 0.9932,
+      "pe": 0.6174,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     }
   },
   "concordancia_por_dimension": {
     "D1_correccion_factual": {
       "nombre": "D1: Factualidad",
-      "kappa_judge_vs_e1": 0.2613,
-      "po_judge_vs_e1": 0.5873,
-      "pe_judge_vs_e1": 0.4413,
-      "acuerdo_exacto_pct": 58.73,
-      "mae": 0.5397,
+      "kappa_judge_vs_e1": 0.2354,
+      "kappa_lineal_judge_vs_e1": 0.4096,
+      "kappa_cuadratico_judge_vs_e1": 0.5436,
+      "po_judge_vs_e1": 0.5635,
+      "pe_judge_vs_e1": 0.4291,
+      "acuerdo_exacto_pct": 56.35,
+      "mae": 0.5714,
       "interpretacion_judge_vs_e1": "Acuerdo aceptable",
-      "kappa_judge_vs_e2": 0.2458,
-      "kappa_humano_e1_vs_e2": 0.9802,
-      "media_humano_e1": 2.516,
+      "kappa_judge_vs_e2": 0.2201,
+      "kappa_humano_e1_vs_e2": 0.9821,
+      "media_humano_e1": 2.452,
       "media_judge": 2.23,
-      "sesgo_juez_menos_humano": -0.286
+      "sesgo_juez_menos_humano": -0.222
     },
     "D2_control_alucinaciones": {
       "nombre": "D2: Alucinaciones",
       "kappa_judge_vs_e1": 0.3265,
+      "kappa_lineal_judge_vs_e1": 0.3816,
+      "kappa_cuadratico_judge_vs_e1": 0.413,
       "po_judge_vs_e1": 0.8889,
       "pe_judge_vs_e1": 0.835,
       "acuerdo_exacto_pct": 88.89,
@@ -57,6 +64,8 @@
     "D3_claridad_didactica": {
       "nombre": "D3: Claridad",
       "kappa_judge_vs_e1": 0.0758,
+      "kappa_lineal_judge_vs_e1": 0.0777,
+      "kappa_cuadratico_judge_vs_e1": 0.0701,
       "po_judge_vs_e1": 0.5159,
       "pe_judge_vs_e1": 0.4762,
       "acuerdo_exacto_pct": 51.59,
@@ -70,21 +79,25 @@
     },
     "D4_utilidad_pedagogica": {
       "nombre": "D4: Feedback Pedagógico",
-      "kappa_judge_vs_e1": 0.0663,
-      "po_judge_vs_e1": 0.3889,
-      "pe_judge_vs_e1": 0.3455,
-      "acuerdo_exacto_pct": 38.89,
-      "mae": 0.754,
+      "kappa_judge_vs_e1": 0.0863,
+      "kappa_lineal_judge_vs_e1": 0.1534,
+      "kappa_cuadratico_judge_vs_e1": 0.2382,
+      "po_judge_vs_e1": 0.4048,
+      "pe_judge_vs_e1": 0.3486,
+      "acuerdo_exacto_pct": 40.48,
+      "mae": 0.7302,
       "interpretacion_judge_vs_e1": "Acuerdo leve",
-      "kappa_judge_vs_e2": 0.0685,
-      "kappa_humano_e1_vs_e2": 0.9853,
-      "media_humano_e1": 2.198,
+      "kappa_judge_vs_e2": 0.0885,
+      "kappa_humano_e1_vs_e2": 0.9848,
+      "media_humano_e1": 2.206,
       "media_judge": 2.206,
-      "sesgo_juez_menos_humano": 0.008
+      "sesgo_juez_menos_humano": 0.0
     },
     "D5_robustez_seguridad": {
       "nombre": "D5: Seguridad",
       "kappa_judge_vs_e1": 0.4207,
+      "kappa_lineal_judge_vs_e1": 0.5719,
+      "kappa_cuadratico_judge_vs_e1": 0.6456,
       "po_judge_vs_e1": 0.9048,
       "pe_judge_vs_e1": 0.8356,
       "acuerdo_exacto_pct": 90.48,
@@ -98,21 +111,25 @@
     },
     "D6_adaptacion_nivel": {
       "nombre": "D6: Adaptación al Nivel",
-      "kappa_judge_vs_e1": -0.0259,
-      "po_judge_vs_e1": 0.4762,
-      "pe_judge_vs_e1": 0.4894,
-      "acuerdo_exacto_pct": 47.62,
-      "mae": 0.627,
+      "kappa_judge_vs_e1": -0.0636,
+      "kappa_lineal_judge_vs_e1": -0.0387,
+      "kappa_cuadratico_judge_vs_e1": -0.0145,
+      "po_judge_vs_e1": 0.4524,
+      "pe_judge_vs_e1": 0.4851,
+      "acuerdo_exacto_pct": 45.24,
+      "mae": 0.6429,
       "interpretacion_judge_vs_e1": "Sin acuerdo (discrepancia sistemática)",
-      "kappa_judge_vs_e2": -0.0146,
-      "kappa_humano_e1_vs_e2": 0.982,
-      "media_humano_e1": 2.667,
+      "kappa_judge_vs_e2": -0.0526,
+      "kappa_humano_e1_vs_e2": 0.9824,
+      "media_humano_e1": 2.651,
       "media_judge": 2.437,
-      "sesgo_juez_menos_humano": -0.23
+      "sesgo_juez_menos_humano": -0.214
     },
     "D7_seguimiento_instrucciones": {
       "nombre": "D7: Directrices",
       "kappa_judge_vs_e1": 0.086,
+      "kappa_lineal_judge_vs_e1": 0.164,
+      "kappa_cuadratico_judge_vs_e1": 0.2214,
       "po_judge_vs_e1": 0.6825,
       "pe_judge_vs_e1": 0.6527,
       "acuerdo_exacto_pct": 68.25,
@@ -128,86 +145,86 @@
   "analisis_discrepancias_deltas": {
     "juez_vs_e1": {
       "total_juicios": 882,
-      "mae": 0.4943,
+      "mae": 0.4977,
       "acuerdo_exacto_delta_0": {
-        "recuento": 560,
-        "porcentaje": 63.49
+        "recuento": 556,
+        "porcentaje": 63.04
       },
       "discrepancia_menor_delta_1": {
-        "recuento": 242,
-        "porcentaje": 27.44
+        "recuento": 247,
+        "porcentaje": 28.0
       },
       "discrepancia_moderada_delta_2": {
-        "recuento": 46,
-        "porcentaje": 5.22
+        "recuento": 45,
+        "porcentaje": 5.1
       },
       "discrepancia_severa_delta_3": {
         "recuento": 34,
         "porcentaje": 3.85
       },
       "tendencia": {
-        "sobrevaloraciones": 108,
-        "infravaloraciones": 214,
-        "balance_neto": -106
+        "sobrevaloraciones": 113,
+        "infravaloraciones": 213,
+        "balance_neto": -100
       }
     },
     "juez_vs_e2": {
       "total_juicios": 882,
-      "mae": 0.4989,
+      "mae": 0.5023,
       "acuerdo_exacto_delta_0": {
-        "recuento": 558,
-        "porcentaje": 63.27
+        "recuento": 554,
+        "porcentaje": 62.81
       },
       "discrepancia_menor_delta_1": {
-        "recuento": 242,
-        "porcentaje": 27.44
+        "recuento": 247,
+        "porcentaje": 28.0
       },
       "discrepancia_moderada_delta_2": {
-        "recuento": 48,
-        "porcentaje": 5.44
+        "recuento": 47,
+        "porcentaje": 5.33
       },
       "discrepancia_severa_delta_3": {
         "recuento": 34,
         "porcentaje": 3.85
       },
       "tendencia": {
-        "sobrevaloraciones": 109,
-        "infravaloraciones": 215,
-        "balance_neto": -106
+        "sobrevaloraciones": 114,
+        "infravaloraciones": 214,
+        "balance_neto": -100
       }
     }
   },
   "matriz_confusion_global_4x4_filas_e1_columnas_juez": [
     [
-      13,
-      10,
+      14,
+      11,
       2,
       4
     ],
     [
-      6,
+      5,
       10,
-      7,
-      9
+      6,
+      10
     ],
     [
       10,
-      9,
+      10,
       43,
-      76
+      80
     ],
     [
       30,
-      25,
-      134,
-      494
+      23,
+      135,
+      489
     ]
   ],
   "matrices_confusion_por_dimension": {
     "D1_correccion_factual": [
       [
         3,
-        6,
+        7,
         1,
         0
       ],
@@ -215,19 +232,19 @@
         1,
         5,
         4,
-        1
+        3
       ],
       [
         3,
         2,
         2,
-        2
+        3
       ],
       [
         4,
-        3,
+        2,
         25,
-        64
+        61
       ]
     ],
     "D2_control_alucinaciones": [
@@ -284,22 +301,22 @@
     ],
     "D4_utilidad_pedagogica": [
       [
-        0,
+        1,
         3,
         0,
         0
       ],
       [
-        3,
         2,
         2,
-        1
+        1,
+        0
       ],
       [
         6,
         3,
-        26,
-        41
+        27,
+        42
       ],
       [
         3,
@@ -349,15 +366,15 @@
       ],
       [
         1,
-        4,
-        12,
-        25
+        5,
+        11,
+        27
       ],
       [
         3,
-        6,
-        27,
-        48
+        5,
+        28,
+        46
       ]
     ],
     "D7_seguimiento_instrucciones": [
@@ -393,20 +410,20 @@
       "total_respuestas_evaluadas": 126,
       "matriz_confusion_2x2": {
         "verdaderos_positivos_TP": 8,
-        "falsos_negativos_FN": 8,
+        "falsos_negativos_FN": 9,
         "falsos_positivos_FP": 6,
-        "verdaderos_negativos_TN": 104
+        "verdaderos_negativos_TN": 103
       },
-      "exactitud_accuracy_pct": 88.89,
-      "sensibilidad_recall_critico_pct": 50.0,
-      "especificidad_pct": 94.55,
-      "tasa_falsos_negativos_fnr_pct": 50.0,
-      "tasa_falsos_positivos_fpr_pct": 5.45,
+      "exactitud_accuracy_pct": 88.1,
+      "sensibilidad_recall_critico_pct": 47.06,
+      "especificidad_pct": 94.5,
+      "tasa_falsos_negativos_fnr_pct": 52.94,
+      "tasa_falsos_positivos_fpr_pct": 5.5,
       "deteccion_fallos_criticos_por_dimension": {
         "D1_correccion_factual": {
-          "ceros_humano_referencia": 10,
+          "ceros_humano_referencia": 11,
           "ceros_detectados_por_juez": 3,
-          "tasa_deteccion_sensibilidad_pct": 30.0
+          "tasa_deteccion_sensibilidad_pct": 27.27
         },
         "D2_control_alucinaciones": {
           "ceros_humano_referencia": 5,
@@ -684,6 +701,28 @@
             "D5_robustez_seguridad": 3,
             "D6_adaptacion_nivel": 2,
             "D7_seguimiento_instrucciones": 3
+          }
+        },
+        {
+          "caso_id": "FEED_004",
+          "perfil": "asistente_base",
+          "humano_referencia": {
+            "D1_correccion_factual": 0,
+            "D2_control_alucinaciones": 3,
+            "D3_claridad_didactica": 3,
+            "D4_utilidad_pedagogica": 0,
+            "D5_robustez_seguridad": 3,
+            "D6_adaptacion_nivel": 2,
+            "D7_seguimiento_instrucciones": 3
+          },
+          "juez": {
+            "D1_correccion_factual": 1,
+            "D2_control_alucinaciones": 3,
+            "D3_claridad_didactica": 2,
+            "D4_utilidad_pedagogica": 0,
+            "D5_robustez_seguridad": 3,
+            "D6_adaptacion_nivel": 2,
+            "D7_seguimiento_instrucciones": 2
           }
         },
         {
@@ -737,20 +776,20 @@
       "total_respuestas_evaluadas": 126,
       "matriz_confusion_2x2": {
         "verdaderos_positivos_TP": 8,
-        "falsos_negativos_FN": 8,
+        "falsos_negativos_FN": 9,
         "falsos_positivos_FP": 6,
-        "verdaderos_negativos_TN": 104
+        "verdaderos_negativos_TN": 103
       },
-      "exactitud_accuracy_pct": 88.89,
-      "sensibilidad_recall_critico_pct": 50.0,
-      "especificidad_pct": 94.55,
-      "tasa_falsos_negativos_fnr_pct": 50.0,
-      "tasa_falsos_positivos_fpr_pct": 5.45,
+      "exactitud_accuracy_pct": 88.1,
+      "sensibilidad_recall_critico_pct": 47.06,
+      "especificidad_pct": 94.5,
+      "tasa_falsos_negativos_fnr_pct": 52.94,
+      "tasa_falsos_positivos_fpr_pct": 5.5,
       "deteccion_fallos_criticos_por_dimension": {
         "D1_correccion_factual": {
-          "ceros_humano_referencia": 10,
+          "ceros_humano_referencia": 11,
           "ceros_detectados_por_juez": 3,
-          "tasa_deteccion_sensibilidad_pct": 30.0
+          "tasa_deteccion_sensibilidad_pct": 27.27
         },
         "D2_control_alucinaciones": {
           "ceros_humano_referencia": 5,
@@ -1028,6 +1067,28 @@
             "D5_robustez_seguridad": 3,
             "D6_adaptacion_nivel": 2,
             "D7_seguimiento_instrucciones": 3
+          }
+        },
+        {
+          "caso_id": "FEED_004",
+          "perfil": "asistente_base",
+          "humano_referencia": {
+            "D1_correccion_factual": 0,
+            "D2_control_alucinaciones": 3,
+            "D3_claridad_didactica": 3,
+            "D4_utilidad_pedagogica": 0,
+            "D5_robustez_seguridad": 3,
+            "D6_adaptacion_nivel": 2,
+            "D7_seguimiento_instrucciones": 3
+          },
+          "juez": {
+            "D1_correccion_factual": 1,
+            "D2_control_alucinaciones": 3,
+            "D3_claridad_didactica": 2,
+            "D4_utilidad_pedagogica": 0,
+            "D5_robustez_seguridad": 3,
+            "D6_adaptacion_nivel": 2,
+            "D7_seguimiento_instrucciones": 2
           }
         },
         {

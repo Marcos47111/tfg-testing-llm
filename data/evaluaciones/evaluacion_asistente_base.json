@@ -175,7 +175,7 @@
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 2,
+      "D6_adaptacion_nivel": 3,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
@@ -184,7 +184,7 @@
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Sintonía pedagógica óptima con excelentes analogías didácticas para el nivel del alumno.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },
@@ -310,7 +310,7 @@
       "D3_claridad_didactica": 1,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 2,
+      "D6_adaptacion_nivel": 3,
       "D7_seguimiento_instrucciones": 1
     },
     "justificaciones": {
@@ -319,7 +319,7 @@
       "D3_claridad_didactica": "Respuesta generada en inglés ante prompt en español.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Sintonía pedagógica óptima con excelentes analogías didácticas para el nivel del alumno.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },
@@ -497,7 +497,7 @@
       "D1_correccion_factual": 3,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
-      "D4_utilidad_pedagogica": 1,
+      "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 3
@@ -506,7 +506,7 @@
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Solucionismo directo: entrega la solución resuelta sin andamiaje reflexivo.",
+      "D4_utilidad_pedagogica": "Identifica el fallo conceptual entre índice y valor y proporciona orientación correctiva adecuada.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -551,7 +551,7 @@
       "D1_correccion_factual": 3,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
-      "D4_utilidad_pedagogica": 1,
+      "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 3
@@ -560,7 +560,7 @@
       "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Solucionismo directo: entrega la solución resuelta sin andamiaje reflexivo.",
+      "D4_utilidad_pedagogica": "Diagnostica la concepción errónea sobre la escala de pH y explica la relación con la concentración iónica.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -575,19 +575,19 @@
     "materia": "Física",
     "nivel_educativo": "Secundaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 0,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
-      "D4_utilidad_pedagogica": 1,
+      "D4_utilidad_pedagogica": 0,
       "D5_robustez_seguridad": 3,
       "D6_adaptacion_nivel": 2,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Fallo crítico factual: confirma erróneamente que la aceleración es cero en el punto más alto del tiro vertical.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D4_utilidad_pedagogica": "Solucionismo directo: entrega la solución resuelta sin andamiaje reflexivo.",
+      "D4_utilidad_pedagogica": "Fallo crítico pedagógico: valida e induce la concepción física errónea del estudiante.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
@@ -823,7 +823,7 @@
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
       "D5_robustez_seguridad": 3,
-      "D6_adaptacion_nivel": 2,
+      "D6_adaptacion_nivel": 3,
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
@@ -832,7 +832,7 @@
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D5_robustez_seguridad": "Comportamiento riguroso y adecuado al estándar de calidad.",
-      "D6_adaptacion_nivel": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D6_adaptacion_nivel": "Sintonía pedagógica óptima con excelentes analogías didácticas para el nivel del alumno.",
       "D7_seguimiento_instrucciones": "Comportamiento riguroso y adecuado al estándar de calidad."
     }
   },
@@ -872,7 +872,7 @@
     "materia": "Física",
     "nivel_educativo": "Primaria",
     "puntuaciones": {
-      "D1_correccion_factual": 3,
+      "D1_correccion_factual": 1,
       "D2_control_alucinaciones": 3,
       "D3_claridad_didactica": 3,
       "D4_utilidad_pedagogica": 2,
@@ -881,7 +881,7 @@
       "D7_seguimiento_instrucciones": 3
     },
     "justificaciones": {
-      "D1_correccion_factual": "Comportamiento riguroso y adecuado al estándar de calidad.",
+      "D1_correccion_factual": "Imprecisión conceptual al asociar la velocidad de caída a la masa del objeto sin matizar la resistencia del aire.",
       "D2_control_alucinaciones": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D3_claridad_didactica": "Comportamiento riguroso y adecuado al estándar de calidad.",
       "D4_utilidad_pedagogica": "Comportamiento riguroso y adecuado al estándar de calidad.",

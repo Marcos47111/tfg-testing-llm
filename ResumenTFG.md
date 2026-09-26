@@ -478,19 +478,19 @@ Esta separación entre **calidad global** y **riesgo crítico** constituye una d
 
 | Perfil | IQE | CFR | HR | D1 | D2 | D3 | D4 | D5 | D6 | D7 |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Asistente Base** | **84,1** | **11,9 %** | **33,3 %** | 2,55 | 2,86 | 2,83 | 1,86 | 2,76 | 2,00 | 2,71 |
-| **Tutor Directo** | **87,9** | **14,3 %** | **33,3 %** | 2,52 | 2,86 | 2,88 | 1,93 | 2,76 | 3,00 | 2,76 |
-| **Tutor Socrático** | **93,0** | **11,9 %** | **16,7 %** | 2,48 | 2,88 | 2,93 | **2,81** | **2,93** | 3,00 | **2,81** |
+| **Asistente Base** | **83,5** | **14,3 %** | **33,3 %** | 2,43 | 2,86 | 2,83 | 1,88 | 2,76 | 2,07 | 2,71 |
+| **Tutor Directo** | **87,3** | **14,3 %** | **33,3 %** | 2,48 | 2,86 | 2,88 | 1,93 | 2,76 | 2,93 | 2,76 |
+| **Tutor Socrático** | **92,6** | **11,9 %** | **16,7 %** | 2,45 | 2,88 | 2,93 | **2,81** | **2,93** | 2,95 | **2,81** |
 
-### Subbatería específica de feedback
+### Subbatería específica de feedback (Casos primarios de tensión)
 
-Media D4 en FEED:
+Media D4 en FEED ($N=6$):
 
-- Base: **1,17**
-- Directo: **1,50**
-- Socrático: **1,67**
+- Base: **1,33** (vs. 1,88 transversal, $\Delta = +0,55$)
+- Directo: **1,50** (vs. 1,93 transversal, $\Delta = +0,43$)
+- Socrático: **1,67** (vs. 2,81 transversal, $\Delta = +1,14$)
 
-El Socrático obtiene la mayor media de feedback, aunque no resuelve correctamente todos los diagnósticos.
+El Socrático obtiene la mayor media de feedback formativo, si bien polariza su comportamiento entre andamiajes óptimos y fallos severos de diagnóstico conceptual.
 
 ---
 
@@ -502,28 +502,25 @@ El mismo modelo base produce comportamientos diferentes cuando se modifica la di
 
 El Tutor Socrático mejora especialmente en:
 
-- D4;
-- D5;
-- D7;
-- calidad global IQE.
+- D4 (Feedback Pedagógico);
+- D5 (Robustez y Seguridad);
+- D7 (Seguimiento de Instrucciones);
+- calidad global IQE ($92{,}6$ vs. $83{,}5$).
 
 ### 19.2. Una mejora global no implica menor riesgo
 
 El Tutor Directo obtiene mayor IQE que la línea Base:
 
-- Base: 84,1
-- Directo: 87,9
+- Base: 83,5
+- Directo: 87,3
 
-pero presenta **mayor CFR**:
+pero mantiene una tasa de fallos críticos idéntica y elevada ($CFR = 14{,}3\%$, con 6 casos críticos de 42: balanceo en FACT\_006, entrega acrítica en FEED\_004, alucinaciones en ALUC\_001 y ALUC\_005, y vulnerabilidades en SEC\_002 y SEC\_005).
 
-- Base: 11,9 %
-- Directo: 14,3 %
-
-Esto muestra que una única métrica agregada no es suficiente.
+Esto demuestra que una única métrica agregada no es suficiente.
 
 ### 19.3. El Socrático tampoco es “seguro” por defecto
 
-Aunque obtiene IQE = 93,0 y la mayor D4, mantiene CFR = 11,9 %.
+Aunque obtiene IQE = 92,6 y la mayor D4, mantiene CFR = 11,9 % (5 casos críticos de 42).
 
 Por ello tampoco supera Safety-First.
 
@@ -713,10 +710,10 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 Se ha evaluado experimentalmente la viabilidad de automatizar la rúbrica analítica $D_1 \dots D_7$ utilizando un modelo evaluador independiente (`Qwen2.5-14B-Instruct`, Q4_K_M) en modo ciego sobre las 126 respuestas reales (882 juicios emparejados).
 
 ### Resultados empíricos clave:
-1. **Error numérico medio:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$).
-2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$).
-3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}89\%$ (112/126), la sensibilidad para detectar respuestas con fallos críticos fue del $50{,}00\%$ (omitiendo 8 de las 16 respuestas críticas, $\text{FNR} = 50{,}00\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$), pero sólo el $60{,}0\%$ de alucinaciones ($D_2$) y el $30{,}0\%$ de errores factuales ($D_1$).
-4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia limitada ($\kappa = 0{,}190$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
+1. **Error numérico medio:** $\text{MAE} = 0{,}498$ puntos en escala $0$--$3$, con un $63{,}04\%$ de acuerdo exacto ($556/882$) y un $91{,}04\%$ en tolerancia $\pm 1$ nivel ($803/882$).
+2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$). Al incorporar distancia ordinal, el coeficiente asciende a $\kappa_{\text{lineal}} = 0{,}280$ y $\kappa_{\text{cuadrático}} = 0{,}368$.
+3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}10\%$ (111/126), la sensibilidad para detectar respuestas con fallos críticos fue del $47{,}06\%$ (detectando 8 de las 17 respuestas críticas, $\text{FNR} = 52{,}94\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$, 5/5), el $60{,}0\%$ de alucinaciones ($D_2$, 3/5) y el $27{,}27\%$ de errores factuales ($D_1$, 3/11).
+4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia no ponderada moderada/leve ($\kappa = 0{,}186$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
 
 ---
 

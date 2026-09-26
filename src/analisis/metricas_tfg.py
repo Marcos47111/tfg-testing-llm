@@ -135,12 +135,17 @@ def generar_informe_sintetico(evaluaciones: List[Dict[str, Any]]) -> Dict[str, A
 def calcular_cohen_kappa(
     evaluador_a: List[int],
     evaluador_b: List[int],
-    niveles: int = 4
+    niveles: int = 4,
+    pesos: Optional[str] = None
 ) -> Dict[str, Any]:
     """Calcula el coeficiente kappa de Cohen (κ) para medir la concordancia inter-evaluador.
     
+    Soporta:
+    - κ no ponderado (pesos=None)
+    - κ ponderado lineal (pesos='linear')
+    - κ ponderado cuadrático (pesos='quadratic')
+    
     κ = (P_o - P_e) / (1 - P_e)
-    donde P_o es la concordancia observada y P_e es la concordancia esperada por azar.
     """
     if len(evaluador_a) != len(evaluador_b) or not evaluador_a:
         raise ValueError("Las listas de puntuaciones deben tener la misma longitud no vacía.")
@@ -153,19 +158,28 @@ def calcular_cohen_kappa(
         if not (type(a) is int and type(b) is int and 0 <= a < niveles and 0 <= b < niveles):
             raise ValueError(f"Puntuación fuera de rango [0, {niveles-1}] o tipo no entero: a={a}, b={b}")
         matriz[a][b] += 1
-            
-    # 2. Proporción observada de acuerdo (Po)
-    acuerdos_observados = sum(matriz[i][i] for i in range(niveles))
-    po = acuerdos_observados / n
-    
-    # 3. Proporción esperada por azar (Pe)
-    pe = 0.0
-    for k in range(niveles):
-        marg_a = sum(matriz[k][j] for j in range(niveles))
-        marg_b = sum(matriz[i][k] for i in range(niveles))
-        pe += (marg_a * marg_b) / (n * n)
         
-    # 4. Cálculo de kappa con manejo seguro de indeterminación
+    # 2. Matriz de pesos W
+    matriz_pesos = [[0.0 for _ in range(niveles)] for _ in range(niveles)]
+    for i in range(niveles):
+        for j in range(niveles):
+            if pesos == "linear":
+                matriz_pesos[i][j] = 1.0 - abs(i - j) / (niveles - 1)
+            elif pesos == "quadratic":
+                matriz_pesos[i][j] = 1.0 - ((i - j) ** 2) / ((niveles - 1) ** 2)
+            else:
+                matriz_pesos[i][j] = 1.0 if i == j else 0.0
+                
+    # 3. Proporción observada de acuerdo ponderado (Po)
+    po = sum(matriz_pesos[i][j] * matriz[i][j] for i in range(niveles) for j in range(niveles)) / n
+    
+    # 4. Proporción esperada por azar ponderada (Pe)
+    marg_a = [sum(matriz[i][j] for j in range(niveles)) for i in range(niveles)]
+    marg_b = [sum(matriz[i][j] for i in range(niveles)) for j in range(niveles)]
+    
+    pe = sum(matriz_pesos[i][j] * (marg_a[i] * marg_b[j]) for i in range(niveles) for j in range(niveles)) / (n * n)
+        
+    # 5. Cálculo de kappa con manejo seguro de indeterminación
     if pe >= 1.0:
         kappa = float("nan")
         interpretacion = "Indeterminado (varianza nula / categoría única)"
@@ -189,7 +203,48 @@ def calcular_cohen_kappa(
         "kappa": round(kappa, 4) if not (isinstance(kappa, float) and kappa != kappa) else float("nan"),
         "acuerdo_observado_po": round(po, 4),
         "acuerdo_esperado_pe": round(pe, 4),
+        "tipo_pesos": pesos if pesos else "no_ponderado",
         "total_pares": n,
         "interpretacion": interpretacion
     }
+
+
+def calcular_medias_primarias_vs_transversales(evaluaciones: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Calcula el análisis de sensibilidad comparando la media transversal (toda la batería)
+    con la media en los casos primarios directamente diseñados para evaluar cada dimensión.
+    Permite cuantificar el efecto techo/suelo en la evaluación transversal.
+    """
+    prefijos_dim = {
+        "D1_correccion_factual": "FACT",
+        "D2_control_alucinaciones": "ALUC",
+        "D3_claridad_didactica": "CLAR",
+        "D4_utilidad_pedagogica": "FEED",
+        "D5_robustez_seguridad": "SEC",
+        "D6_adaptacion_nivel": "NIV",
+        "D7_seguimiento_instrucciones": "INST"
+    }
+    
+    res = {}
+    for dim, prefix in prefijos_dim.items():
+        todos = [e["puntuaciones"][dim] for e in evaluaciones if dim in e.get("puntuaciones", {})]
+        primarios = [
+            e["puntuaciones"][dim] for e in evaluaciones 
+            if dim in e.get("puntuaciones", {}) and e.get("caso_id", "").startswith(prefix)
+        ]
+        
+        m_trans = calcular_puntuacion_media(todos)
+        m_prim = calcular_puntuacion_media(primarios)
+        delta = m_trans - m_prim
+        
+        res[dim] = {
+            "media_transversal": round(m_trans, 2),
+            "n_transversal": len(todos),
+            "media_primaria": round(m_prim, 2),
+            "n_primaria": len(primarios),
+            "delta_efecto_techo": round(delta, 2)
+        }
+        
+    return res
+
 

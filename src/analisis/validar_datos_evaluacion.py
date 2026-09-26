@@ -14,7 +14,7 @@ import csv
 import json
 import sys
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -25,6 +25,8 @@ from src.utils.loader_prompts import cargar_todos_los_prompts
 DATA_DIR = PROJECT_ROOT / "data"
 EVAL_DIR = DATA_DIR / "evaluaciones"
 RAW_DIR = EVAL_DIR / "raw"
+
+RAW_INDEP_DIR = EVAL_DIR / "raw_independientes"
 
 DIMENSIONES_ESPERADAS = [
     "D1_correccion_factual",
@@ -50,7 +52,7 @@ CAMPOS_OBLIGATORIOS = [
 ]
 
 
-def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str, evaluador_esperado: str = None) -> List[str]:
+def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str, evaluador_esperado: str = None, total_casos_esperado: Optional[int] = None) -> List[str]:
     """Valida un conjunto de evaluaciones contra el esquema y las reglas del marco metodológico."""
     errores = []
     
@@ -59,6 +61,9 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
     
     if len(items) == 0:
         return [f"[{nombre_archivo}] El archivo está vacío."]
+        
+    if total_casos_esperado is not None and len(items) != total_casos_esperado:
+        errores.append(f"[{nombre_archivo}] Número incorrecto de registros: {len(items)} (esperados: {total_casos_esperado}).")
     
     prompts = {c["id"]: c for c in cargar_todos_los_prompts()}
     casos_vistos = set()
@@ -76,10 +81,10 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
         ev_id = item.get("evaluador_id")
         
         if cid not in prompts:
-            errores.append(f"{prefijo} 'caso_id' '{cid}' no existe en el banco de 42 prompts.")
+            errores.append(f"{prefijo} 'caso_id' '{cid}' no existe en el banco de {len(prompts)} prompts.")
             
         if perfil not in PERFILES_ESPERADOS:
-            errores.append(f"{prefijo} 'perfil' '{perfil}' no es uno de los 3 perfiles válidos.")
+            errores.append(f"{prefijo} 'perfil' '{perfil}' no es uno de los {len(PERFILES_ESPERADOS)} perfiles válidos.")
             
         if evaluador_esperado and ev_id != evaluador_esperado:
             errores.append(f"{prefijo} 'evaluador_id' esperado '{evaluador_esperado}', encontrado '{ev_id}'.")
@@ -111,7 +116,7 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
     return errores
 
 
-def validar_csv_raw(csv_path: Path, evaluador_esperado: str) -> List[str]:
+def validar_csv_raw(csv_path: Path, evaluador_esperado: str, total_esperado: int) -> List[str]:
     """Valida la integridad de un fichero CSV de anotación humana original."""
     errores = []
     if not csv_path.exists():
@@ -129,18 +134,19 @@ def validar_csv_raw(csv_path: Path, evaluador_esperado: str) -> List[str]:
             if perfil not in PERFILES_ESPERADOS:
                 errores.append(f"[{csv_path.name} fila {idx+1}] Perfil inválido: {perfil}.")
             for d in DIMENSIONES_ESPERADAS:
-                if d not in row:
-                    errores.append(f"[{csv_path.name} fila {idx+1}] Falta columna {d}.")
+                col_score = d if d in row else f"puntuacion_{d}"
+                if col_score not in row:
+                    errores.append(f"[{csv_path.name} fila {idx+1}] Falta columna {d} o puntuacion_{d}.")
                 else:
                     try:
-                        val = int(row[d])
+                        val = int(row[col_score])
                         if val not in [0, 1, 2, 3]:
-                            errores.append(f"[{csv_path.name} fila {idx+1}] Valor fuera de rango en {d}: {val}")
+                            errores.append(f"[{csv_path.name} fila {idx+1}] Valor fuera de rango en {col_score}: {val}")
                     except ValueError:
-                        errores.append(f"[{csv_path.name} fila {idx+1}] Valor no numérico en {d}: {row[d]}")
+                        errores.append(f"[{csv_path.name} fila {idx+1}] Valor no numérico en {col_score}: {row[col_score]}")
                         
-    if filas != 126:
-        errores.append(f"[{csv_path.name}] Número incorrecto de filas: {filas} (esperadas: 126).")
+    if filas != total_esperado:
+        errores.append(f"[{csv_path.name}] Número incorrecto de filas: {filas} (esperadas: {total_esperado}).")
         
     return errores
 
@@ -183,7 +189,8 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
             
         # Comparar puntuaciones D1..D7
         for d in DIMENSIONES_ESPERADAS:
-            csv_val = int(row[d])
+            col_score = d if d in row else f"puntuacion_{d}"
+            csv_val = int(row[col_score])
             json_val = j_item["puntuaciones"][d]
             if csv_val != json_val:
                 errores.append(f"Discrepancia de puntuación en ({cid}, {perf}, {d}): CSV={csv_val} vs JSON={json_val}")
@@ -197,7 +204,7 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
     return errores
 
 
-def validar_dataset_llm_judge() -> List[str]:
+def validar_dataset_llm_judge(total_evaluaciones_esperadas: int, total_prompts: int) -> List[str]:
     """
     Valida exhaustivamente la integridad estructural, criptográfica y metodológica
     del dataset experimental generado por LLM-as-a-Judge.
@@ -224,8 +231,8 @@ def validar_dataset_llm_judge() -> List[str]:
     else:
         with open(raw_file, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
-        if len(raw_data) != 126:
-            errores.append(f"[raw_judge] Número de trazas incorrecto: {len(raw_data)} (esperados: 126).")
+        if len(raw_data) != total_evaluaciones_esperadas:
+            errores.append(f"[raw_judge] Número de trazas incorrecto: {len(raw_data)} (esperados: {total_evaluaciones_esperadas}).")
         else:
             # Validar consistencia interna del dataset raw
             modelos = {t.get("judge_model") for t in raw_data}
@@ -251,7 +258,7 @@ def validar_dataset_llm_judge() -> List[str]:
                 errores.append(f"[raw_judge] Los pares (caso_id, perfil) en raw no coinciden con la referencia humana E1: discrepancias={len(diff)}")
                 
             if not errores:
-                print(f"    [+] {raw_file.name}: 126 trazas raw validadas (Proveedor: {list(proveedores)[0]}, Modelo: {list(modelos)[0]}).")
+                print(f"    [+] {raw_file.name}: {total_evaluaciones_esperadas} trazas raw validadas (Proveedor: {list(proveedores)[0]}, Modelo: {list(modelos)[0]}).")
                 
     # 2. Validar JSON normalizado
     norm_file = judge_dir / "evaluacion_llm_judge.json"
@@ -260,13 +267,13 @@ def validar_dataset_llm_judge() -> List[str]:
     else:
         with open(norm_file, "r", encoding="utf-8") as f:
             norm_data = json.load(f)
-        if len(norm_data) != 126:
-            errores.append(f"[norm_judge] Número de registros incorrecto: {len(norm_data)} (esperados: 126).")
-        errs = validar_dataset_evaluacion(norm_data, norm_file.name, evaluador_esperado="LLM_JUDGE")
+        if len(norm_data) != total_evaluaciones_esperadas:
+            errores.append(f"[norm_judge] Número de registros incorrecto: {len(norm_data)} (esperados: {total_evaluaciones_esperadas}).")
+        errs = validar_dataset_evaluacion(norm_data, norm_file.name, evaluador_esperado="LLM_JUDGE", total_casos_esperado=total_evaluaciones_esperadas)
         errores.extend(errs)
         
         # 3. Validar correspondencia biunívoca raw <-> normalizado
-        if raw_data and norm_data and len(raw_data) == 126 and len(norm_data) == 126:
+        if raw_data and norm_data and len(raw_data) == total_evaluaciones_esperadas and len(norm_data) == total_evaluaciones_esperadas:
             map_raw = {(t["caso_id"], t["perfil"]): t for t in raw_data}
             map_norm = {(n["caso_id"], n["perfil"]): n for n in norm_data}
             
@@ -284,7 +291,7 @@ def validar_dataset_llm_judge() -> List[str]:
                     errores.append(f"[judge_sync] Discrepancia raw vs normalizado en {clave}: raw={raw_scores} vs norm={norm_scores}")
                     
             if not errs and not [e for e in errores if "[judge_sync]" in e]:
-                print(f"    [+] {norm_file.name}: 126 registros normalizados validados (Correspondencia exacta raw <-> JSON).")
+                print(f"    [+] {norm_file.name}: {total_evaluaciones_esperadas} registros normalizados validados (Correspondencia exacta raw <-> JSON).")
                 
     # 4. Validar particiones por perfil del juez
     for perfil in PERFILES_ESPERADOS:
@@ -292,36 +299,83 @@ def validar_dataset_llm_judge() -> List[str]:
         if p_file.exists():
             with open(p_file, "r", encoding="utf-8") as f:
                 p_data = json.load(f)
-            if len(p_data) != 42:
-                errores.append(f"[particion_judge] Longitud incorrecta para {p_file.name}: {len(p_data)} (esperados: 42).")
+            if len(p_data) != total_prompts:
+                errores.append(f"[particion_judge] Longitud incorrecta para {p_file.name}: {len(p_data)} (esperados: {total_prompts}).")
             else:
-                print(f"    [+] {p_file.name}: 42 casos del perfil '{perfil}' validados.")
+                print(f"    [+] {p_file.name}: {total_prompts} casos del perfil '{perfil}' validados.")
+                
+    # 5. Validar manifiesto de ejecución si existe
+    manifest_file = judge_dir / "run_manifest.json"
+    if manifest_file.exists():
+        with open(manifest_file, "r", encoding="utf-8") as f:
+            manifest_data = json.load(f)
+        if manifest_data.get("volumen_evaluado", {}).get("total_respuestas") != total_evaluaciones_esperadas:
+            errores.append(f"[manifest_judge] Discrepancia en volumen_evaluado.total_respuestas: {manifest_data.get('volumen_evaluado', {}).get('total_respuestas')} vs {total_evaluaciones_esperadas}")
+        else:
+            print(f"    [+] {manifest_file.name}: Manifiesto del Juez verificado.")
                 
     return errores
 
 
 def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
     """Ejecuta la validación exhaustiva de todos los archivos de evaluación humana y opcionalmente LLM-as-a-Judge."""
-    print("=" * 65)
-    print("  AUDITORÍA Y VALIDACIÓN DE INTEGRIDAD DE EVALUACIONES HUMANAS")
-    print("=" * 65)
+    prompts = cargar_todos_los_prompts()
+    total_prompts = len(prompts)
+    total_evaluaciones_esperadas = total_prompts * len(PERFILES_ESPERADOS)
+    total_juicios = total_evaluaciones_esperadas * len(DIMENSIONES_ESPERADAS)
+
+    print("=" * 68)
+    print("  AUDITORÍA Y VALIDACIÓN DE INTEGRIDAD DE EVALUACIONES EXPERIMENTALES")
+    print(f"  Banco de casos: {total_prompts} | Perfiles: {len(PERFILES_ESPERADOS)} | Total evals/evaluador: {total_evaluaciones_esperadas}")
+    print("=" * 68)
     
     total_errores = []
     
-    # 1. Validar ficheros fuente RAW (CSV)
-    print("  [1/4] Validando ficheros originales de anotación (raw CSV)...")
+    # 1. Validar Fase 1: Anotaciones Independientes Originales (raw_independientes)
+    print("  [1/5] Validando Fase 1: Anotaciones independientes originales (raw_independientes)...")
+    archivos_independientes = [
+        ("evaluador_1_original.csv", "evaluador_1_original.json", "evaluador_1"),
+        ("evaluador_2_original.csv", "evaluador_2_original.json", "evaluador_2"),
+    ]
+    for csv_name, json_name, ev_id in archivos_independientes:
+        csv_path = RAW_INDEP_DIR / csv_name
+        json_path = RAW_INDEP_DIR / json_name
+        
+        # Validar CSV
+        errs_csv = validar_csv_raw(csv_path, ev_id, total_evaluaciones_esperadas)
+        total_errores.extend(errs_csv)
+        if not errs_csv:
+            print(f"    [+] {csv_name}: {total_evaluaciones_esperadas} anotaciones independientes validadas ({ev_id}).")
+            
+        # Validar JSON
+        if json_path.exists():
+            with open(json_path, "r", encoding="utf-8") as f:
+                datos_indep = json.load(f)
+            errs_json = validar_dataset_evaluacion(datos_indep, json_name, evaluador_esperado=ev_id, total_casos_esperado=total_evaluaciones_esperadas)
+            total_errores.extend(errs_json)
+            if not errs_json:
+                print(f"    [+] {json_name}: {len(datos_indep)} registros independientes JSON validados ({ev_id}).")
+                
+        # Validar sincronía CSV <-> JSON
+        errs_sync = comparar_csv_con_json(csv_path, json_path)
+        total_errores.extend(errs_sync)
+        if not errs_sync:
+            print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta {total_evaluaciones_esperadas}/{total_evaluaciones_esperadas} (0 discrepancias).")
+
+    # 2. Validar Fase 2: Datasets Consolidados (raw CSV)
+    print("  [2/5] Validando Fase 2: Ficheros CSV raw consolidados...")
     for ev_id, fname in [("evaluador_1", "anotaciones_evaluador_1_raw.csv"), ("evaluador_2", "anotaciones_evaluador_2_raw.csv")]:
         csv_path = RAW_DIR / fname
-        errs = validar_csv_raw(csv_path, ev_id)
+        errs = validar_csv_raw(csv_path, ev_id, total_evaluaciones_esperadas)
         total_errores.extend(errs)
         if not errs:
-            print(f"    [+] {fname}: 126 anotaciones originales validadas ({ev_id}).")
+            print(f"    [+] {fname}: {total_evaluaciones_esperadas} anotaciones consolidadas validadas ({ev_id}).")
             
-    # 2. Validar archivos JSON de Evaluador 1 y 2
-    print("  [2/4] Validando datasets normalizados JSON (Evaluador 1 y 2)...")
+    # 3. Validar Fase 2: Datasets JSON Consolidados (Evaluador 1 y 2)
+    print("  [3/5] Validando Fase 2: Datasets normalizados JSON (Evaluador 1 y 2)...")
     archivos_evaluador = {
-        "evaluacion_evaluador_1.json": ("evaluador_1", 126),
-        "evaluacion_evaluador_2.json": ("evaluador_2", 126),
+        "evaluacion_evaluador_1.json": ("evaluador_1", total_evaluaciones_esperadas),
+        "evaluacion_evaluador_2.json": ("evaluador_2", total_evaluaciones_esperadas),
     }
     for fname, (ev_id, total_esperado) in archivos_evaluador.items():
         fpath = EVAL_DIR / fname
@@ -332,16 +386,12 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         with open(fpath, "r", encoding="utf-8") as f:
             datos = json.load(f)
             
-        if len(datos) != total_esperado:
-            total_errores.append(f"[{fname}] Número de registros incorrecto: {len(datos)} (esperados: {total_esperado}).")
-            
-        errs = validar_dataset_evaluacion(datos, fname, evaluador_esperado=ev_id)
+        errs = validar_dataset_evaluacion(datos, fname, evaluador_esperado=ev_id, total_casos_esperado=total_esperado)
         total_errores.extend(errs)
         if not errs:
             print(f"    [+] {fname}: {len(datos)} registros validados ({ev_id}).")
             
-    # 3. Comparación exacta campo a campo raw CSV <-> normalizado JSON
-    print("  [3/4] Comprobando correspondencia exacta y biunívoca (raw CSV <-> JSON)...")
+    # Comparación exacta campo a campo raw CSV <-> normalizado JSON
     comparaciones = [
         ("anotaciones_evaluador_1_raw.csv", "evaluacion_evaluador_1.json"),
         ("anotaciones_evaluador_2_raw.csv", "evaluacion_evaluador_2.json")
@@ -350,10 +400,10 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         errs_comp = comparar_csv_con_json(RAW_DIR / csv_name, EVAL_DIR / json_name)
         total_errores.extend(errs_comp)
         if not errs_comp:
-            print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta 126/126 registros (0 discrepancias).")
+            print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta {total_evaluaciones_esperadas}/{total_evaluaciones_esperadas} (0 discrepancias).")
             
-    # 4. Validar particiones por perfil (Evaluador 1)
-    print("  [4/4] Validando particiones por perfil...")
+    # 4. Validar particiones por perfil (Evaluador 1 / Gold Standard)
+    print("  [4/5] Validando particiones por perfil...")
     for perfil in PERFILES_ESPERADOS:
         fname = f"evaluacion_{perfil}.json"
         fpath = EVAL_DIR / fname
@@ -364,33 +414,31 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         with open(fpath, "r", encoding="utf-8") as f:
             datos_perfil = json.load(f)
             
-        if len(datos_perfil) != 42:
-            total_errores.append(f"[{fname}] Número de casos incorrecto: {len(datos_perfil)} (esperados: 42).")
-            
-        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="evaluador_1")
+        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="evaluador_1", total_casos_esperado=total_prompts)
         total_errores.extend(errs)
         if not errs:
             print(f"    [+] {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
             
     # 5. Opcional: Validar LLM Judge
     if incluir_judge:
-        errs_j = validar_dataset_llm_judge()
+        print("  [5/5] Validando extensión experimental LLM-as-a-Judge...")
+        errs_j = validar_dataset_llm_judge(total_evaluaciones_esperadas, total_prompts)
         total_errores.extend(errs_j)
             
     # Resumen final
-    print("-" * 65)
+    print("-" * 68)
     if total_errores:
         print(f"[-] Se encontraron {len(total_errores)} errores de validación:")
         for e in total_errores[:20]:
             print(f"   - {e}")
         if len(total_errores) > 20:
             print(f"   ... y {len(total_errores)-20} errores más.")
-            return False
+        return False
     else:
         print("  Todos los conjuntos de evaluacion cumplen el estandar metodologico.")
-        print(f"  Trazabilidad completa: raw CSV -> normalizado JSON -> métricas.")
-        print(f"  Total de pares evaluados pareados: 126 casos x 7 dimensiones = 882 puntuaciones.")
-    print("=" * 65)
+        print("  Trazabilidad completa: raw independientes -> raw consolidados -> JSON -> métricas.")
+        print(f"  Total de pares evaluados pareados: {total_evaluaciones_esperadas} casos x {len(DIMENSIONES_ESPERADAS)} dimensiones = {total_juicios} puntuaciones.")
+    print("=" * 68)
     return len(total_errores) == 0
 
 
@@ -403,4 +451,5 @@ if __name__ == "__main__":
     exito = ejecutar_auditoria_completa_evaluaciones(incluir_judge=args.incluir_judge)
     if not exito:
         sys.exit(1)
+
 

@@ -1,6 +1,7 @@
 {
   "experimento": "Experimento Principal de Generación Conversacional con Llama 3",
   "framework": "TFG Testing LLM Educativo",
+  "procedencia_registro": "reconstruccion_post_hoc_documentada",
   "modelo_base": "llama3:8b",
   "runtime": "Ollama",
   "ollama_version": "0.1.32",
@@ -34,6 +35,10 @@
   "evaluacion_humana": {
     "evaluadores": ["evaluador_1", "evaluador_2"],
     "total_juicios_pareados": 882,
-    "concordancia_global_kappa": 0.9818
+    "concordancia_fase1_independiente_kappa_no_ponderado": 0.9742,
+    "concordancia_fase1_independiente_kappa_lineal": 0.9807,
+    "concordancia_fase1_independiente_kappa_cuadratico": 0.9884,
+    "concordancia_fase2_consenso_kappa": 0.9822,
+    "acuerdo_observado_fase1_porcentaje": 99.55
   }
 }

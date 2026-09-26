@@ -241,10 +241,19 @@ def ejecutar_analisis_concordancia_llm_judge():
             
     n_global = len(scores_e1_global)
             
-    # 2. Kappa Global
+    # 2. Kappa Global (No ponderado, lineal y cuadrático)
     kappa_j_e1_global = calcular_cohen_kappa(scores_e1_global, scores_judge_global)
+    kappa_j_e1_lin = calcular_cohen_kappa(scores_e1_global, scores_judge_global, pesos="linear")
+    kappa_j_e1_quad = calcular_cohen_kappa(scores_e1_global, scores_judge_global, pesos="quadratic")
+    
     kappa_j_e2_global = calcular_cohen_kappa(scores_e2_global, scores_judge_global)
+    kappa_j_e2_lin = calcular_cohen_kappa(scores_e2_global, scores_judge_global, pesos="linear")
+    kappa_j_e2_quad = calcular_cohen_kappa(scores_e2_global, scores_judge_global, pesos="quadratic")
+    
     kappa_e1_e2_global = calcular_cohen_kappa(scores_e1_global, scores_e2_global)
+    kappa_e1_e2_lin = calcular_cohen_kappa(scores_e1_global, scores_e2_global, pesos="linear")
+    kappa_e1_e2_quad = calcular_cohen_kappa(scores_e1_global, scores_e2_global, pesos="quadratic")
+    
     mae_global_j_e1 = calcular_mae(scores_e1_global, scores_judge_global)
     mae_global_j_e2 = calcular_mae(scores_e2_global, scores_judge_global)
     
@@ -255,6 +264,9 @@ def ejecutar_analisis_concordancia_llm_judge():
     
     for d_key, d_nombre in DIMENSIONES:
         k_j_e1 = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_judge[d_key])
+        k_j_e1_lin = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_judge[d_key], pesos="linear")
+        k_j_e1_quad = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_judge[d_key], pesos="quadratic")
+        
         k_j_e2 = calcular_cohen_kappa(scores_dim_e2[d_key], scores_dim_judge[d_key])
         k_e1_e2 = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_e2[d_key])
         
@@ -271,6 +283,8 @@ def ejecutar_analisis_concordancia_llm_judge():
         concordancia_dimensional[d_key] = {
             "nombre": d_nombre,
             "kappa_judge_vs_e1": k_j_e1["kappa"],
+            "kappa_lineal_judge_vs_e1": k_j_e1_lin["kappa"],
+            "kappa_cuadratico_judge_vs_e1": k_j_e1_quad["kappa"],
             "po_judge_vs_e1": k_j_e1["acuerdo_observado_po"],
             "pe_judge_vs_e1": k_j_e1["acuerdo_esperado_pe"],
             "acuerdo_exacto_pct": acuerdo_exacto_pct,
@@ -286,6 +300,8 @@ def ejecutar_analisis_concordancia_llm_judge():
         filas_tabla.append({
             "Dimensión": d_nombre,
             "Kappa (Juez vs E1)": k_j_e1["kappa"],
+            "Kappa Lineal": k_j_e1_lin["kappa"],
+            "Kappa Cuadrático": k_j_e1_quad["kappa"],
             "P_o": k_j_e1["acuerdo_observado_po"],
             "P_e": k_j_e1["acuerdo_esperado_pe"],
             "MAE": round(mae_dim, 3),
@@ -312,9 +328,30 @@ def ejecutar_analisis_concordancia_llm_judge():
             "total_pares_comparados": len(scores_e1_global),
             "mae_juez_vs_e1": round(mae_global_j_e1, 4),
             "mae_juez_vs_e2": round(mae_global_j_e2, 4),
-            "juez_vs_evaluador_1": kappa_j_e1_global,
-            "juez_vs_evaluador_2": kappa_j_e2_global,
-            "humano_e1_vs_e2_referencia": kappa_e1_e2_global
+            "juez_vs_evaluador_1": {
+                "kappa_no_ponderado": kappa_j_e1_global["kappa"],
+                "kappa_ponderado_lineal": kappa_j_e1_lin["kappa"],
+                "kappa_ponderado_cuadratico": kappa_j_e1_quad["kappa"],
+                "po": kappa_j_e1_global["acuerdo_observado_po"],
+                "pe": kappa_j_e1_global["acuerdo_esperado_pe"],
+                "interpretacion": kappa_j_e1_global["interpretacion"]
+            },
+            "juez_vs_evaluador_2": {
+                "kappa_no_ponderado": kappa_j_e2_global["kappa"],
+                "kappa_ponderado_lineal": kappa_j_e2_lin["kappa"],
+                "kappa_ponderado_cuadratico": kappa_j_e2_quad["kappa"],
+                "po": kappa_j_e2_global["acuerdo_observado_po"],
+                "pe": kappa_j_e2_global["acuerdo_esperado_pe"],
+                "interpretacion": kappa_j_e2_global["interpretacion"]
+            },
+            "humano_e1_vs_e2_referencia": {
+                "kappa_no_ponderado": kappa_e1_e2_global["kappa"],
+                "kappa_ponderado_lineal": kappa_e1_e2_lin["kappa"],
+                "kappa_ponderado_cuadratico": kappa_e1_e2_quad["kappa"],
+                "po": kappa_e1_e2_global["acuerdo_observado_po"],
+                "pe": kappa_e1_e2_global["acuerdo_esperado_pe"],
+                "interpretacion": kappa_e1_e2_global["interpretacion"]
+            }
         },
         "concordancia_por_dimension": concordancia_dimensional,
         "analisis_discrepancias_deltas": {

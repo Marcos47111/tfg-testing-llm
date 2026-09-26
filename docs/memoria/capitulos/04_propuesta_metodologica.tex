@@ -88,23 +88,30 @@ Para obtener una métrica sintética de calidad en escala $[0, 100]$, se pondera
 \end{equation}
 donde las ponderaciones fijadas son $w_1 = 0{,}25$ (Rigor Factual), $w_2 = 0{,}20$ (Control de Alucinaciones), $w_3 = 0{,}15$ (Claridad Didáctica), $w_4 = 0{,}15$ (Feedback Formativo), $w_5 = 0{,}10$ (Seguridad), $w_6 = 0{,}10$ (Adaptación) y $w_7 = 0{,}05$ (Directrices), con $\sum_{d=1}^{7} w_d = 1{,}0$.
 
-Estas ponderaciones se establecieron a priori como una decisión de diseño del marco, priorizando la corrección factual y el control de alucinaciones frente a aspectos de formato. No deben interpretarse como pesos empíricamente universales, sino como una parametrización de referencia. Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0{,}143$) produce valores de $IQE$ equivalentes ($83{,}7$ para Asistente Base, $89{,}1$ para Tutor Directo y $94{,}4$ para Tutor Socrático), lo que indica que las comparaciones relativas entre perfiles no dependen críticamente de los pesos asignados. Asimismo, para la evaluación de la Factualidad ($D_1$) en casos de naturaleza conceptual, la guía establece que para alcanzar la máxima calificación (Nivel 3) la respuesta debe ser rigurosa y suficientemente completa respecto a la información demandada, no bastando la mera ausencia de error si se omiten los contenidos nucleares requeridos.
+Estas ponderaciones se establecieron a priori como una decisión de diseño del marco, priorizando la corrección factual y el control de alucinaciones frente a aspectos de formato. No deben interpretarse como pesos empíricamente universales, sino como una parametrización de referencia. Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0{,}143$) produce valores de $IQE$ altamente consistentes ($83{,}3$ para Asistente Base, $87{,}1$ para Tutor Directo y $92{,}5$ para Tutor Socrático frente a los valores de diseño $83{,}5$, $87{,}3$ y $92{,}6$), lo que confirma que las conclusiones comparativas entre perfiles no dependen críticamente de los pesos asignados. Asimismo, para la evaluación de la Factualidad ($D_1$) en casos de naturaleza conceptual, la guía establece que para alcanzar la máxima calificación (Nivel 3) la respuesta debe ser rigurosa y suficientemente completa respecto a la información demandada, no bastando la mera ausencia de error si se omiten los contenidos nucleares requeridos.
 
-\section{Protocolo de consistencia inter-evaluador}
+\section{Protocolo de consistencia y validación inter-evaluador}
 \label{sec:concordancia_inter_evaluador}
-Para estimar el grado de acuerdo entre evaluadores al aplicar la rúbrica cualitativa, el marco contempla una evaluación independiente y anonimizada —en la que dos evaluadores califican cada respuesta sin acceso a las valoraciones del otro evaluador ni a la etiqueta explícita del perfil del chatbot evaluado— y cuantifica la consistencia mediante el coeficiente Kappa de Cohen ($\kappa$) \cite{landis1977measurement}:
+Para asegurar la máxima fiabilidad, trazabilidad e integridad en la aplicación de la rúbrica analítica, el marco metodológico establece un protocolo de evaluación en dos fases secuenciales:
+
+\begin{enumerate}
+    \item \textbf{Fase 1: Doble anotación independiente y a ciegas}: Dos evaluadores humanos ($E_1$ y $E_2$) califican de forma totalmente desacoplada e independiente la totalidad de las 126 respuestas generadas ($42 \text{ casos} \times 3 \text{ perfiles} \times 7 \text{ dimensiones} = 882 \text{ juicios pareados}$), sin acceso a las puntuaciones del otro evaluador ni a la etiqueta identificativa del perfil conversacional emisor. Las trazas originales de esta fase se custodian de manera inmutable en \path{data/evaluaciones/raw_independientes/}.
+    \item \textbf{Fase 2: Adjudicación colegiada y consolidación del Gold Standard}: En los casos donde concurre alguna discrepancia categorial entre evaluadores, se realiza una sesión de deliberación y contraste contra las evidencias textuales de la respuesta y las definiciones operacionales de la rúbrica. Tras la adjudicación colegiada, se consolida el conjunto canónico de referencia (\textit{Gold Standard}) en \path{data/evaluaciones/}, base sobre la que se computan los indicadores analíticos oficiales ($IQE$, $CFR$, $HR$).
+\end{enumerate}
+
+Para cuantificar formalmente el grado de acuerdo inter-evaluador en la Fase 1, se emplea el coeficiente Kappa de Cohen ($\kappa$) \cite{cohen1960coefficient,landis1977measurement}:
 
 \begin{equation}[EQ:COHENKAPPA]{Coeficiente Kappa de Cohen para fiabilidad inter-evaluador}
     \kappa = \frac{P_o - P_e}{1 - P_e}
 \end{equation}
 
-donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporción de acuerdo atribuible al azar:
+donde $P_o$ representa la proporción de acuerdo observado y $P_e$ la proporción de acuerdo esperable por azar:
 
 \begin{equation}[EQ:PROPORCIONESKAPPA]{Proporciones observada y esperada de acuerdo}
     P_o = \frac{1}{N_\kappa} \sum_{k=0}^{3} f_{kk}, \quad P_e = \sum_{k=0}^{3} \left( \frac{R_k \cdot C_k}{N_\kappa^2} \right)
 \end{equation}
 
-donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales por categoría. En las Ecuaciones \ref{EQ:PROPORCIONESKAPPA}, $N_\kappa$ representa el número total de pares de puntuaciones comparadas; en esta aplicación, $N_\kappa = 126 \times 7 = 882$. Aun cuando la escala de cuatro niveles posee naturaleza ordinal, se empleó el coeficiente $\kappa$ no ponderado como decisión metodológica para medir el acuerdo exacto entre evaluadores y penalizar por igual cualquier discrepancia categorial entre niveles; la evaluación mediante $\kappa$ ponderado se reserva como extensión metodológica para futuros estudios con paneles ampliados. Según los criterios de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ se interpretan como acuerdo casi perfecto sobre la muestra analizada.
+donde $f_{kk}$ corresponde a los aciertos en la diagonal principal de la matriz de contingencia $4 \times 4$, y $R_k, C_k$ a los totales marginales por categoría ($N_\kappa = 882$). Adicionalmente, dado el carácter ordinal de la rúbrica (Niveles $0, 1, 2, 3$), se complementa la formulación tradicional no ponderada con el cálculo del coeficiente Kappa Ponderado ($\kappa_w$) propuesto por Cohen \cite{cohen1968weighted}, considerando esquemas de penalización con pesos lineales ($w_{ij} = 1 - \frac{|i-j|}{k-1}$) y cuadráticos ($w_{ij} = 1 - \frac{(i-j)^2}{(k-1)^2}$). Según las tablas de referencia psicométrica de Landis y Koch \cite{landis1977measurement}, valores de $\kappa > 0{,}80$ representan un acuerdo casi perfecto (\textit{almost perfect agreement}).
 
 \section{Implementación y arquitectura del software de testing}
 \label{sec:arquitectura_software}

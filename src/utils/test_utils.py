@@ -30,7 +30,7 @@ class TestUtilsTFG(unittest.TestCase):
         tex = generar_tabla_latex_comparativa()
         self.assertIn("\\begin{table}", tex)
         self.assertIn("\\end{table}", tex)
-        self.assertIn("asistente\\_base", tex)
+        self.assertTrue("Asistente Base" in tex or "asistente\\_base" in tex)
 
 
 if __name__ == "__main__":

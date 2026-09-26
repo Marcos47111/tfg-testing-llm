@@ -214,8 +214,9 @@ class OllamaJudgeProvider(JudgeProvider):
             with urllib.request.urlopen(req_v, timeout=5) as resp:
                 v_data = json.loads(resp.read().decode("utf-8"))
                 info["ollama_version"] = v_data.get("version", "desconocida")
-        except Exception:
+        except Exception as e:
             info["ollama_version"] = "no_disponible"
+            print(f"  [WARN] No se pudo consultar /api/version de Ollama: {e}")
             
         # 2. Obtener digest del modelo desde /api/tags
         try:
@@ -230,8 +231,8 @@ class OllamaJudgeProvider(JudgeProvider):
                         if "details" in m and not info.get("model_details"):
                             info["model_details"] = m.get("details", {})
                         break
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"  [WARN] No se pudo obtener digest desde /api/tags: {e}")
 
         # 3. Obtener detalles arquitectónicos adicionales (/api/show)
         try:
@@ -246,8 +247,8 @@ class OllamaJudgeProvider(JudgeProvider):
                     info["model_digest"] = show_data.get("digest", "")
                 if "details" in show_data:
                     info["model_details"] = show_data.get("details", {})
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"  [WARN] No se pudo obtener detalles desde /api/show: {e}")
             
         self._cached_model_info = info
         return info
@@ -741,15 +742,62 @@ def ejecutar_evaluacion_llm_judge(
             json.dump(items, f, indent=2, ensure_ascii=False)
         print(f"  [+] Dataset perfil '{perfil}' guardado: {p_path} ({len(items)} casos)")
         
+    # 4. Guardar manifiesto de ejecución con metadatos completos y hashes
+    manifest_data = {
+        "extension_experimental": "LLM-as-a-Judge para Evaluación Multidimensional de Chatbots Educativos",
+        "protocolo_version": PROMPT_VERSION,
+        "rubrica_version": RUBRIC_VERSION,
+        "modelo_juez": {
+            "model_tag": modelo,
+            "runtime": metadatos_proveedor.get("runtime", "Ollama"),
+            "ollama_version": metadatos_proveedor.get("ollama_version", "N/A"),
+            "model_digest": metadatos_proveedor.get("model_digest", ""),
+            "model_details": metadatos_proveedor.get("model_details", {})
+        },
+        "parametros_inferencia": {
+            "temperature": float(temperatura),
+            "top_p": float(top_p),
+            "seed": seed,
+            "timeout_segundos": timeout,
+            "max_retries": max_reintentos
+        },
+        "hashes_congelacion": {
+            "prompt_template_sha256": PROMPT_TEMPLATE_SHA256,
+            "rubric_sha256": RUBRIC_SHA256
+        },
+        "cegamiento_metodologico": {
+            "etiqueta_perfil_en_prompt": False,
+            "evaluaciones_humanas_en_prompt": False,
+            "evaluacion_ciega": True
+        },
+        "volumen_evaluado": {
+            "total_respuestas": len(evaluaciones_normalizadas),
+            "dimensiones_evaluadas": len(DIMENSIONES),
+            "total_juicios": len(evaluaciones_normalizadas) * len(DIMENSIONES)
+        },
+        "estado_ejecucion": {
+            "completado": True,
+            "fecha_finalizacion_utc": datetime.now(timezone.utc).isoformat(),
+            "total_respuestas_evaluadas": len(evaluaciones_normalizadas),
+            "total_juicios_generados": len(evaluaciones_normalizadas) * len(DIMENSIONES),
+            "tiempo_total_segundos": tiempo_total,
+            "tiempo_medio_por_caso_segundos": round(tiempo_total / max(1, len(evaluaciones_normalizadas)), 2)
+        }
+    }
+    manifest_path = dir_salida / "run_manifest.json"
+    with open(manifest_path, "w", encoding="utf-8") as f:
+        json.dump(manifest_data, f, indent=2, ensure_ascii=False)
+    print(f"  [+] Manifiesto de ejecución guardado: {manifest_path}")
+
     # Limpiar checkpoint tras finalización exitosa
     if checkpoint_file.exists():
         try:
             checkpoint_file.unlink()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"  [WARN] No se pudo eliminar checkpoint temporal ({checkpoint_file}): {e}")
             
     print(f"\n  Evaluación completada en {tiempo_total}s (Nuevos: {total_evaluados}, Reutilizados: {total_reutilizados}).")
-    print(f"  Total juicios procesados: {len(evaluaciones_normalizadas)} casos x 7 dimensiones = {len(evaluaciones_normalizadas)*7} juicios.")
+    print(f"  Total juicios procesados: {len(evaluaciones_normalizadas)} casos x {len(DIMENSIONES)} dimensiones = {len(evaluaciones_normalizadas)*len(DIMENSIONES)} juicios.")
     print("=" * 70)
 
 
