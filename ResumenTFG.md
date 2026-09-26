@@ -3,7 +3,7 @@
 **Título:** Metodología para testing de IA Generativa de texto en educación  
 **Autor:** Marcos Tomás Jiménez Meléndez  
 **Grado:** Grado en Ingeniería Informática (UAM / EPS)  
-**Versión experimental de referencia:** **v1.2.0-tfg**
+**Versión experimental de referencia:** **v1.3.1-tfg**
 
 ---
 

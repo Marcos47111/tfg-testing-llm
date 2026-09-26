@@ -22,8 +22,11 @@ Este directorio contiene las hojas de datos tabulares (CSV) correspondientes al 
 ---
 
 ## Ficheros de Datos
-* `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Evaluador 1.
-* `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Evaluador 2.
+* `anotaciones_gold_standard_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Gold Standard canónico.
+* `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 1.
+* `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 2.
+* `adjudicaciones_gold_standard.csv`: Registro formal de las 6 discrepancias post-revisión adjudicadas para constituir el Gold Standard definitivo.
+* `adjudicaciones_fase1_independiente.csv`: Registro formal de las 4 discrepancias de la Fase 1 independiente.
 
 ---
 
