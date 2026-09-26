@@ -3,7 +3,8 @@ Módulo de cálculo de métricas de calidad y fiabilidad para el TFG:
 Metodología para testing de IA Generativa de texto en educación.
 """
 
-from typing import List, Dict, Any, Optional
+import math
+from typing import List, Dict, Any, Optional, Tuple
 
 # Ponderaciones oficiales del Índice Global de Calidad Educativa (IQE)
 PESOS_DIMENSIONES = {
@@ -29,7 +30,7 @@ def calcular_puntuacion_media(puntuaciones: List[int]) -> float:
     s_d = (1 / N) * sum(s_i)
     """
     if not puntuaciones:
-        return 0.0
+        raise ValueError("La lista de puntuaciones no puede estar vacía para calcular la media.")
     return sum(puntuaciones) / len(puntuaciones)
 
 
@@ -39,7 +40,7 @@ def calcular_tasa_aprobado(puntuaciones: List[int], umbral_aprobado: int = 2) ->
     CR_d = (N_aprobados / N_total) * 100
     """
     if not puntuaciones:
-        return 0.0
+        raise ValueError("La lista de puntuaciones no puede estar vacía para calcular la tasa de aprobado.")
     aprobados = sum(1 for p in puntuaciones if p >= umbral_aprobado)
     return (aprobados / len(puntuaciones)) * 100.0
 
@@ -62,18 +63,18 @@ def calcular_tasa_fallos_criticos(evaluaciones: List[Dict[str, Any]]) -> float:
     CFR = (N_criticos / N_total) * 100
     """
     if not evaluaciones:
-        return 0.0
+        raise ValueError("La lista de evaluaciones no puede estar vacía para calcular el CFR.")
     criticos = sum(1 for e in evaluaciones if es_fallo_critico(e))
     return (criticos / len(evaluaciones)) * 100.0
 
 
 def calcular_tasa_alucinaciones(evaluaciones_alucinacion: List[Dict[str, Any]]) -> float:
-    """Calcula la tasa de alucinaciones en los casos específicos diseñados para detectar alucinaciones.
+    """Calcula la Tasa de Alucinaciones Críticas (HR) en los casos específicos diseñados para detectar alucinaciones (D2=0).
     
-    HR = (N_alucinaciones / N_total_alucinacion) * 100
+    HR = (N_alucinaciones_criticas / N_total_alucinacion) * 100
     """
     if not evaluaciones_alucinacion:
-        return 0.0
+        raise ValueError("La lista de evaluaciones de alucinación no puede estar vacía para calcular el HR.")
     alucinaciones = sum(
         1 for e in evaluaciones_alucinacion
         if e.get("puntuaciones", {}).get("D2_control_alucinaciones") == 0
@@ -99,8 +100,32 @@ def calcular_iqe(medias_dimensiones: Dict[str, float], pesos: Optional[Dict[str,
     return iqe * 100.0
 
 
+def calcular_intervalo_wilson(exitos: int, total: int, z: float = 1.96) -> Dict[str, float]:
+    """Calcula el intervalo de confianza de Wilson (por defecto 95%, z=1.96) para proporciones binomiales."""
+    if total <= 0:
+        raise ValueError("El total debe ser un entero positivo.")
+    if exitos < 0 or exitos > total:
+        raise ValueError("El número de éxitos debe estar acotado entre 0 y el total.")
+    p = exitos / total
+    denom = 1.0 + (z ** 2) / total
+    center = (p + (z ** 2) / (2.0 * total)) / denom
+    margin = (z / denom) * math.sqrt((p * (1.0 - p) / total) + (z ** 2) / (4.0 * (total ** 2)))
+    low = max(0.0, center - margin) * 100.0
+    high = min(1.0, center + margin) * 100.0
+    return {
+        "exitos": exitos,
+        "total": total,
+        "proporcion_pct": round(p * 100.0, 2),
+        "ci_low_pct": round(low, 2),
+        "ci_high_pct": round(high, 2)
+    }
+
+
 def generar_informe_sintetico(evaluaciones: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Genera un resumen consolidado con todas las métricas a partir de un conjunto de evaluaciones."""
+    if not evaluaciones:
+        raise ValueError("El conjunto de evaluaciones no puede estar vacío.")
+    
     puntuaciones_por_dim: Dict[str, List[int]] = {dim: [] for dim in PESOS_DIMENSIONES}
     
     for ev in evaluaciones:
@@ -108,8 +133,8 @@ def generar_informe_sintetico(evaluaciones: List[Dict[str, Any]]) -> Dict[str, A
             if dim in puntuaciones_por_dim and score is not None:
                 puntuaciones_por_dim[dim].append(score)
 
-    medias = {dim: calcular_puntuacion_media(scores) for dim, scores in puntuaciones_por_dim.items()}
-    tasas_aprobado = {dim: calcular_tasa_aprobado(scores) for dim, scores in puntuaciones_por_dim.items()}
+    medias = {dim: (calcular_puntuacion_media(scores) if scores else 0.0) for dim, scores in puntuaciones_por_dim.items()}
+    tasas_aprobado = {dim: (calcular_tasa_aprobado(scores) if scores else 0.0) for dim, scores in puntuaciones_por_dim.items()}
     
     cfr = calcular_tasa_fallos_criticos(evaluaciones)
     
@@ -128,6 +153,7 @@ def generar_informe_sintetico(evaluaciones: List[Dict[str, Any]]) -> Dict[str, A
         "tasas_aprobado_por_dimension": tasas_aprobado,
         "tasa_fallos_criticos_cfr": cfr,
         "tasa_alucinaciones_hr": hr,
+        "tasa_alucinaciones_criticas_hr": hr,
         "indice_calidad_educativa_iqe": iqe
     }
 
@@ -137,10 +163,9 @@ def calcular_cohen_kappa(
     evaluador_b: List[int],
     niveles: int = 4
 ) -> Dict[str, Any]:
-    """Calcula el coeficiente kappa de Cohen (κ) para medir la concordancia inter-evaluador.
+    """Calcula el coeficiente kappa de Cohen (κ) no ponderado para medir la concordancia entre evaluadores.
     
     κ = (P_o - P_e) / (1 - P_e)
-    donde P_o es la concordancia observada y P_e es la concordancia esperada por azar.
     """
     if len(evaluador_a) != len(evaluador_b) or not evaluador_a:
         raise ValueError("Las listas de puntuaciones deben tener la misma longitud no vacía.")
@@ -171,7 +196,6 @@ def calcular_cohen_kappa(
         interpretacion = "Indeterminado (varianza nula / categoría única)"
     else:
         kappa = (po - pe) / (1.0 - pe)
-        # Interpretación según Landis & Koch (1977)
         if kappa < 0:
             interpretacion = "Sin acuerdo (discrepancia sistemática)"
         elif kappa <= 0.20:
@@ -186,9 +210,76 @@ def calcular_cohen_kappa(
             interpretacion = "Acuerdo casi perfecto / Excelente"
         
     return {
-        "kappa": round(kappa, 4) if not (isinstance(kappa, float) and kappa != kappa) else float("nan"),
+        "kappa": round(kappa, 4) if not (isinstance(kappa, float) and math.isnan(kappa)) else float("nan"),
         "acuerdo_observado_po": round(po, 4),
         "acuerdo_esperado_pe": round(pe, 4),
+        "total_pares": n,
+        "interpretacion": interpretacion
+    }
+
+
+def calcular_cohen_kappa_ponderado(
+    evaluador_a: List[int],
+    evaluador_b: List[int],
+    tipo_ponderacion: str = "lineal",
+    niveles: int = 4
+) -> Dict[str, Any]:
+    """Calcula el coeficiente Kappa de Cohen ponderado (lineal o cuadrático) para escalas ordinales.
+    
+    Ponderación lineal: w_ij = 1 - |i - j| / (k - 1)
+    Ponderación cuadrática: w_ij = 1 - (i - j)^2 / (k - 1)^2
+    """
+    if len(evaluador_a) != len(evaluador_b) or not evaluador_a:
+        raise ValueError("Las listas de puntuaciones deben tener la misma longitud no vacía.")
+    if tipo_ponderacion not in ["lineal", "cuadratico"]:
+        raise ValueError("El tipo de ponderación debe ser 'lineal' o 'cuadratico'.")
+        
+    n = len(evaluador_a)
+    matriz = [[0 for _ in range(niveles)] for _ in range(niveles)]
+    for a, b in zip(evaluador_a, evaluador_b):
+        if not (type(a) is int and type(b) is int and 0 <= a < niveles and 0 <= b < niveles):
+            raise ValueError(f"Puntuación fuera de rango [0, {niveles-1}]: a={a}, b={b}")
+        matriz[a][b] += 1
+        
+    # Matriz de pesos
+    pesos = [[0.0 for _ in range(niveles)] for _ in range(niveles)]
+    for i in range(niveles):
+        for j in range(niveles):
+            if tipo_ponderacion == "lineal":
+                pesos[i][j] = 1.0 - abs(i - j) / (niveles - 1)
+            else:
+                pesos[i][j] = 1.0 - ((i - j) ** 2) / ((niveles - 1) ** 2)
+                
+    # Marginales
+    r_marg = [sum(matriz[i][j] for j in range(niveles)) for i in range(niveles)]
+    c_marg = [sum(matriz[i][j] for i in range(niveles)) for j in range(niveles)]
+    
+    po_w = sum(pesos[i][j] * matriz[i][j] for i in range(niveles) for j in range(niveles)) / n
+    pe_w = sum(pesos[i][j] * (r_marg[i] * c_marg[j]) for i in range(niveles) for j in range(niveles)) / (n * n)
+    
+    if pe_w >= 1.0:
+        kappa_w = float("nan")
+        interpretacion = "Indeterminado"
+    else:
+        kappa_w = (po_w - pe_w) / (1.0 - pe_w)
+        if kappa_w < 0:
+            interpretacion = "Sin acuerdo"
+        elif kappa_w <= 0.20:
+            interpretacion = "Acuerdo leve"
+        elif kappa_w <= 0.40:
+            interpretacion = "Acuerdo aceptable"
+        elif kappa_w <= 0.60:
+            interpretacion = "Acuerdo moderado"
+        elif kappa_w <= 0.80:
+            interpretacion = "Acuerdo sustancial"
+        else:
+            interpretacion = "Acuerdo casi perfecto / Excelente"
+            
+    return {
+        "tipo_ponderacion": tipo_ponderacion,
+        "kappa_ponderado": round(kappa_w, 4) if not (isinstance(kappa_w, float) and math.isnan(kappa_w)) else float("nan"),
+        "po_ponderado": round(po_w, 4),
+        "pe_ponderado": round(pe_w, 4),
         "total_pares": n,
         "interpretacion": interpretacion
     }

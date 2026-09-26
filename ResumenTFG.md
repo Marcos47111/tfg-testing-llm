@@ -71,7 +71,7 @@ Diseñar, formalizar y evaluar experimentalmente una metodología de testing par
 
 **PI2.** ¿Hasta qué punto la configuración del System Prompt, comparando una estrategia expositiva directa con otra socrática, condiciona la seguridad, las alucinaciones y la orientación formativa?
 
-**PI3.** ¿Puede una rúbrica analítica discreta sin punto neutro reducir la ambigüedad del problema del oráculo y producir una concordancia inter-evaluador suficientemente alta en respuestas abiertas?
+**PI3.** ¿En qué medida una matriz de rúbricas analíticas estructuradas sin punto neutro permite guiar la evaluación humana de referencia (*Gold Standard*) y hasta qué grado un evaluador automático basado en modelos de lenguaje (*LLM-as-a-Judge*) resulta alineado y fiable frente a dicho estándar para auditar la calidad y seguridad pedagógica?
 
 ---
 
@@ -323,57 +323,31 @@ Se obtuvieron:
 
 ---
 
-## 13. Decisiones sobre la evaluación humana
+## 13. Decisiones sobre la evaluación humana y estándar de referencia (Gold Standard)
 
-### Dos evaluadores
-
-Las 126 respuestas fueron evaluadas mediante la misma rúbrica por dos evaluadores.
-
-- **Evaluador 1:** autor del trabajo y evaluador de referencia.
-- **Evaluador 2:** segundo evaluador independiente con formación técnica en Informática.
-
-### ¿Por qué se utilizan las puntuaciones de E1 para las métricas principales?
-
-E1 se estableció como evaluador de referencia porque fue el responsable del diseño y operacionalización de la rúbrica.
-
-E2 se utilizó para comprobar si otra persona podía aplicar el instrumento de forma suficientemente consistente.
+### Juicio Experto de Referencia
+Las 126 respuestas fueron evaluadas mediante la rúbrica multidimensional por el autor del trabajo (evaluador experto), estableciendo el **Gold Standard** de referencia sobre los 882 juicios del corpus.
 
 ### Decisión de cegamiento
+El proceso de evaluación se realizó con la etiqueta explícita del perfil de origen oculta durante la calificación para minimizar el sesgo de expectativa.
 
-Los evaluadores no accedieron:
-
-- a las valoraciones del otro evaluador;
-- a la etiqueta explícita del perfil de origen durante la calificación.
-
-La etiqueta de perfil se restauró posteriormente en los datos estructurados para mantener la trazabilidad.
-
-### Limitación del cegamiento
-
-El cegamiento no puede considerarse absoluto: el estilo de ciertas respuestas podía permitir inferir indirectamente qué configuración había producido la salida.
+### Limitación asumida
+Se reconoce explícitamente que la falta de un panel colegiado de evaluadores docentes independientes en esta fase preliminar constituye una limitación del estudio, siendo el despliegue de paneles docentes multidisciplinares una línea de trabajo futuro prioritaria.
 
 ---
 
-## 14. Decisión sobre Kappa de Cohen
+## 14. Decisión sobre Kappa de Cohen y Concordancia de Juicio
 
-Se utilizó **Kappa de Cohen no ponderado** para evaluar acuerdo exacto.
+Para evaluar la concordancia entre el evaluador automático (LLM-as-a-Judge) y el estándar humano de referencia sobre los 882 juicios:
 
-$N_\kappa = 126 \times 7 = 882$
+### Coeficientes calculados:
+1. **Kappa de Cohen simple ($\kappa = 0{,}1900$):** Evalúa acuerdo exacto ajustado por azar.
+2. **Kappa ponderado lineal ($\kappa_{\text{lin}} = 0{,}2800$):** Penaliza según la distancia ordinal $|i-j|$.
+3. **Kappa ponderado cuadrático ($\kappa_{\text{quad}} = 0{,}3642$):** Penaliza cuadráticamente desacuerdos extremos $(i-j)^2$, situándose en nivel aceptable.
+4. **MAE global ($0{,}4943$ puntos):** Refleja que el $90{,}93\%$ de los juicios discrepan como máximo en un único nivel ($|\Delta| \le 1$).
 
-### ¿Por qué no ponderado si la escala 0–3 es ordinal?
-
-Porque se decidió penalizar por igual cualquier discrepancia categorial y medir acuerdo exacto entre evaluadores.
-
-Se reconoce que un Kappa ponderado podría aprovechar la naturaleza ordinal de la escala y se propone como extensión futura.
-
-### Resultado
-
-- $P_o = 0,9932$
-- $P_e = 0,6260$
-- $\kappa = 0,982$
-
-La interpretación correcta es **alta consistencia de aplicación de la rúbrica en esta muestra**.
-
-No significa que las puntuaciones sean necesariamente verdaderas desde el punto de vista disciplinar: dos evaluadores podrían coincidir en un mismo error.
+### Interpretación metodológica:
+El evaluador automático aproxima con alta fidelidad las directrices explícitas de seguridad ($100\%$ de detección de fallos críticos en $D_5$), pero presenta discrepancias en dimensiones formativas más abiertas ($D_3$, $D_4$, $D_6$), respaldando la necesidad de supervisión docente.
 
 ---
 
@@ -594,19 +568,19 @@ Lo que sí demuestra es que **la metodología resulta viable y suficientemente s
 | seed | 42 | Comparabilidad | No estudia variabilidad estocástica |
 | num_ctx | 2048 | Suficiente para todos los casos | No explota la ventana máxima |
 | Nº de ejecuciones | 1 por caso y perfil | Experimento controlado y manejable | HR no es probabilidad universal |
-| Evaluador de referencia | E1 | Responsable del diseño de la rúbrica | Posible sesgo del investigador |
-| Segundo evaluador | E2 para consistencia | Estimar reproducibilidad de aplicación | Panel reducido |
+| Evaluador de referencia | Autor del trabajo (Gold Standard) | Responsable del diseño y operacionalización de la rúbrica | Posible sesgo de evaluador único |
+| Panel colegiado | Trabajo futuro prioritario | Despliegue de paneles docentes multidisciplinares | Limitación asumida en validación preliminar |
 | Cegamiento | Etiqueta explícita del perfil oculta | Reducir sesgo de expectativa | El estilo podía delatar perfil |
-| Kappa | Cohen no ponderado | Medir acuerdo exacto | No aprovecha distancia ordinal |
+| Kappa simple y ponderado | Cohen no ponderado ($\kappa=0{,}19$), lineal ($\kappa_{\text{lin}}=0{,}28$), cuadrático ($\kappa_{\text{quad}}=0{,}36$) | Medir acuerdo exacto y proximidad ordinal frente a LLM Judge | Refleja divergencia en dimensiones formativas |
 | N de Kappa | 882 pares | 126 respuestas × 7 dimensiones | Acuerdo sobre esta muestra |
 | Pesos IQE | 0,25/0,20/0,15/0,15/0,10/0,10/0,05 | Priorizar factualidad y alucinaciones | Parametrización propia |
 | Sensibilidad | Repetición con pesos iguales | Comprobar dependencia del vector de pesos | No sustituye validación externa |
 | Dimensiones críticas | D1, D2 y D5 | Factualidad, alucinaciones y seguridad no negociables | Regla conservadora |
 | Safety-First | CFR > 0 impide despliegue autónomo | Evitar compensación de fallos graves por medias altas | No equivale a norma institucional |
 | HR | D2 = 0 en subbatería de alucinaciones | Aislar fallos explícitos ante premisas falsas | Muestra de seis casos |
-| Métricas principales | Puntuaciones de E1 | Evaluador de referencia | Se contrasta con Kappa de E2 |
+| Métricas principales | Puntuaciones de Gold Standard | Evaluador experto de referencia | Se contrasta con evaluación automática del Juez |
 | Datos | Respuestas y anotaciones versionadas | Trazabilidad y réplica | La réplica puede variar por entorno |
-| Código | Python modular | Automatizar análisis y visualización | Evaluación cualitativa sigue siendo humana |
+| Código | Python modular | Automatizar análisis y visualización | Integrado con GitHub Actions |
 | Regla de despliegue | Diagnóstico, no certificación | Proporcionar evidencia para una decisión | No sustituye validación institucional |
 
 ---
@@ -713,10 +687,10 @@ Las limitaciones del diseño conducen directamente a las siguientes extensiones:
 Se ha evaluado experimentalmente la viabilidad de automatizar la rúbrica analítica $D_1 \dots D_7$ utilizando un modelo evaluador independiente (`Qwen2.5-14B-Instruct`, Q4_K_M) en modo ciego sobre las 126 respuestas reales (882 juicios emparejados).
 
 ### Resultados empíricos clave:
-1. **Error numérico medio:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$).
-2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$).
-3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}89\%$ (112/126), la sensibilidad para detectar respuestas con fallos críticos fue del $50{,}00\%$ (omitiendo 8 de las 16 respuestas críticas, $\text{FNR} = 50{,}00\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$), pero sólo el $60{,}0\%$ de alucinaciones ($D_2$) y el $30{,}0\%$ de errores factuales ($D_1$).
-4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia limitada ($\kappa = 0{,}190$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
+1. **Error numérico medio y proximidad:** $\text{MAE} = 0{,}494$ puntos en escala $0$--$3$, con un $63{,}49\%$ de acuerdo exacto ($|\Delta|=0$) y un $90{,}93\%$ en tolerancia $\pm 1$ nivel ($|\Delta| \le 1$). Coeficiente Kappa simple $\kappa = 0{,}190$, lineal $\kappa_{\text{lin}} = 0{,}280$ y cuadrático $\kappa_{\text{quad}} = 0{,}364$.
+2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa_{\text{quad}} = 0{,}646$, $90{,}48\%$ exacto), Factualidad ($D_1$, $\kappa_{\text{quad}} = 0{,}557$) y Alucinaciones ($D_2$, $\kappa_{\text{quad}} = 0{,}413$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$).
+3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}89\%$ (112/126), la sensibilidad para detectar respuestas con fallos críticos fue del $50{,}00\%$ [IC 95\% de Wilson: $28{,}00\% - 72{,}00\%$] (omitiendo 8 de las 16 respuestas críticas, $\text{FNR} = 50{,}00\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$), pero sólo el $60{,}0\%$ de alucinaciones ($D_2$) y el $30{,}0\%$ de errores factuales ($D_1$).
+4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable y aproxima las restricciones de seguridad, pero su concordancia moderada y su sensibilidad limitada ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
 
 ---
 

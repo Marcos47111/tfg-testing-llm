@@ -38,7 +38,7 @@ def cargar_informe_concordancia() -> dict:
 def generar_grafico_concordancia_dimensional(datos: dict):
     """
     Genera un gráfico de barras comparativo de Cohen's Kappa por dimensión
-    entre LLM-as-a-Judge vs E1, LLM-as-a-Judge vs E2, y la referencia humana E1 vs E2.
+    (no ponderado, ponderado lineal y ponderado cuadrático) entre LLM-as-a-Judge vs Gold Standard.
     """
     dims = [
         ("D1_correccion_factual", "D1: Factualidad"),
@@ -51,9 +51,9 @@ def generar_grafico_concordancia_dimensional(datos: dict):
     ]
     
     etiquetas = [d[1] for d in dims]
-    k_j_e1 = [datos["concordancia_por_dimension"][d[0]]["kappa_judge_vs_e1"] for d in dims]
-    k_j_e2 = [datos["concordancia_por_dimension"][d[0]]["kappa_judge_vs_e2"] for d in dims]
-    k_e1_e2 = [datos["concordancia_por_dimension"][d[0]]["kappa_humano_e1_vs_e2"] for d in dims]
+    k_unw = [datos["concordancia_por_dimension"][d[0]]["kappa_no_ponderado"] for d in dims]
+    k_lin = [datos["concordancia_por_dimension"][d[0]]["kappa_ponderado_lineal"] for d in dims]
+    k_quad = [datos["concordancia_por_dimension"][d[0]]["kappa_ponderado_cuadratico"] for d in dims]
     
     x = np.arange(len(etiquetas))
     width = 0.26
@@ -61,17 +61,18 @@ def generar_grafico_concordancia_dimensional(datos: dict):
     fig, ax = plt.subplots(figsize=(10, 5.2), dpi=300)
     
     # Barras
-    rects1 = ax.bar(x - width, k_j_e1, width, label=r"Juez vs $E_1$", color="#337ab7", alpha=0.9, edgecolor="#1f4e78")
-    rects2 = ax.bar(x, k_j_e2, width, label=r"Juez vs $E_2$", color="#5bc0de", alpha=0.9, edgecolor="#31708f")
-    rects3 = ax.bar(x + width, k_e1_e2, width, label=r"Humano ($E_1$ vs $E_2$)", color="#5cb85c", alpha=0.9, edgecolor="#3e8f3e")
+    rects1 = ax.bar(x - width, k_unw, width, label=r"$\kappa$ No ponderado", color="#337ab7", alpha=0.9, edgecolor="#1f4e78")
+    rects2 = ax.bar(x, k_lin, width, label=r"$\kappa_{\mathrm{lin}}$ Ponderado Lineal", color="#5bc0de", alpha=0.9, edgecolor="#31708f")
+    rects3 = ax.bar(x + width, k_quad, width, label=r"$\kappa_{\mathrm{quad}}$ Ponderado Cuadrático", color="#5cb85c", alpha=0.9, edgecolor="#3e8f3e")
     
     # Líneas de referencia metodológicas
     ax.axhline(0.80, color="#27ae60", linestyle="--", linewidth=1.0, alpha=0.7, label=r"Acuerdo Casi Perfecto ($\kappa \geq 0.80$)")
     ax.axhline(0.60, color="#f0ad4e", linestyle=":", linewidth=1.0, alpha=0.7, label=r"Acuerdo Sustancial ($\kappa \geq 0.60$)")
+    ax.axhline(0.20, color="#d9534f", linestyle="-.", linewidth=1.0, alpha=0.6, label=r"Límite Acuerdo Leve ($\kappa = 0.20$)")
     ax.axhline(0.00, color="#888888", linestyle="-", linewidth=0.8, alpha=0.5)
     
     ax.set_ylabel(r"Coeficiente Kappa de Cohen ($\kappa$)", fontsize=11, fontweight="bold")
-    ax.set_title(r"Concordancia Inter-Evaluador por Dimensión: LLM-as-a-Judge vs Evaluadores Humanos", fontsize=12, fontweight="bold", pad=12)
+    ax.set_title(r"Concordancia Dimensional: LLM-as-a-Judge (Qwen2.5-14B) vs Juicio Humano Gold Standard", fontsize=11.5, fontweight="bold", pad=12)
     ax.set_xticks(x)
     ax.set_xticklabels(etiquetas, fontsize=9.5)
     ax.set_ylim(-0.15, 1.08)
@@ -115,9 +116,9 @@ def generar_grafico_concordancia_dimensional(datos: dict):
 
 def generar_grafico_matriz_confusion(datos: dict):
     """
-    Genera un mapa de calor para la matriz de confusión 4x4 (E1 vs Juez, N=882).
+    Genera un mapa de calor para la matriz de confusión 4x4 (Gold Standard vs Juez, N=882).
     """
-    matriz = np.array(datos["matriz_confusion_global_4x4_filas_e1_columnas_juez"])
+    matriz = np.array(datos["matriz_confusion_global_4x4_filas_humano_columnas_juez"])
     
     fig, ax = plt.subplots(figsize=(6.5, 5.5), dpi=300)
     
@@ -133,9 +134,9 @@ def generar_grafico_matriz_confusion(datos: dict):
     ax.set_xticklabels([f"Nivel {i}" for i in range(4)], fontsize=10)
     ax.set_yticklabels([f"Nivel {i}" for i in range(4)], fontsize=10)
     
-    ax.set_xlabel("Puntuación Juez Automático (LLM-as-a-Judge)", fontsize=11, fontweight="bold", labelpad=8)
-    ax.set_ylabel(r"Puntuación Evaluador Humano $E_1$", fontsize=11, fontweight="bold", labelpad=8)
-    ax.set_title(r"Matriz de Confusión Global: $E_1$ vs LLM-as-a-Judge ($N_\kappa=882$)", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_xlabel("Puntuación Juez Automático (Qwen2.5-14B)", fontsize=11, fontweight="bold", labelpad=8)
+    ax.set_ylabel("Puntuación Juicio Humano Experto (Gold Standard)", fontsize=11, fontweight="bold", labelpad=8)
+    ax.set_title(r"Matriz de Confusión Global: Humano vs Juez ($N_\kappa=882$)", fontsize=11.5, fontweight="bold", pad=12)
     
     # Anotar recuentos
     threshold = matriz.max() / 2.0
@@ -159,9 +160,9 @@ def generar_grafico_matriz_confusion(datos: dict):
 
 def generar_grafico_distribucion_discrepancias(datos: dict):
     """
-    Genera un gráfico circular o de barras con la distribución deltas (|Δ| in {0, 1, 2, 3}).
+    Genera un gráfico de barras horizontales con la distribución de deltas (|Δ| in {0, 1, 2, 3}).
     """
-    deltas = datos["analisis_discrepancias_deltas"]["juez_vs_e1"]
+    deltas = datos["analisis_discrepancias_deltas"]
     
     etiquetas = [
         r"Acuerdo Exacto ($|\Delta| = 0$)",
@@ -180,8 +181,8 @@ def generar_grafico_distribucion_discrepancias(datos: dict):
     fig, ax = plt.subplots(figsize=(7.5, 4.5), dpi=300)
     
     bars = ax.barh(etiquetas, recuentos, color=colores, edgecolor="#333333", height=0.55)
-    ax.set_xlabel("Número de Juicios Pareados ($N=882$)", fontsize=10.5, fontweight="bold")
-    ax.set_title(r"Distribución de la Magnitud de Discrepancias ($|P_{juez} - P_{E1}|$)", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_xlabel(r"Número de Calificaciones Dimensionales ($N=882$)", fontsize=10.5, fontweight="bold")
+    ax.set_title(r"Distribución de la Magnitud de Discrepancias ($|P_{\mathrm{juez}} - P_{\mathrm{humano}}|$)", fontsize=11.5, fontweight="bold", pad=12)
     ax.grid(axis="x", linestyle="--", alpha=0.5)
     ax.set_xlim(0, 950)
     

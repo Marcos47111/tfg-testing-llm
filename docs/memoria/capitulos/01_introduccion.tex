@@ -31,6 +31,7 @@ Para alcanzar esta meta global, se establecen los siguientes objetivos específi
     \item Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación.
     \item Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$), complementado por un criterio de seguridad prioritaria (\textit{Safety-First}).
     \item Construir una batería estructurada de casos de prueba y aplicarla experimentalmente sobre tres perfiles de chatbot para contrastar la sensibilidad del marco.
+    \item Establecer una evaluación humana experta de referencia (\textit{Gold Standard}) y analizar empíricamente la viabilidad, grado de concordancia y limitaciones de la evaluación automatizada (\textit{LLM-as-a-Judge}) frente a dicho estándar de referencia.
 \end{enumerate}
 
 \section{Preguntas de investigación}
@@ -39,7 +40,7 @@ El diseño de la metodología y la experimentación posterior se orientan a dar 
 \begin{itemize}
     \item \textbf{PI1:} ¿De qué manera es posible estructurar un protocolo de testing para LLMs que evalúe simultáneamente el rigor conceptual y la calidad del andamiaje pedagógico mediante criterios objetivos?
     \item \textbf{PI2:} ¿Hasta qué punto la configuración del \textit{System Prompt} (instrucción expositiva directa frente a directrices socráticas) condiciona la seguridad, la prevención de alucinaciones y la orientación formativa del asistente?
-    \item \textbf{PI3:} ¿Permite una matriz de rúbricas analíticas con escala discreta sin punto neutro mitigar el problema del oráculo y alcanzar una concordancia inter-evaluador elevada ($\kappa \ge 0{,}70$, umbral operacional fijado a priori dentro del intervalo de acuerdo sustancial propuesto por Landis y Koch \cite{landis1977measurement}) en la muestra analizada de respuestas abiertas de lenguaje natural?
+    \item \textbf{PI3:} ¿En qué medida una matriz de rúbricas analíticas estructuradas sin punto neutro permite guiar la evaluación humana de referencia (\textit{Gold Standard}) y hasta qué grado un evaluador automático basado en modelos de lenguaje (\textit{LLM-as-a-Judge}) resulta alineado y fiable frente a dicho estándar para auditar la calidad y seguridad pedagógica?
 \end{itemize}
 
 \section{Alcance y delimitación del estudio}

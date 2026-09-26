@@ -41,7 +41,7 @@ Total de ensayos analizados & 126 interacciones (42 por cada uno de los 3 perfil
 
 El protocolo comprendió la ejecución de los 42 casos de prueba formalizados en la Sección \ref{sec:casos_prueba} sobre cada uno de los tres perfiles. Esto generó un conjunto de 126 interacciones registradas en ficheros JSON dentro del directorio \texttt{data/respuestas\_obtenidas/raw/}. Cada registro almacena el identificador del caso, la dimensión evaluada, el prompt de entrada, la respuesta íntegra del modelo y los parámetros empleados.
 
-Posteriormente, cada respuesta fue evaluada de forma independiente aplicando la rúbrica de cuatro niveles ($0$ a $3$) definida en la Sección \ref{sec:rubrica_escalas}. El Evaluador 1 (autor del trabajo) se estableció como evaluador de referencia para el cálculo de las métricas principales de la Tabla \ref{TB:RESULTADOS} por ser el responsable del diseño y operacionalización de la rúbrica, mientras que el Evaluador 2 se reservó para estimar de forma independiente la consistencia de aplicación del instrumento mediante el cálculo de concordancia inter-evaluador ($\kappa$) sobre las 126 respuestas (882 juicios emparejados). Las puntuaciones asignadas fueron procesadas por el software de análisis (\texttt{src/analisis/analizador\_experimentos.py}) para calcular las métricas dimensionales, las tasas de fallo y el índice global $IQE$.
+Posteriormente, cada respuesta fue evaluada aplicando la rúbrica analítica de cuatro niveles ($0$ a $3$) definida en la Sección \ref{sec:rubrica_escalas} por el evaluador experto (autor del trabajo), conformando el estándar de referencia (\textit{Gold Standard}) sobre las 126 interacciones registradas (882 juicios multidimensionales). Las puntuaciones asignadas fueron procesadas por el software de análisis (\texttt{src/analisis/analizador\_experimentos.py}) para calcular las métricas dimensionales, las tasas de fallo y el índice global $IQE$ de la Tabla \ref{TB:RESULTADOS}.
 
 \section{Resultados obtenidos y análisis cuantitativo}
 \label{sec:resultados_cuantitativos}
@@ -97,24 +97,13 @@ En \texttt{FEED\_001}, el Tutor Socrático orientó al estudiante sin desvelar e
 \paragraph{Robustez ante inyecciones y fraude académico (\texttt{SEC\_002} y \texttt{SEC\_005}):}
 En \texttt{SEC\_002} (examen tipo test en curso), los tres perfiles mostraron vulnerabilidad facilitando respuestas directas (Nivel 0 en $D_5$). En \texttt{SEC\_005} (inyección indirecta de prompt), el Asistente Base y el Tutor Directo cedieron emitiendo el mensaje malicioso, mientras que el Tutor Socrático resistió el ataque reconduciendo la interacción al tema histórico (Nivel 3 en $D_5$).
 
-\section{Evaluación de la concordancia inter-evaluador}
-\label{sec:evaluacion_concordancia}
-
-Para evaluar la consistencia del instrumento, dos evaluadores independientes calificaron las 126 respuestas del corpus experimental sobre las siete dimensiones de la rúbrica (882 asignaciones emparejadas en total). El panel estuvo integrado por el autor del trabajo (Evaluador 1, evaluador de referencia) y un segundo evaluador independiente (Evaluador 2) con formación técnica en Informática. Ambos dispusieron de las rúbricas analíticas con definiciones operacionales y soluciones canónicas de referencia (\textit{ground truth}), realizando la calificación de forma independiente con la etiqueta explícita del perfil de origen oculta. Se calcularon el acuerdo observado $P_o$ y el esperado por azar $P_e$:
-
-\begin{equation}[EQ:KAPPA_RESULT]{Cálculo del coeficiente Kappa de Cohen inter-evaluador}
-P_o = 0{,}9932, \quad P_e = 0{,}6260 \implies \kappa = \frac{0{,}9932 - 0{,}6260}{1 - 0{,}6260} = 0{,}982
-\end{equation}
-
-El coeficiente global $\kappa = 0{,}982$ corresponde a un nivel de acuerdo clasificado como \textit{casi perfecto} según Landis y Koch \cite{landis1977measurement}. Por dimensiones, la concordancia osciló entre $\kappa = 0{,}980$ en Factualidad ($D_1$), $\kappa = 0{,}913$ en Alucinaciones ($D_2$), $\kappa = 0{,}894$ en Claridad ($D_3$), $\kappa = 0{,}985$ en Feedback ($D_4$), $\kappa = 1{,}000$ en Seguridad ($D_5$), $\kappa = 0{,}982$ en Nivel ($D_6$) y $\kappa = 1{,}000$ en Directrices ($D_7$). Este resultado muestra que las definiciones conductuales proporcionaron un criterio de asignación altamente consistente entre evaluadores en la muestra analizada.
-
-\section{Protocolo experimental de evaluación automática mediante LLM-as-a-Judge}
+\section{Evaluación automática mediante LLM-as-a-Judge y concordancia con el estándar humano}
 \label{sec:resultados_llm_judge}
 
 Siguiendo el diseño metodológico formalizado en la Sección~\ref{sec:extension_llm_judge}, el marco de testing incorpora un protocolo estructurado de evaluación automática mediante un modelo de lenguaje independiente que actúa como evaluador experimental (\textit{LLM-as-a-Judge}).
 
 \subsection{Configuración del entorno de inferencia del juez}
-Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo independiente, de distinta familia y mayor tamaño nominal que el modelo evaluado: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}) o endpoints compatibles.
+Para mitigar el sesgo de autopreferencia (\textit{self-enhancement bias}) y evitar la auto-evaluación, el protocolo establece como juez un modelo independiente, de distinta familia y mayor tamaño nominal que el modelo evaluado: \texttt{Qwen2.5-14B-Instruct} \cite{yang2024qwen25}, servido localmente a través de la API REST de Ollama (\path{/api/chat}).
 
 La inferencia se configura con parámetros de baja variabilidad orientados a favorecer la reproducibilidad: temperatura $T = 0{,}0$, muestreo $\text{top-}p = 0{,}90$ y semilla $\text{seed} = 42$. El proceso opera bajo un esquema de evaluación ciega respecto al perfil generador y a las evaluaciones humanas:
 \begin{enumerate}
@@ -126,45 +115,48 @@ La inferencia se configura con parámetros de baja variabilidad orientados a fav
 \subsection{Pipeline de análisis estadístico de concordancia}
 El software de análisis (\path{src/analisis/analizar_concordancia_llm_judge.py}) implementa el cálculo automático de los siguientes indicadores de alineación Humano--IA:
 \begin{itemize}
-    \item \textbf{Coeficiente Kappa de Cohen ($\kappa$):} Calculado a nivel global ($N_\kappa = 882$) y para cada una de las 7 dimensiones individuales, contrastando las asignaciones del juez frente a ambos evaluadores humanos independientes ($E_1$ y $E_2$).
+    \item \textbf{Coeficientes Kappa de Cohen simple y ponderados ($\kappa, \kappa_{\text{lin}}, \kappa_{\text{quad}}$):} Calculados a nivel global ($N_\kappa = 882$) y para cada una de las 7 dimensiones individuales, contrastando las asignaciones del juez frente a la evaluación humana de referencia (\textit{Gold Standard}).
     \item \textbf{Acuerdo observado ($P_o$) y esperado ($P_e$):} Para detectar fenómenos de asimetría marginal o prevalencia extrema (\textit{paradoja de Kappa} \cite{feinstein1990high}).
     \item \textbf{Error Absoluto Medio ($\text{MAE}$):} Estimación de la magnitud numérica de la desviación sobre la escala $0$--$3$.
     \item \textbf{Matrices de confusión $4 \times 4$ y distribución de deltas ($|\Delta|$):} Identificación de patrones sistemáticos de sobrevaloración o infravaloración.
-    \item \textbf{Sensibilidad Safety-First:} Evaluación de la tasa de falsos negativos en la detección de fallos críticos ($S_d = 0$ en $D_1$, $D_2$ y $D_5$), verificando que vulnerabilidades éticas o alucinaciones no sean catalogadas indebidamente como aptas.
+    \item \textbf{Sensibilidad e Intervalos de Confianza Safety-First:} Evaluación de la tasa de falsos negativos en la detección de fallos críticos ($S_d = 0$ en $D_1$, $D_2$ y $D_5$), calculando intervalos de confianza del 95\% mediante el método de Wilson.
 \end{itemize}
 
 \subsection{Resultados empíricos de concordancia Humano--IA}
 \label{subsec:resultados_concordancia_juez}
 
-La ejecución del protocolo sobre las 126 respuestas reales mediante \texttt{Qwen2.5-14B-Instruct} generó un total de 882 asignaciones discretas pareadas. La Tabla~\ref{TB:CONCORDANCIA_JUDGE} recoge los coeficientes de concordancia ($\kappa$), acuerdos observados ($P_o$), acuerdos esperados ($P_e$) y errores absolutos medios ($\text{MAE}$) desglosados por dimensión y a nivel global frente a los evaluadores humanos de referencia. Asimismo, la Figura~\ref{FIG:CONCORDANCIA_JUDGE} ilustra la distribución del acuerdo dimensional.
+La ejecución del protocolo sobre las 126 respuestas reales mediante \texttt{Qwen2.5-14B-Instruct} generó un total de 882 asignaciones discretas pareadas. La Tabla~\ref{TB:CONCORDANCIA_JUDGE} recoge los coeficientes de concordancia ($\kappa$ no ponderado, $\kappa_{\text{lin}}$ ponderado lineal, $\kappa_{\text{quad}}$ ponderado cuadrático), acuerdos observados ($P_o$), acuerdos esperados ($P_e$) y errores absolutos medios ($\text{MAE}$) desglosados por dimensión y a nivel global frente al estándar humano de referencia. Asimismo, la Figura~\ref{FIG:CONCORDANCIA_JUDGE} ilustra la distribución del acuerdo dimensional.
 
-\begin{table}[Concordancia inter-evaluador LLM Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$).}
+\begin{table}[Concordancia inter-evaluador LLM Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (Qwen2.5-14B) y el Juicio Humano Experto de Referencia (Gold Standard).}
 \centering
+\small
 \begin{tabular}{l c c c c c c l}
 \hline
-\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\textbf{Dimensión} & \textbf{$\kappa$ (Simple)} & \textbf{$\kappa_{\text{lin}}$} & \textbf{$\kappa_{\text{quad}}$} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{Nivel de Acuerdo} \\
 \hline \hline
-D1: Factualidad & 0,261 & 0,5873 & 0,4413 & 0,540 & 0,246 & 0,980 & Aceptable \\
-D2: Alucinaciones & 0,327 & 0,8889 & 0,8350 & 0,262 & 0,326 & 0,913 & Aceptable \\
-D3: Claridad & 0,076 & 0,5159 & 0,4762 & 0,587 & 0,047 & 0,894 & Leve \\
-D4: Feedback Pedagógico & 0,066 & 0,3889 & 0,3455 & 0,754 & 0,069 & 0,985 & Leve \\
-D5: Seguridad & 0,421 & 0,9048 & 0,8356 & 0,159 & 0,421 & 1,000 & Moderado \\
-D6: Adaptación al Nivel & -0,026 & 0,4762 & 0,4894 & 0,627 & -0,015 & 0,982 & Sin acuerdo \\
-D7: Directrices & 0,086 & 0,6825 & 0,6527 & 0,532 & 0,086 & 1,000 & Leve \\
+D1: Factualidad & 0,261 & 0,429 & 0,557 & 0,5873 & 0,4413 & 0,540 & Acuerdo aceptable \\
+D2: Alucinaciones & 0,327 & 0,382 & 0,413 & 0,8889 & 0,8350 & 0,262 & Acuerdo aceptable \\
+D3: Claridad & 0,076 & 0,078 & 0,070 & 0,5159 & 0,4762 & 0,587 & Acuerdo leve \\
+D4: Feedback Pedagógico & 0,066 & 0,129 & 0,207 & 0,3889 & 0,3455 & 0,754 & Acuerdo leve \\
+D5: Seguridad & 0,421 & 0,572 & 0,646 & 0,9048 & 0,8356 & 0,159 & Acuerdo moderado \\
+D6: Adaptación al Nivel & -0,026 & -0,017 & -0,012 & 0,4762 & 0,4894 & 0,627 & Sin acuerdo \\
+D7: Directrices & 0,086 & 0,164 & 0,221 & 0,6825 & 0,6527 & 0,532 & Acuerdo leve \\
 \hline
-\textbf{Global ($N_\kappa=882$)} & \textbf{0,190} & \textbf{0,6349} & \textbf{0,5493} & \textbf{0,494} & \textbf{0,186} & \textbf{0,982} & \textbf{Acuerdo leve} \\
+\textbf{Global ($N_\kappa=882$)} & \textbf{0,190} & \textbf{0,280} & \textbf{0,364} & \textbf{0,6349} & \textbf{0,5493} & \textbf{0,494} & \textbf{Acuerdo leve} \\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{figure}[Concordancia dimensional del Juez Automático]{FIG:CONCORDANCIA_JUDGE}{Comparativa de concordancia observada ($P_o$), acuerdo esperado ($P_e$) y coeficiente $\kappa$ entre el Juez Automático y el Evaluador 1 ($E_1$).}
+\begin{figure}[Concordancia dimensional del Juez Automático]{FIG:CONCORDANCIA_JUDGE}{Comparativa de concordancia simple y ponderada ($\kappa, \kappa_{\text{lin}}, \kappa_{\text{quad}}$) y error absoluto medio (MAE) entre el Juez Automático y el estándar humano de referencia.}
   \image{9.2cm}{}{concordancia_llm_judge}
 \end{figure}
 
-A nivel agregado, el juez automático obtuvo un $\text{MAE} = 0{,}494$ puntos en una escala de $0$ a $3$, con un $63{,}49\%$ de asignaciones idénticas ($|\Delta|=0$) y un $90{,}93\%$ dentro de una tolerancia de un único nivel de discrepancia ($|\Delta| \le 1$). La concordancia por dimensiones revela dos regímenes de comportamiento diferenciados:
+A nivel agregado, el juez automático obtuvo un $\text{MAE} = 0{,}494$ puntos en una escala de $0$ a $3$, con un $63{,}49\%$ de asignaciones idénticas ($560/882$, $|\Delta|=0$) y un $90{,}93\%$ dentro de una tolerancia de un único nivel de discrepancia ($802/882$, $|\Delta| \le 1$). La consideración de la estructura ordinal de la escala mediante ponderación revela una correlación de grado superior: el coeficiente Kappa pasa de $\kappa = 0{,}190$ (simple) a $\kappa_{\text{lin}} = 0{,}280$ (ponderación lineal) y $\kappa_{\text{quad}} = 0{,}364$ (ponderación cuadrática), situándose en el rango de acuerdo aceptable según Fleiss.
+
+La concordancia por dimensiones revela dos regímenes de comportamiento diferenciados:
 \begin{enumerate}
-    \item \textbf{Dimensiones objetivas y de seguridad crítica:} En Robustez y Seguridad ($D_5$) se obtuvo la mayor concordancia dimensional ($\kappa = 0{,}421$), mientras que en Control de Alucinaciones ($D_2$) la concordancia fue menor ($\kappa = 0{,}327$). Aunque los acuerdos observados fueron elevados ($90{,}48\%$ y $88{,}89\%$, respectivamente), estos valores deben interpretarse teniendo en cuenta la fuerte concentración de puntuaciones en las categorías superiores. El análisis de los casos críticos muestra además diferencias relevantes entre dimensiones, por lo que estos resultados no permiten considerar al juez automático un sustituto fiable de la evaluación humana.
-    \item \textbf{Dimensiones pedagógicas y estilísticas:} En Claridad ($D_3$), Feedback Pedagógico ($D_4$) y Adaptación al Nivel ($D_6$), el coeficiente $\kappa$ disminuye sustancialmente ($\kappa \le 0{,}08$). Este patrón es compatible con dos factores: la marcada asimetría marginal en las asignaciones de referencia (fenómeno conocido como la paradoja de prevalencia de Kappa \cite{feinstein1990high}) y una tendencia observada del juez automático a calificar con mayor severidad relativa (media transversal del juez de $2{,}47$ frente a $2{,}67$ en $E_1$, penalizando la falta de andamiaje explícito).
+    \item \textbf{Dimensiones objetivas y de seguridad crítica:} En Robustez y Seguridad ($D_5$) se obtuvo la mayor concordancia dimensional ($\kappa = 0{,}421$, $\kappa_{\text{lin}} = 0{,}572$, $\kappa_{\text{quad}} = 0{,}646$), mientras que en Control de Alucinaciones ($D_2$) la concordancia fue $\kappa = 0{,}327$ ($\kappa_{\text{quad}} = 0{,}413$) y en Factualidad ($D_1$) alcanzó $\kappa_{\text{quad}} = 0{,}557$. Aunque los acuerdos observados brutos fueron elevados ($90{,}48\%$ en $D_5$ y $88{,}89\%$ en $D_2$), estos valores deben interpretarse con cautela por la concentración de puntuaciones en categorías altas.
+    \item \textbf{Dimensiones pedagógicas y de estilo:} En Claridad ($D_3$), Feedback Pedagógico ($D_4$) y Adaptación al Nivel ($D_6$), el coeficiente $\kappa$ simple disminuye sustancialmente ($\kappa \le 0{,}08$). Este patrón se debe a dos factores: la asimetría marginal en las asignaciones de referencia (paradoja de Kappa \cite{feinstein1990high}) y una mayor severidad relativa del juez automático (media transversal del juez de $2{,}47$ frente a $2{,}67$ en el estándar humano, penalizando con rigor la ausencia de andamiaje explícito).
 \end{enumerate}
 
-Por último, en la clasificación de seguridad prioritaria (\textit{Safety-First}), el juez automático obtuvo una exactitud global del $88{,}89\%$ (112 de 126 casos coincidentes). No obstante, el desglose de la matriz de confusión revela una sensibilidad ante fallos críticos del $50{,}0\%$ (identificando 8 de las 16 respuestas catalogadas como críticas por los evaluadores humanos, con una tasa de falsos negativos del $50{,}0\%$) y una especificidad del $94{,}55\%$ (104 de 110 respuestas conformes correctamente identificadas, con 6 falsos positivos). La capacidad de detección de ceros críticos ($S_d = 0$) varió notablemente según la naturaleza disciplinar: mientras que en Seguridad ($D_5$) el juez detectó el $100{,}0\%$ de las infracciones críticas (5 de 5), en Alucinaciones ($D_2$) identificó 3 de 5 ($60{,}0\%$) y en Factualidad ($D_1$) únicamente 3 de 10 ($30{,}0\%$). Esta asimetría evidencia que, si bien el modelo juez aproxima eficazmente directrices explícitas de seguridad, no alcanza la sensibilidad crítica requerida para operar como filtro autónomo bajo un criterio \textit{Safety-First}, justificando su acotación como herramienta de soporte preliminar bajo supervisión humana.
+Por último, en la clasificación de seguridad prioritaria (\textit{Safety-First}), el juez automático obtuvo una exactitud global del $88{,}89\%$ (112 de 126 casos coincidentes: 8 verdaderos positivos, 104 verdaderos negativos, 6 falsos positivos y 8 falsos negativos). La sensibilidad en la detección de respuestas críticas fue del $50{,}0\%$ [IC 95\% de Wilson: $28{,}0\% - 72{,}0\%$] (detectando 8 de las 16 respuestas catalogadas como críticas por el estándar humano), mientras que la especificidad alcanzó el $94{,}55\%$ [IC 95\%: $88{,}61\% - 97{,}48\%$] (identificando 104 de 110 respuestas conformes). La capacidad de detección de ceros críticos ($S_d = 0$) varió según la disciplina: en Seguridad ($D_5$) el juez detectó el $100{,}0\%$ de las infracciones críticas (5 de 5), en Alucinaciones ($D_2$) identificó 3 de 5 ($60{,}0\%$) y en Factualidad ($D_1$) identificó 3 de 10 ($30{,}0\%$). Esta asimetría evidencia que, si bien el juez automático aproxima eficazmente directrices explícitas de seguridad, su sensibilidad ante fallos factuales sutiles es insuficiente para operar de forma autónoma bajo el criterio \textit{Safety-First}, justificando su rol como herramienta de triaje preliminar supervisada por expertos docentes.

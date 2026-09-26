@@ -199,15 +199,39 @@ def comparar_csv_con_json(csv_path: Path, json_path: Path) -> List[str]:
 
 def validar_dataset_llm_judge() -> List[str]:
     """
-    Valida exhaustivamente la integridad estructural, criptográfica y metodológica
-    del dataset experimental generado por LLM-as-a-Judge.
+    Valida exhaustivamente la consistencia estructural, correspondencia de metadatos versionados (SHA-256)
+    y la integridad metodológica del dataset experimental generado por LLM-as-a-Judge.
     """
     print("  [Opcional] Validando dataset experimental LLM-as-a-Judge...")
     judge_dir = EVAL_DIR / "llm_judge"
     raw_dir = judge_dir / "raw"
     errores = []
     
-    # Cargar pares canónicos de referencia desde Evaluador 1
+    # 0. Recalcular hashes de plantilla y rúbrica desde el código fuente
+    try:
+        from src.evaluador.evaluador_llm_judge import RUBRIC_SHA256, PROMPT_TEMPLATE_SHA256
+    except Exception as e:
+        RUBRIC_SHA256 = None
+        PROMPT_TEMPLATE_SHA256 = None
+        errores.append(f"[hashes] No se pudieron importar los hashes del evaluador: {e}")
+        
+    # Validar run_manifest.json
+    manifest_file = judge_dir / "run_manifest.json"
+    manifest_data = None
+    if not manifest_file.exists():
+        errores.append("[manifest] Archivo 'run_manifest.json' no encontrado.")
+    else:
+        with open(manifest_file, "r", encoding="utf-8") as f:
+            manifest_data = json.load(f)
+        m_prompt_hash = manifest_data.get("hashes_congelacion", {}).get("prompt_template_sha256")
+        m_rubric_hash = manifest_data.get("hashes_congelacion", {}).get("rubric_sha256")
+        
+        if PROMPT_TEMPLATE_SHA256 and m_prompt_hash != PROMPT_TEMPLATE_SHA256:
+            errores.append(f"[manifest] Hash del prompt en manifest ({m_prompt_hash}) no coincide con el recalculado ({PROMPT_TEMPLATE_SHA256}).")
+        if RUBRIC_SHA256 and m_rubric_hash != RUBRIC_SHA256:
+            errores.append(f"[manifest] Hash de la rúbrica en manifest ({m_rubric_hash}) no coincide con el recalculado ({RUBRIC_SHA256}).")
+            
+    # Cargar pares canónicos de referencia desde Evaluador 1 (Gold Standard)
     e1_file = EVAL_DIR / "evaluacion_evaluador_1.json"
     pares_esperados = set()
     if e1_file.exists():
@@ -234,6 +258,7 @@ def validar_dataset_llm_judge() -> List[str]:
             prompt_hashes = {t.get("prompt_template_sha256", t.get("judge_prompt_sha256")) for t in raw_data}
             rubric_vers = {t.get("rubric_version") for t in raw_data}
             rubric_hashes = {t.get("rubric_sha256") for t in raw_data}
+            model_digests = {t.get("model_digest") for t in raw_data if t.get("model_digest")}
             pares_raw = {(t.get("caso_id"), t.get("perfil")) for t in raw_data}
             
             if "MockJudgeProvider" in proveedores:
@@ -246,12 +271,24 @@ def validar_dataset_llm_judge() -> List[str]:
                 errores.append(f"[raw_judge] Discrepancia en versiones/hashes del prompt: versiones={prompt_vers}, hashes={prompt_hashes}")
             if len(rubric_vers) > 1 or len(rubric_hashes) > 1:
                 errores.append(f"[raw_judge] Discrepancia en versiones/hashes de la rúbrica: versiones={rubric_vers}, hashes={rubric_hashes}")
+                
+            # Validar contra los hashes recalculados y contra manifest
+            if PROMPT_TEMPLATE_SHA256 and list(prompt_hashes)[0] != PROMPT_TEMPLATE_SHA256:
+                errores.append(f"[raw_judge] El hash del prompt en las trazas ({list(prompt_hashes)[0]}) no coincide con el recalculado ({PROMPT_TEMPLATE_SHA256}).")
+            if RUBRIC_SHA256 and list(rubric_hashes)[0] != RUBRIC_SHA256:
+                errores.append(f"[raw_judge] El hash de la rúbrica en las trazas ({list(rubric_hashes)[0]}) no coincide con el recalculado ({RUBRIC_SHA256}).")
+                
+            if manifest_data:
+                m_digest = manifest_data.get("modelo_juez", {}).get("model_digest")
+                if m_digest and model_digests and list(model_digests)[0] != m_digest:
+                    errores.append(f"[manifest_sync] model_digest en manifest ({m_digest}) no coincide con las trazas ({list(model_digests)[0]}).")
+                
             if pares_esperados and pares_raw != pares_esperados:
                 diff = pares_esperados ^ pares_raw
-                errores.append(f"[raw_judge] Los pares (caso_id, perfil) en raw no coinciden con la referencia humana E1: discrepancias={len(diff)}")
+                errores.append(f"[raw_judge] Los pares (caso_id, perfil) en raw no coinciden con la referencia humana Gold Standard: discrepancias={len(diff)}")
                 
             if not errores:
-                print(f"    [+] {raw_file.name}: 126 trazas raw validadas (Proveedor: {list(proveedores)[0]}, Modelo: {list(modelos)[0]}).")
+                print(f"    [+] {raw_file.name}: 126 trazas raw validadas (Proveedor: {list(proveedores)[0]}, Modelo: {list(modelos)[0]}, Hashes verificados).")
                 
     # 2. Validar JSON normalizado
     norm_file = judge_dir / "evaluacion_llm_judge.json"

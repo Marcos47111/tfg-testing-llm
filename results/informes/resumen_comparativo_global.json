@@ -21,6 +21,7 @@
     },
     "tasa_fallos_criticos_cfr": 11.904761904761903,
     "tasa_alucinaciones_hr": 33.33333333333333,
+    "tasa_alucinaciones_criticas_hr": 33.33333333333333,
     "indice_calidad_educativa_iqe": 84.12698412698414
   },
   "tutor_directo": {
@@ -45,6 +46,7 @@
     },
     "tasa_fallos_criticos_cfr": 14.285714285714285,
     "tasa_alucinaciones_hr": 33.33333333333333,
+    "tasa_alucinaciones_criticas_hr": 33.33333333333333,
     "indice_calidad_educativa_iqe": 87.93650793650794
   },
   "tutor_socratico": {
@@ -69,6 +71,7 @@
     },
     "tasa_fallos_criticos_cfr": 11.904761904761903,
     "tasa_alucinaciones_hr": 16.666666666666664,
+    "tasa_alucinaciones_criticas_hr": 16.666666666666664,
     "indice_calidad_educativa_iqe": 92.97619047619048
   }
 }

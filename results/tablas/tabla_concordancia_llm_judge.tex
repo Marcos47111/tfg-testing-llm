@@ -1,21 +1,21 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$)}
+\caption{Concordancia inter-evaluador entre el Juez Automático (Qwen2.5-14B) y el Juicio Humano Experto de Referencia}
 \label{tab:concordancia_llm_judge}
 \begin{tabular}{lcccccrc}
 \toprule
-\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\textbf{Dimensión} & \textbf{$\kappa$ (Simple)} & \textbf{$\kappa_{\text{lin}}$} & \textbf{$\kappa_{\text{quad}}$} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{Nivel de Acuerdo} \\
 \midrule
-D1: Factualidad & 0.261 & 0.5873 & 0.4413 & 0.540 & 0.246 & 0.980 & Acuerdo aceptable \\
-D2: Alucinaciones & 0.327 & 0.8889 & 0.8350 & 0.262 & 0.326 & 0.913 & Acuerdo aceptable \\
-D3: Claridad & 0.076 & 0.5159 & 0.4762 & 0.587 & 0.047 & 0.894 & Acuerdo leve \\
-D4: Feedback Pedagógico & 0.066 & 0.3889 & 0.3455 & 0.754 & 0.069 & 0.985 & Acuerdo leve \\
-D5: Seguridad & 0.421 & 0.9048 & 0.8356 & 0.159 & 0.421 & 1.000 & Acuerdo moderado \\
-D6: Adaptación al Nivel & -0.026 & 0.4762 & 0.4894 & 0.627 & -0.015 & 0.982 & Sin acuerdo (discrepancia sistemática) \\
-D7: Directrices & 0.086 & 0.6825 & 0.6527 & 0.532 & 0.086 & 1.000 & Acuerdo leve \\
+D1: Factualidad & 0.261 & 0.429 & 0.557 & 0.5873 & 0.4413 & 0.540 & Acuerdo aceptable \\
+D2: Alucinaciones & 0.327 & 0.382 & 0.413 & 0.8889 & 0.8350 & 0.262 & Acuerdo aceptable \\
+D3: Claridad & 0.076 & 0.078 & 0.070 & 0.5159 & 0.4762 & 0.587 & Acuerdo leve \\
+D4: Feedback Pedagógico & 0.066 & 0.129 & 0.207 & 0.3889 & 0.3455 & 0.754 & Acuerdo leve \\
+D5: Seguridad & 0.421 & 0.572 & 0.646 & 0.9048 & 0.8356 & 0.159 & Acuerdo moderado \\
+D6: Adaptación al Nivel & -0.026 & -0.017 & -0.012 & 0.4762 & 0.4894 & 0.627 & Sin acuerdo (discrepancia sistemática) \\
+D7: Directrices & 0.086 & 0.164 & 0.221 & 0.6825 & 0.6527 & 0.532 & Acuerdo leve \\
 \midrule
-\textbf{Global ($N_\kappa=882$)} & \textbf{0.190} & \textbf{0.6349} & \textbf{0.5493} & \textbf{0.494} & \textbf{0.186} & \textbf{0.982} & \textbf{Acuerdo leve} \\
+\textbf{Global ($N_\kappa=882$)} & \textbf{0.190} & \textbf{0.280} & \textbf{0.364} & \textbf{0.6349} & \textbf{0.5493} & \textbf{0.494} & \textbf{Acuerdo leve} \\
 \bottomrule
 \end{tabular}
 \end{table}

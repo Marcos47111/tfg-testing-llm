@@ -11,19 +11,20 @@ La segunda conclusión concierne a la influencia del diseño de directivas de si
 
 La tercera conclusión pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
 
-Por último, la evaluación automática mediante un modelo juez independiente (\textit{LLM-as-a-Judge}, evaluado empíricamente con Qwen2.5-14B-Instruct) mostró una concordancia limitada con los evaluadores humanos ($\kappa = 0{,}190$ frente a $E_1$), especialmente en dimensiones pedagógicas. Además, aunque la clasificación \textit{Safety-First} alcanzó un $88{,}89\%$ de acuerdo global, la sensibilidad para detectar respuestas críticas fue del $50{,}0\%$. Estos resultados indican que, con la configuración evaluada, el juez automático no resulta adecuado como mecanismo autónomo de decisión y debe considerarse únicamente como apoyo dentro de esquemas de triaje supervisado (\textit{Human-in-the-Loop}).
+Por último, la evaluación automática mediante un modelo juez independiente (\textit{LLM-as-a-Judge}, evaluado empíricamente con Qwen2.5-14B-Instruct) frente al estándar de referencia humano (\textit{Gold Standard}) mostró una concordancia moderada considerando la escala ordinal ($\kappa_{\text{quad}} = 0{,}364$, $\kappa_{\text{lin}} = 0{,}280$, $\kappa = 0{,}190$, $MAE = 0{,}494$, $90{,}93\%$ de acuerdos en $|\Delta| \le 1$), con mayor alineación en seguridad ($D_5$) y menor en dimensiones pedagógicas abiertas. Asimismo, aunque la clasificación \textit{Safety-First} alcanzó un $88{,}89\%$ de exactitud global, la sensibilidad en la detección de fallos críticos fue del $50{,}0\%$ [IC 95\% de Wilson: $28{,}0\% - 72{,}0\%$]. Estos resultados evidencian que el juez automático no resulta apto como mecanismo decisor autónomo en despliegues educativos y debe integrarse como herramienta de triaje preliminar dentro de esquemas híbridos supervisados (\textit{Human-in-the-Loop}).
 
 \section{Grado de cumplimiento de objetivos}
 \label{sec:cumplimiento_objetivos}
 
-Los cinco objetivos específicos planteados en la Sección \ref{sec:objetivos} han sido alcanzados satisfactoriamente a lo largo del proyecto:
+Los seis objetivos específicos planteados en la Sección \ref{sec:objetivos} han sido alcanzados satisfactoriamente a lo largo del proyecto:
 
 \begin{enumerate}
     \item \textbf{Analizar las diferencias metodológicas y operacionales entre el testing de software determinista y la evaluación de modelos generativos, formalizando el impacto del problema del oráculo:} Cumplido en los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS}, donde se contrastan las aserciones booleanas deterministas con la naturaleza estocástica de los modelos de lenguaje, formalizando el problema del oráculo y analizando las limitaciones de las métricas sintácticas y benchmarks estáticos.
     \item \textbf{Definir un conjunto de dimensiones de calidad de software educativo inspiradas en el estándar ISO/IEC 25010 y la literatura pedagógica:} Cumplido en la Sección \ref{sec:dimensiones_evaluacion}, donde se formalizan y justifican las siete dimensiones analíticas ($D_1$ a $D_7$) integrando características de calidad de software (adecuación funcional, interacción, fiabilidad y seguridad) y constructos pedagógicos consolidados (ZDP, andamiaje tutorial y taxonomía de Bloom).
-    \item \textbf{Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación:} Cumplido en la Sección \ref{sec:rubrica_escalas} y en el Anexo \ref{anexo:rubrica}, estableciendo descriptores conductuales explícitos para cada nivel y dimensión, cuya consistencia de aplicación quedó respaldada por un coeficiente inter-evaluador $\kappa = 0{,}982$.
+    \item \textbf{Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación:} Cumplido en la Sección \ref{sec:rubrica_escalas} y en el Anexo \ref{anexo:rubrica}, estableciendo descriptores conductuales explícitos para cada nivel y dimensión, contrastados sistemáticamente frente a las respuestas reales.
     \item \textbf{Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$), complementado por un criterio de seguridad prioritaria (\textit{Safety-First}):} Cumplido en la Sección \ref{sec:metricas_agregacion}, formalizando analíticamente las medias $\bar{S}_d$, tasas $CR_d$, $CFR$, $HR$ y el índice ponderado $IQE$, complementado con la regla de decisión \textit{Safety-First} y su verificación mediante análisis de sensibilidad.
     \item \textbf{Construir una batería estructurada de casos de prueba, aplicarla experimentalmente sobre tres perfiles de chatbot y realizar el análisis comparativo para contrastar la sensibilidad del marco:} Cumplido en el Capítulo \ref{CAP:EXPERIMENTACION} y el Anexo \ref{anexo:casos_prueba}, mediante el diseño de 42 casos estructurados por tipologías y su ejecución sobre tres perfiles conversacionales con Meta-Llama-3-8B-Instruct (126 ensayos registrados), demostrando la capacidad discriminativa del marco.
+    \item \textbf{Establecer una evaluación humana experta de referencia (\textit{Gold Standard}) y analizar empíricamente la viabilidad y concordancia de la evaluación automatizada (\textit{LLM-as-a-Judge}):} Cumplido en las Secciones \ref{sec:concordancia_inter_evaluador}, \ref{sec:extension_llm_judge}, \ref{sec:resultados_llm_judge} y \ref{sec:discusion_llm_judge}, formalizando y ejecutando el protocolo con Qwen2.5-14B-Instruct, calculando coeficientes Kappa simples y ponderados ($\kappa_{\text{lin}}, \kappa_{\text{quad}}$), MAE, sensibilidad Safety-First con intervalos de Wilson y definiendo la arquitectura de triaje supervisado.
 \end{enumerate}
 
 \section{Aportaciones del trabajo}
@@ -35,28 +36,29 @@ Una metodología de evaluación estructurada y reproducible para auditar la cali
 
 Un banco estructurado de 42 casos de prueba (prompts de prueba) que cubre escenarios curriculares, preguntas trampa para detección de alucinaciones y vectores de ataque adversario.
 
-Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$ y la generación de gráficos vectoriales (radar y barras).
+Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$, el análisis de concordancia simple y ponderada y la generación de gráficos vectoriales (radar, barras, matrices de confusión y deltas).
 
-Un módulo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis de concordancia inter-evaluador Humano--IA y evaluación empírica real.
+Un módulo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis estadístico de concordancia Humano--IA con verificación criptográfica SHA-256.
 
-Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas, las calificaciones de ambos evaluadores humanos independientes y las 126 evaluaciones del juez automático, junto con sus trazas y metadatos de ejecución.
+Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas, las calificaciones del estándar de referencia humano (\textit{Gold Standard}) y las 126 evaluaciones del juez automático, junto con sus trazas y metadatos de ejecución.
 
 \section{Líneas de trabajo futuro}
 \label{sec:trabajo_futuro}
 
 A partir de la metodología desarrollada, se identifican las siguientes líneas de trabajo futuro:
 
+\paragraph{Paneles de evaluación multidisciplinares:}
+Conformación de paneles colegiados de evaluadores docentes independientes en cada disciplina curricular, permitiendo cuantificar la fiabilidad inter-jueces humana mediante coeficientes de correlación intraclase (ICC) o Kappa de Fleiss y fortaleciendo la validez de contenido del estándar de referencia.
+
 \paragraph{Sistemas híbridos de triaje Humano--IA (\textit{Human-in-the-Loop}):}
-Implementar flujos de auditoría continua donde el juez automático realice una evaluación masiva preliminar de primer nivel y derive automáticamente hacia paneles docentes humanos aquellos casos que presenten fallos críticos ($S_d = 0$), métricas de baja certidumbre probabilística o discrepancias inter-modelo.
+Implementar flujos de auditoría continua en pipelines CI/CD donde el juez automático realice una evaluación masiva preliminar de primer nivel y derive automáticamente hacia paneles docentes humanos aquellos casos que presenten fallos críticos ($S_d = 0$), métricas de baja certidumbre probabilística o discrepancias inter-modelo.
 
 \paragraph{Comités y ensambles de jueces con especialización dimensional:}
 Explorar arquitecturas de evaluación basadas en múltiples modelos juez (\textit{LLM Judge Ensembles}) y asignación de jueces especializados por dimensión (por ejemplo, modelos optimizados en razonamiento formal y código para $D_1$, clasificadores de seguridad dedicados para $D_5$ y modelos con alineamiento pedagógico para $D_4$ y $D_6$).
-
-\paragraph{Paneles de evaluación multidisciplinares:}
-Conformación de paneles de evaluación con especialistas docentes en cada disciplina curricular, fortaleciendo la validez de contenido y minimizando el riesgo de errores disciplinarios compartidos.
 
 \paragraph{Esquemas de aplicabilidad condicional y pesos dinámicos:}
 Formalizar esquemas de aplicabilidad condicional o ponderaciones dinámicas por dimensión ($D_k$) según la naturaleza de cada caso de prueba, evitando la saturación de puntuaciones en dimensiones no directamente estresadas.
 
 \paragraph{Extensión a sistemas RAG y soporte multimodal:}
 Extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) y soporte multimodal para auditar interacciones que incluyan diagramas técnicos, gráficas estadísticas o fórmulas manuscritas.
+

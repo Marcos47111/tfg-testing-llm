@@ -1,11 +1,11 @@
 """
-Módulo de Análisis Estadístico y Concordancia Humano-IA (LLM-as-a-Judge vs E1 / E2).
+Módulo de Análisis Estadístico y Concordancia Humano-IA (LLM-as-a-Judge vs Juicio Humano Experto Gold Standard).
 Calcula de forma rigurosa:
-- Cohen's Kappa global y dimensional (Judge vs E1, Judge vs E2, y E1 vs E2).
+- Cohen's Kappa global y dimensional (no ponderado, ponderado lineal y ponderado cuadrático).
 - Acuerdo observado (Po), acuerdo esperado (Pe), acuerdo exacto (%) y MAE por dimensión.
 - Distribución de deltas de discrepancia (|Δ| = 0, 1, 2, 3) y balance de sesgo direccional.
 - Matrices de confusión 4x4 (global y dimensional).
-- Sensibilidad en fallos críticos (Safety-First: falsos positivos y falsos negativos).
+- Sensibilidad en fallos críticos (Safety-First: Falsos Positivos, Falsos Negativos, Recall, Especificidad e Intervalos Wilson 95%).
 Genera informes JSON estructurados y tablas en CSV, Markdown y LaTeX.
 """
 
@@ -20,7 +20,12 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.analisis.metricas_tfg import calcular_cohen_kappa, es_fallo_critico
+from src.analisis.metricas_tfg import (
+    calcular_cohen_kappa,
+    calcular_cohen_kappa_ponderado,
+    calcular_intervalo_wilson,
+    es_fallo_critico
+)
 
 DATA_DIR = PROJECT_ROOT / "data"
 EVAL_DIR = DATA_DIR / "evaluaciones"
@@ -56,7 +61,7 @@ def calcular_mae(y_true: List[int], y_pred: List[int]) -> float:
 
 
 def analizar_distribucion_deltas(y_true: List[int], y_pred: List[int]) -> Dict[str, Any]:
-    """Analiza la magnitud de las discrepancias entre evaluadores."""
+    """Analiza la magnitud de las discrepancias entre el juicio humano y el juez automático."""
     total = len(y_true)
     deltas = [p - t for t, p in zip(y_true, y_pred)]
     abs_deltas = [abs(d) for d in deltas]
@@ -91,6 +96,8 @@ def analizar_distribucion_deltas(y_true: List[int], y_pred: List[int]) -> Dict[s
         "tendencia": {
             "sobrevaloraciones": sobrevaloraciones,
             "infravaloraciones": infravaloraciones,
+            "sobrevaloraciones_juez": sobrevaloraciones,
+            "infravaloraciones_juez": infravaloraciones,
             "balance_neto": sobrevaloraciones - infravaloraciones
         }
     }
@@ -99,11 +106,11 @@ def analizar_distribucion_deltas(y_true: List[int], y_pred: List[int]) -> Dict[s
 def analizar_fallos_criticos_cruzados(
     evals_humano: List[Dict[str, Any]],
     evals_juez: List[Dict[str, Any]],
-    nombre_humano_ref: str = "E1"
+    nombre_humano_ref: str = "Humano (Gold Standard)"
 ) -> Dict[str, Any]:
     """
     Evalúa la alineación en detección de fallos críticos (Safety-First: D1=0, D2=0 o D5=0)
-    entre el evaluador humano de referencia y el juez automático.
+    entre el evaluador humano de referencia (Gold Standard) y el juez automático.
     """
     total_casos = len(evals_humano)
     coinciden_critico = 0
@@ -144,10 +151,15 @@ def analizar_fallos_criticos_cruzados(
         h_ceros = sum(1 for h in evals_humano if h["puntuaciones"].get(dim_crit) == 0)
         j_coincide_cero = sum(1 for h, j in zip(evals_humano, evals_juez) if h["puntuaciones"].get(dim_crit) == 0 and j["puntuaciones"].get(dim_crit) == 0)
         tasa_det = round((j_coincide_cero / h_ceros * 100), 2) if h_ceros > 0 else 100.0
+        wilson_dim = calcular_intervalo_wilson(j_coincide_cero, h_ceros) if h_ceros > 0 else {"ci_low_pct": 100.0, "ci_high_pct": 100.0}
         det_por_dim[dim_crit] = {
             "ceros_humano_referencia": h_ceros,
             "ceros_detectados_por_juez": j_coincide_cero,
-            "tasa_deteccion_sensibilidad_pct": tasa_det
+            "tasa_deteccion_sensibilidad_pct": tasa_det,
+            "intervalo_confianza_wilson_95": {
+                "ci_low_pct": wilson_dim["ci_low_pct"],
+                "ci_high_pct": wilson_dim["ci_high_pct"]
+            }
         }
 
     tp = coinciden_critico
@@ -160,6 +172,9 @@ def analizar_fallos_criticos_cruzados(
     fnr = round((fn / (tp + fn)) * 100, 2) if (tp + fn) > 0 else 0.0
     fpr = round((fp / (tn + fp)) * 100, 2) if (tn + fp) > 0 else 0.0
     accuracy = round(((tp + tn) / total_casos) * 100, 2)
+    
+    wilson_sens = calcular_intervalo_wilson(tp, tp + fn) if (tp + fn) > 0 else {"ci_low_pct": 0.0, "ci_high_pct": 0.0}
+    wilson_esp = calcular_intervalo_wilson(tn, tn + fp) if (tn + fp) > 0 else {"ci_low_pct": 0.0, "ci_high_pct": 0.0}
             
     return {
         "evaluador_humano_referencia": nombre_humano_ref,
@@ -172,7 +187,15 @@ def analizar_fallos_criticos_cruzados(
         },
         "exactitud_accuracy_pct": accuracy,
         "sensibilidad_recall_critico_pct": sensibilidad,
+        "intervalo_sensibilidad_wilson_95": {
+            "ci_low_pct": wilson_sens["ci_low_pct"],
+            "ci_high_pct": wilson_sens["ci_high_pct"]
+        },
         "especificidad_pct": especificidad,
+        "intervalo_especificidad_wilson_95": {
+            "ci_low_pct": wilson_esp["ci_low_pct"],
+            "ci_high_pct": wilson_esp["ci_high_pct"]
+        },
         "tasa_falsos_negativos_fnr_pct": fnr,
         "tasa_falsos_positivos_fpr_pct": fpr,
         "deteccion_fallos_criticos_por_dimension": det_por_dim,
@@ -182,7 +205,7 @@ def analizar_fallos_criticos_cruzados(
 
 
 def ejecutar_analisis_concordancia_llm_judge():
-    """Ejecuta el pipeline completo de concordancia y análisis estadístico Humano-IA."""
+    """Ejecuta el pipeline completo de concordancia y análisis estadístico Humano (Gold Standard) vs LLM-as-a-Judge."""
     INFORMES_DIR.mkdir(parents=True, exist_ok=True)
     TABLAS_DIR.mkdir(parents=True, exist_ok=True)
     
@@ -195,58 +218,48 @@ def ejecutar_analisis_concordancia_llm_judge():
         return None
 
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "r", encoding="utf-8") as f:
-        evals_e1_list = json.load(f)
-    with open(EVAL_DIR / "evaluacion_evaluador_2.json", "r", encoding="utf-8") as f:
-        evals_e2_list = json.load(f)
+        evals_humano_list = json.load(f)
     with open(judge_file, "r", encoding="utf-8") as f:
         evals_judge_list = json.load(f)
         
-    map_e1 = {(x["caso_id"], x["perfil"]): x for x in evals_e1_list}
-    map_e2 = {(x["caso_id"], x["perfil"]): x for x in evals_e2_list}
+    map_humano = {(x["caso_id"], x["perfil"]): x for x in evals_humano_list}
     map_judge = {(x["caso_id"], x["perfil"]): x for x in evals_judge_list}
     
-    claves_ordenadas = sorted(map_e1.keys())
-    evals_e1 = [map_e1[k] for k in claves_ordenadas]
-    evals_e2 = [map_e2[k] for k in claves_ordenadas]
+    claves_ordenadas = sorted(map_humano.keys())
+    evals_humano = [map_humano[k] for k in claves_ordenadas]
     evals_judge = [map_judge[k] for k in claves_ordenadas]
         
     print("=" * 70)
-    print("  ANÁLISIS DE CONCORDANCIA HUMANO-IA (LLM-AS-A-JUDGE vs E1 / E2)")
+    print("  ANÁLISIS DE CONCORDANCIA HUMANO-IA (LLM-AS-A-JUDGE vs GOLD STANDARD)")
     print("=" * 70)
     
     # Recopilar vectores de puntuaciones
-    scores_e1_global = []
-    scores_e2_global = []
+    scores_humano_global = []
     scores_judge_global = []
     
-    scores_dim_e1 = {d[0]: [] for d in DIMENSIONES}
-    scores_dim_e2 = {d[0]: [] for d in DIMENSIONES}
+    scores_dim_humano = {d[0]: [] for d in DIMENSIONES}
     scores_dim_judge = {d[0]: [] for d in DIMENSIONES}
     
-    for e1, e2, j in zip(evals_e1, evals_e2, evals_judge):
-        if e1["caso_id"] != j["caso_id"] or e1["perfil"] != j["perfil"] or e2["caso_id"] != j["caso_id"] or e2["perfil"] != j["perfil"]:
-            raise ValueError(f"Desalineación entre datasets: E1={e1['caso_id']}, E2={e2['caso_id']}, Juez={j['caso_id']}")
+    for h, j in zip(evals_humano, evals_judge):
+        if h["caso_id"] != j["caso_id"] or h["perfil"] != j["perfil"]:
+            raise ValueError(f"Desalineación entre datasets: Humano={h['caso_id']}, Juez={j['caso_id']}")
         for d_key, _ in DIMENSIONES:
-            s_e1 = e1["puntuaciones"][d_key]
-            s_e2 = e2["puntuaciones"][d_key]
+            s_h = h["puntuaciones"][d_key]
             s_j = j["puntuaciones"][d_key]
             
-            scores_e1_global.append(s_e1)
-            scores_e2_global.append(s_e2)
+            scores_humano_global.append(s_h)
             scores_judge_global.append(s_j)
             
-            scores_dim_e1[d_key].append(s_e1)
-            scores_dim_e2[d_key].append(s_e2)
+            scores_dim_humano[d_key].append(s_h)
             scores_dim_judge[d_key].append(s_j)
             
-    n_global = len(scores_e1_global)
+    n_global = len(scores_humano_global)
             
-    # 2. Kappa Global
-    kappa_j_e1_global = calcular_cohen_kappa(scores_e1_global, scores_judge_global)
-    kappa_j_e2_global = calcular_cohen_kappa(scores_e2_global, scores_judge_global)
-    kappa_e1_e2_global = calcular_cohen_kappa(scores_e1_global, scores_e2_global)
-    mae_global_j_e1 = calcular_mae(scores_e1_global, scores_judge_global)
-    mae_global_j_e2 = calcular_mae(scores_e2_global, scores_judge_global)
+    # 2. Kappa Global (No Ponderado, Lineal, Cuadrático)
+    kappa_global_unweighted = calcular_cohen_kappa(scores_humano_global, scores_judge_global)
+    kappa_global_linear = calcular_cohen_kappa_ponderado(scores_humano_global, scores_judge_global, tipo_ponderacion="lineal")
+    kappa_global_quadratic = calcular_cohen_kappa_ponderado(scores_humano_global, scores_judge_global, tipo_ponderacion="cuadratico")
+    mae_global = calcular_mae(scores_humano_global, scores_judge_global)
     
     # 3. Kappa y Métricas Dimensionales
     concordancia_dimensional = {}
@@ -254,79 +267,69 @@ def ejecutar_analisis_concordancia_llm_judge():
     filas_tabla = []
     
     for d_key, d_nombre in DIMENSIONES:
-        k_j_e1 = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_judge[d_key])
-        k_j_e2 = calcular_cohen_kappa(scores_dim_e2[d_key], scores_dim_judge[d_key])
-        k_e1_e2 = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_e2[d_key])
+        k_unw = calcular_cohen_kappa(scores_dim_humano[d_key], scores_dim_judge[d_key])
+        k_lin = calcular_cohen_kappa_ponderado(scores_dim_humano[d_key], scores_dim_judge[d_key], tipo_ponderacion="lineal")
+        k_quad = calcular_cohen_kappa_ponderado(scores_dim_humano[d_key], scores_dim_judge[d_key], tipo_ponderacion="cuadratico")
         
-        mae_dim = calcular_mae(scores_dim_e1[d_key], scores_dim_judge[d_key])
-        mat_dim = calcular_matriz_confusion_4x4(scores_dim_e1[d_key], scores_dim_judge[d_key])
+        mae_dim = calcular_mae(scores_dim_humano[d_key], scores_dim_judge[d_key])
+        mat_dim = calcular_matriz_confusion_4x4(scores_dim_humano[d_key], scores_dim_judge[d_key])
         matrices_confusion_dim[d_key] = mat_dim
         
-        # Medias por dimensión
-        media_e1 = round(float(np.mean(scores_dim_e1[d_key])), 3)
+        media_humano = round(float(np.mean(scores_dim_humano[d_key])), 3)
         media_judge = round(float(np.mean(scores_dim_judge[d_key])), 3)
-        sesgo = round(media_judge - media_e1, 3)
-        acuerdo_exacto_pct = round(k_j_e1["acuerdo_observado_po"] * 100, 2)
+        sesgo = round(media_judge - media_humano, 3)
+        acuerdo_exacto_pct = round(k_unw["acuerdo_observado_po"] * 100, 2)
         
         concordancia_dimensional[d_key] = {
             "nombre": d_nombre,
-            "kappa_judge_vs_e1": k_j_e1["kappa"],
-            "po_judge_vs_e1": k_j_e1["acuerdo_observado_po"],
-            "pe_judge_vs_e1": k_j_e1["acuerdo_esperado_pe"],
+            "kappa_no_ponderado": k_unw["kappa"],
+            "kappa_ponderado_lineal": k_lin["kappa_ponderado"],
+            "kappa_ponderado_cuadratico": k_quad["kappa_ponderado"],
+            "po": k_unw["acuerdo_observado_po"],
+            "pe": k_unw["acuerdo_esperado_pe"],
             "acuerdo_exacto_pct": acuerdo_exacto_pct,
             "mae": round(mae_dim, 4),
-            "interpretacion_judge_vs_e1": k_j_e1["interpretacion"],
-            "kappa_judge_vs_e2": k_j_e2["kappa"],
-            "kappa_humano_e1_vs_e2": k_e1_e2["kappa"],
-            "media_humano_e1": media_e1,
+            "interpretacion": k_unw["interpretacion"],
+            "media_humano_gold_standard": media_humano,
             "media_judge": media_judge,
             "sesgo_juez_menos_humano": sesgo
         }
         
         filas_tabla.append({
             "Dimensión": d_nombre,
-            "Kappa (Juez vs E1)": k_j_e1["kappa"],
-            "P_o": k_j_e1["acuerdo_observado_po"],
-            "P_e": k_j_e1["acuerdo_esperado_pe"],
+            "Kappa (No pond.)": k_unw["kappa"],
+            "Kappa (Lineal)": k_lin["kappa_ponderado"],
+            "Kappa (Cuadrático)": k_quad["kappa_ponderado"],
+            "P_o": k_unw["acuerdo_observado_po"],
+            "P_e": k_unw["acuerdo_esperado_pe"],
             "MAE": round(mae_dim, 3),
-            "Kappa (Juez vs E2)": k_j_e2["kappa"],
-            "Kappa (E1 vs E2)": k_e1_e2["kappa"],
-            "Media E1": media_e1,
+            "Media Humano": media_humano,
             "Media Juez": media_judge,
             "Sesgo": f"{'+' if sesgo > 0 else ''}{sesgo}",
-            "Nivel de Acuerdo": k_j_e1["interpretacion"]
+            "Nivel de Acuerdo": k_unw["interpretacion"]
         })
         
     # 4. Distribución de Deltas y Matrices de Confusión
-    deltas_j_e1 = analizar_distribucion_deltas(scores_e1_global, scores_judge_global)
-    deltas_j_e2 = analizar_distribucion_deltas(scores_e2_global, scores_judge_global)
-    matriz_conf_global = calcular_matriz_confusion_4x4(scores_e1_global, scores_judge_global)
+    deltas_global = analizar_distribucion_deltas(scores_humano_global, scores_judge_global)
+    matriz_conf_global = calcular_matriz_confusion_4x4(scores_humano_global, scores_judge_global)
     
     # 5. Alineación de Fallos Críticos (Safety-First)
-    safety_first_j_e1 = analizar_fallos_criticos_cruzados(evals_e1, evals_judge, nombre_humano_ref="Evaluador 1 (E1)")
-    safety_first_j_e2 = analizar_fallos_criticos_cruzados(evals_e2, evals_judge, nombre_humano_ref="Evaluador 2 (E2)")
+    safety_first = analizar_fallos_criticos_cruzados(evals_humano, evals_judge, nombre_humano_ref="Humano (Gold Standard)")
     
     # 6. Compilar Informe Consolidado
     informe_completo = {
         "concordancia_global": {
-            "total_pares_comparados": len(scores_e1_global),
-            "mae_juez_vs_e1": round(mae_global_j_e1, 4),
-            "mae_juez_vs_e2": round(mae_global_j_e2, 4),
-            "juez_vs_evaluador_1": kappa_j_e1_global,
-            "juez_vs_evaluador_2": kappa_j_e2_global,
-            "humano_e1_vs_e2_referencia": kappa_e1_e2_global
+            "total_pares_comparados": len(scores_humano_global),
+            "mae_global": round(mae_global, 4),
+            "kappa_no_ponderado": kappa_global_unweighted,
+            "kappa_ponderado_lineal": kappa_global_linear,
+            "kappa_ponderado_cuadratico": kappa_global_quadratic
         },
         "concordancia_por_dimension": concordancia_dimensional,
-        "analisis_discrepancias_deltas": {
-            "juez_vs_e1": deltas_j_e1,
-            "juez_vs_e2": deltas_j_e2
-        },
-        "matriz_confusion_global_4x4_filas_e1_columnas_juez": matriz_conf_global,
+        "analisis_discrepancias_deltas": deltas_global,
+        "matriz_confusion_global_4x4_filas_humano_columnas_juez": matriz_conf_global,
         "matrices_confusion_por_dimension": matrices_confusion_dim,
-        "analisis_safety_first_fallos_criticos": {
-            "juez_vs_e1_referencia": safety_first_j_e1,
-            "juez_vs_e2_referencia": safety_first_j_e2
-        }
+        "analisis_safety_first_fallos_criticos": safety_first
     }
     
     # Guardar Informe JSON
@@ -342,12 +345,12 @@ def ejecutar_analisis_concordancia_llm_judge():
     # Markdown
     cols = list(df_tab.columns)
     lineas_md = [
-        "# Tabla Comparativa de Concordancia Humano-IA (LLM-as-a-Judge)",
+        "# Tabla de Concordancia Humano-IA (Gold Standard vs LLM-as-a-Judge)",
         "",
-        rf"**Kappa Global Juez vs E1 ($\kappa$):** {kappa_j_e1_global['kappa']} (Po = {kappa_j_e1_global['acuerdo_observado_po']}, Pe = {kappa_j_e1_global['acuerdo_esperado_pe']}, MAE = {mae_global_j_e1:.3f}) - *{kappa_j_e1_global['interpretacion']}*",
-        rf"**Kappa Global Juez vs E2 ($\kappa$):** {kappa_j_e2_global['kappa']} (Po = {kappa_j_e2_global['acuerdo_observado_po']}, Pe = {kappa_j_e2_global['acuerdo_esperado_pe']}, MAE = {mae_global_j_e2:.3f})",
-        rf"**Referencia Humana E1 vs E2 ($\kappa$):** {kappa_e1_e2_global['kappa']}",
-        rf"**Total juicios emparejados:** {n_global} pares.",
+        rf"**Kappa Global no ponderado ($\kappa$):** {kappa_global_unweighted['kappa']} (Po = {kappa_global_unweighted['acuerdo_observado_po']}, Pe = {kappa_global_unweighted['acuerdo_esperado_pe']}, MAE = {mae_global:.3f}) - *{kappa_global_unweighted['interpretacion']}*",
+        rf"**Kappa Global ponderado lineal ($\kappa_{{\text{{lin}}}}$):** {kappa_global_linear['kappa_ponderado']} - *{kappa_global_linear['interpretacion']}*",
+        rf"**Kappa Global ponderado cuadrático ($\kappa_{{\text{{quad}}}}$):** {kappa_global_quadratic['kappa_ponderado']} - *{kappa_global_quadratic['interpretacion']}*",
+        rf"**Total juicios emparejados:** {n_global} calificaciones dimensionales.",
         "",
         "| " + " | ".join(cols) + " |",
         "| " + " | ".join([":---" if i == 0 else ":---:" for i in range(len(cols))]) + " |"
@@ -363,26 +366,26 @@ def ejecutar_analisis_concordancia_llm_judge():
         r"\begin{table}[htbp]",
         r"\centering",
         r"\small",
-        r"\caption{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$)}",
+        r"\caption{Concordancia inter-evaluador entre el Juez Automático (Qwen2.5-14B) y el Juicio Humano Experto de Referencia}",
         r"\label{tab:concordancia_llm_judge}",
         r"\begin{tabular}{lcccccrc}",
         r"\toprule",
-        r"\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\",
+        r"\textbf{Dimensión} & \textbf{$\kappa$ (Simple)} & \textbf{$\kappa_{\text{lin}}$} & \textbf{$\kappa_{\text{quad}}$} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{Nivel de Acuerdo} \\",
         r"\midrule"
     ]
     for _, r in df_tab.iterrows():
-        k1 = f"{r['Kappa (Juez vs E1)']:.3f}" if isinstance(r['Kappa (Juez vs E1)'], (float, int)) else str(r['Kappa (Juez vs E1)'])
+        k1 = f"{r['Kappa (No pond.)']:.3f}" if isinstance(r['Kappa (No pond.)'], (float, int)) else str(r['Kappa (No pond.)'])
+        k_lin_val = f"{r['Kappa (Lineal)']:.3f}" if isinstance(r['Kappa (Lineal)'], (float, int)) else str(r['Kappa (Lineal)'])
+        k_quad_val = f"{r['Kappa (Cuadrático)']:.3f}" if isinstance(r['Kappa (Cuadrático)'], (float, int)) else str(r['Kappa (Cuadrático)'])
         po = f"{r['P_o']:.4f}" if isinstance(r['P_o'], (float, int)) else str(r['P_o'])
         pe = f"{r['P_e']:.4f}" if isinstance(r['P_e'], (float, int)) else str(r['P_e'])
         mae_val = f"{r['MAE']:.3f}" if isinstance(r['MAE'], (float, int)) else str(r['MAE'])
-        k2 = f"{r['Kappa (Juez vs E2)']:.3f}" if isinstance(r['Kappa (Juez vs E2)'], (float, int)) else str(r['Kappa (Juez vs E2)'])
-        k_hum = f"{r['Kappa (E1 vs E2)']:.3f}" if isinstance(r['Kappa (E1 vs E2)'], (float, int)) else str(r['Kappa (E1 vs E2)'])
         interp = r['Nivel de Acuerdo']
-        lineas_tex.append(rf"{r['Dimensión']} & {k1} & {po} & {pe} & {mae_val} & {k2} & {k_hum} & {interp} \\")
+        lineas_tex.append(rf"{r['Dimensión']} & {k1} & {k_lin_val} & {k_quad_val} & {po} & {pe} & {mae_val} & {interp} \\")
         
     lineas_tex.extend([
         r"\midrule",
-        rf"\textbf{{Global ($N_\kappa={n_global}$)}} & \textbf{{{kappa_j_e1_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_j_e1_global['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global_j_e1:.3f}}} & \textbf{{{kappa_j_e2_global['kappa']:.3f}}} & \textbf{{{kappa_e1_e2_global['kappa']:.3f}}} & \textbf{{{kappa_j_e1_global['interpretacion']}}} \\",
+        rf"\textbf{{Global ($N_\kappa={n_global}$)}} & \textbf{{{kappa_global_unweighted['kappa']:.3f}}} & \textbf{{{kappa_global_linear['kappa_ponderado']:.3f}}} & \textbf{{{kappa_global_quadratic['kappa_ponderado']:.3f}}} & \textbf{{{kappa_global_unweighted['acuerdo_observado_po']:.4f}}} & \textbf{{{kappa_global_unweighted['acuerdo_esperado_pe']:.4f}}} & \textbf{{{mae_global:.3f}}} & \textbf{{{kappa_global_unweighted['interpretacion']}}} \\",
         r"\bottomrule",
         r"\end{tabular}",
         r"\end{table}"
@@ -391,27 +394,28 @@ def ejecutar_analisis_concordancia_llm_judge():
     with open(TABLAS_DIR / "tabla_concordancia_llm_judge.tex", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_tex) + "\n")
         
-    tp = safety_first_j_e1["matriz_confusion_2x2"]["verdaderos_positivos_TP"]
-    fn = safety_first_j_e1["matriz_confusion_2x2"]["falsos_negativos_FN"]
-    fp = safety_first_j_e1["matriz_confusion_2x2"]["falsos_positivos_FP"]
-    tn = safety_first_j_e1["matriz_confusion_2x2"]["verdaderos_negativos_TN"]
-    acc = safety_first_j_e1["exactitud_accuracy_pct"]
-    sens = safety_first_j_e1["sensibilidad_recall_critico_pct"]
-    esp = safety_first_j_e1["especificidad_pct"]
+    tp = safety_first["matriz_confusion_2x2"]["verdaderos_positivos_TP"]
+    fn = safety_first["matriz_confusion_2x2"]["falsos_negativos_FN"]
+    fp = safety_first["matriz_confusion_2x2"]["falsos_positivos_FP"]
+    tn = safety_first["matriz_confusion_2x2"]["verdaderos_negativos_TN"]
+    acc = safety_first["exactitud_accuracy_pct"]
+    sens = safety_first["sensibilidad_recall_critico_pct"]
+    esp = safety_first["especificidad_pct"]
     
-    det_dim = safety_first_j_e1["deteccion_fallos_criticos_por_dimension"]
+    det_dim = safety_first["deteccion_fallos_criticos_por_dimension"]
     
     print(f"  [+] Tablas exportadas en {TABLAS_DIR}")
     print("\n  Resumen de Resultados Principales:")
-    print(f"   -> Kappa Global (Juez vs E1): {kappa_j_e1_global['kappa']} ({kappa_j_e1_global['interpretacion']})")
-    print(f"   -> Kappa Global (Juez vs E2): {kappa_j_e2_global['kappa']} ({kappa_j_e2_global['interpretacion']})")
-    print(f"   -> MAE Global (Juez vs E1): {mae_global_j_e1:.4f}")
-    print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_j_e1['acuerdo_exacto_delta_0']['recuento']}/{n_global} ({deltas_j_e1['acuerdo_exacto_delta_0']['porcentaje']}%)")
-    print(f"   -> Discrepancia menor (|Δ|=1): {deltas_j_e1['discrepancia_menor_delta_1']['recuento']}/{n_global} ({deltas_j_e1['discrepancia_menor_delta_1']['porcentaje']}%)")
-    print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_j_e1['discrepancia_moderada_delta_2']['recuento'] + deltas_j_e1['discrepancia_severa_delta_3']['recuento']}/{n_global}")
+    print(f"   -> Kappa Global No Ponderado: {kappa_global_unweighted['kappa']} ({kappa_global_unweighted['interpretacion']})")
+    print(f"   -> Kappa Global Ponderado Lineal: {kappa_global_linear['kappa_ponderado']} ({kappa_global_linear['interpretacion']})")
+    print(f"   -> Kappa Global Ponderado Cuadrático: {kappa_global_quadratic['kappa_ponderado']} ({kappa_global_quadratic['interpretacion']})")
+    print(f"   -> MAE Global: {mae_global:.4f}")
+    print(f"   -> Acuerdo exacto (|Δ|=0): {deltas_global['acuerdo_exacto_delta_0']['recuento']}/{n_global} ({deltas_global['acuerdo_exacto_delta_0']['porcentaje']}%)")
+    print(f"   -> Discrepancia menor (|Δ|=1): {deltas_global['discrepancia_menor_delta_1']['recuento']}/{n_global} ({deltas_global['discrepancia_menor_delta_1']['porcentaje']}%)")
+    print(f"   -> Discrepancias mayores (|Δ|>=2): {deltas_global['discrepancia_moderada_delta_2']['recuento'] + deltas_global['discrepancia_severa_delta_3']['recuento']}/{n_global}")
     print(f"   -> Safety-First Accuracy: {acc}% (TP={tp}, TN={tn}, FP={fp}, FN={fn})")
-    print(f"   -> Safety-First Sensibilidad (Recall Crítico): {sens}% (detecta {tp}/{tp+fn} respuestas críticas)")
-    print(f"   -> Safety-First Especificidad: {esp}% (detecta {tn}/{tn+fp} respuestas conformes)")
+    print(f"   -> Safety-First Sensibilidad (Recall Crítico): {sens}% [IC 95%: {safety_first['intervalo_sensibilidad_wilson_95']['ci_low_pct']}% - {safety_first['intervalo_sensibilidad_wilson_95']['ci_high_pct']}%] (detecta {tp}/{tp+fn} respuestas críticas)")
+    print(f"   -> Safety-First Especificidad: {esp}% [IC 95%: {safety_first['intervalo_especificidad_wilson_95']['ci_low_pct']}% - {safety_first['intervalo_especificidad_wilson_95']['ci_high_pct']}%] (detecta {tn}/{tn+fp} respuestas conformes)")
     print(f"   -> Detección Ceros D1 Factualidad: {det_dim['D1_correccion_factual']['ceros_detectados_por_juez']}/{det_dim['D1_correccion_factual']['ceros_humano_referencia']} ({det_dim['D1_correccion_factual']['tasa_deteccion_sensibilidad_pct']}%)")
     print(f"   -> Detección Ceros D2 Alucinaciones: {det_dim['D2_control_alucinaciones']['ceros_detectados_por_juez']}/{det_dim['D2_control_alucinaciones']['ceros_humano_referencia']} ({det_dim['D2_control_alucinaciones']['tasa_deteccion_sensibilidad_pct']}%)")
     print(f"   -> Detección Ceros D5 Seguridad: {det_dim['D5_robustez_seguridad']['ceros_detectados_por_juez']}/{det_dim['D5_robustez_seguridad']['ceros_humano_referencia']} ({det_dim['D5_robustez_seguridad']['tasa_deteccion_sensibilidad_pct']}%)")
@@ -420,3 +424,4 @@ def ejecutar_analisis_concordancia_llm_judge():
 
 if __name__ == "__main__":
     ejecutar_analisis_concordancia_llm_judge()
+
