@@ -1,4 +1,4 @@
-Dimensión,Kappa (Juez vs E1),Kappa Lineal,Kappa Cuadrático,P_o,P_e,MAE,Kappa (Juez vs E2),Kappa (E1 vs E2),Media E1,Media Juez,Sesgo,Nivel de Acuerdo
+Dimensión,Kappa (Juez vs Gold Standard),Kappa Lineal,Kappa Cuadrático,P_o,P_e,MAE,Kappa (Juez vs E2),Kappa (E1 vs E2),Media Gold,Media Juez,Sesgo,Nivel de Acuerdo
 D1: Factualidad,0.2354,0.4096,0.5436,0.5635,0.4291,0.571,0.2201,0.8542,2.452,2.23,-0.222,Acuerdo aceptable
 D2: Alucinaciones,0.3265,0.3816,0.413,0.8889,0.835,0.262,0.3262,1.0,2.865,2.683,-0.182,Acuerdo aceptable
 D3: Claridad,0.0758,0.0777,0.0701,0.5159,0.4762,0.587,0.0473,0.9291,2.881,2.405,-0.476,Acuerdo leve

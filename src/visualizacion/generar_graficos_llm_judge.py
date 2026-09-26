@@ -38,7 +38,7 @@ def cargar_informe_concordancia() -> dict:
 def generar_grafico_concordancia_dimensional(datos: dict):
     """
     Genera un gráfico de barras comparativo de Cohen's Kappa por dimensión
-    entre LLM-as-a-Judge vs E1, LLM-as-a-Judge vs E2, y la referencia humana E1 vs E2.
+    entre LLM-as-a-Judge vs Gold Standard, LLM-as-a-Judge vs E2, y la referencia humana E1 vs E2.
     """
     dims = [
         ("D1_correccion_factual", "D1: Factualidad"),
@@ -51,7 +51,7 @@ def generar_grafico_concordancia_dimensional(datos: dict):
     ]
     
     etiquetas = [d[1] for d in dims]
-    k_j_e1 = [datos["concordancia_por_dimension"][d[0]]["kappa_judge_vs_e1"] for d in dims]
+    k_j_gold = [datos["concordancia_por_dimension"][d[0]].get("kappa_judge_vs_gold", datos["concordancia_por_dimension"][d[0]].get("kappa_judge_vs_e1")) for d in dims]
     k_j_e2 = [datos["concordancia_por_dimension"][d[0]]["kappa_judge_vs_e2"] for d in dims]
     k_e1_e2 = [datos["concordancia_por_dimension"][d[0]]["kappa_humano_e1_vs_e2"] for d in dims]
     
@@ -61,7 +61,7 @@ def generar_grafico_concordancia_dimensional(datos: dict):
     fig, ax = plt.subplots(figsize=(10, 5.2), dpi=300)
     
     # Barras
-    rects1 = ax.bar(x - width, k_j_e1, width, label=r"Juez vs $E_1$", color="#337ab7", alpha=0.9, edgecolor="#1f4e78")
+    rects1 = ax.bar(x - width, k_j_gold, width, label=r"Juez vs Gold Standard", color="#337ab7", alpha=0.9, edgecolor="#1f4e78")
     rects2 = ax.bar(x, k_j_e2, width, label=r"Juez vs $E_2$", color="#5bc0de", alpha=0.9, edgecolor="#31708f")
     rects3 = ax.bar(x + width, k_e1_e2, width, label=r"Humano ($E_1$ vs $E_2$)", color="#5cb85c", alpha=0.9, edgecolor="#3e8f3e")
     
@@ -71,7 +71,7 @@ def generar_grafico_concordancia_dimensional(datos: dict):
     ax.axhline(0.00, color="#888888", linestyle="-", linewidth=0.8, alpha=0.5)
     
     ax.set_ylabel(r"Coeficiente Kappa de Cohen ($\kappa$)", fontsize=11, fontweight="bold")
-    ax.set_title(r"Concordancia Inter-Evaluador por Dimensión: LLM-as-a-Judge vs Evaluadores Humanos", fontsize=12, fontweight="bold", pad=12)
+    ax.set_title(r"Concordancia Inter-Evaluador por Dimensión: LLM-as-a-Judge vs Gold Standard y Humanos", fontsize=12, fontweight="bold", pad=12)
     ax.set_xticks(x)
     ax.set_xticklabels(etiquetas, fontsize=9.5)
     ax.set_ylim(-0.15, 1.08)
@@ -115,9 +115,10 @@ def generar_grafico_concordancia_dimensional(datos: dict):
 
 def generar_grafico_matriz_confusion(datos: dict):
     """
-    Genera un mapa de calor para la matriz de confusión 4x4 (E1 vs Juez).
+    Genera un mapa de calor para la matriz de confusión 4x4 (Gold Standard vs Juez).
     """
-    matriz = np.array(datos["matriz_confusion_global_4x4_filas_e1_columnas_juez"])
+    matriz_data = datos.get("matriz_confusion_global_4x4_filas_gold_columnas_juez", datos.get("matriz_confusion_global_4x4_filas_e1_columnas_juez"))
+    matriz = np.array(matriz_data)
     total_pares = datos["concordancia_global"]["total_pares_comparados"]
     
     fig, ax = plt.subplots(figsize=(6.5, 5.5), dpi=300)
@@ -135,8 +136,8 @@ def generar_grafico_matriz_confusion(datos: dict):
     ax.set_yticklabels([f"Nivel {i}" for i in range(4)], fontsize=10)
     
     ax.set_xlabel("Puntuación Juez Automático (LLM-as-a-Judge)", fontsize=11, fontweight="bold", labelpad=8)
-    ax.set_ylabel(r"Puntuación Evaluador Humano $E_1$", fontsize=11, fontweight="bold", labelpad=8)
-    ax.set_title(rf"Matriz de Confusión Global: $E_1$ vs LLM-as-a-Judge ($N_\kappa={total_pares}$)", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_ylabel(r"Puntuación Gold Standard Humano", fontsize=11, fontweight="bold", labelpad=8)
+    ax.set_title(rf"Matriz de Confusión Global: Gold Standard vs LLM-as-a-Judge ($N_\kappa={total_pares}$)", fontsize=11.5, fontweight="bold", pad=12)
     
     # Anotar recuentos
     threshold = matriz.max() / 2.0
@@ -162,7 +163,7 @@ def generar_grafico_distribucion_discrepancias(datos: dict):
     """
     Genera un gráfico de barras horizontales con la distribución de deltas (|Δ| in {0, 1, 2, 3}).
     """
-    deltas = datos["analisis_discrepancias_deltas"]["juez_vs_e1"]
+    deltas = datos["analisis_discrepancias_deltas"].get("juez_vs_gold_standard", datos["analisis_discrepancias_deltas"]["juez_vs_e1"])
     total_pares = datos["concordancia_global"]["total_pares_comparados"]
     
     etiquetas = [
@@ -183,7 +184,7 @@ def generar_grafico_distribucion_discrepancias(datos: dict):
     
     bars = ax.barh(etiquetas, recuentos, color=colores, edgecolor="#333333", height=0.55)
     ax.set_xlabel(rf"Número de Juicios Pareados ($N={total_pares}$)", fontsize=10.5, fontweight="bold")
-    ax.set_title(r"Distribución de la Magnitud de Discrepancias ($|P_{juez} - P_{E1}|$)", fontsize=11.5, fontweight="bold", pad=12)
+    ax.set_title(r"Distribución de la Magnitud de Discrepancias ($|P_{juez} - P_{\mathrm{Gold}}|$)", fontsize=11.5, fontweight="bold", pad=12)
     ax.grid(axis="x", linestyle="--", alpha=0.5)
     ax.set_xlim(0, max(recuentos) * 1.25)
     

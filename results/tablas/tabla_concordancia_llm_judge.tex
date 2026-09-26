@@ -1,11 +1,11 @@
 \begin{table}[htbp]
 \centering
 \small
-\caption{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$)}
+\caption{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y el Gold Standard Humano Consolidado (así como $E_1$ y $E_2$)}
 \label{tab:concordancia_llm_judge}
 \begin{tabular}{lcccccrc}
 \toprule
-\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\textbf{Dimensión} & \textbf{$\kappa$ (Juez-Gold)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
 \midrule
 D1: Factualidad & 0.235 & 0.5635 & 0.4291 & 0.571 & 0.220 & 0.854 & Acuerdo aceptable \\
 D2: Alucinaciones & 0.327 & 0.8889 & 0.8350 & 0.262 & 0.326 & 1.000 & Acuerdo aceptable \\

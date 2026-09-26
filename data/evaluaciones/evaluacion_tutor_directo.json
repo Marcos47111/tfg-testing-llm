@@ -2,7 +2,7 @@
   {
     "caso_id": "ALUC_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Informática",
@@ -29,7 +29,7 @@
   {
     "caso_id": "ALUC_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Historia",
@@ -56,7 +56,7 @@
   {
     "caso_id": "ALUC_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Física",
@@ -83,7 +83,7 @@
   {
     "caso_id": "ALUC_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Literatura / Citas",
@@ -110,7 +110,7 @@
   {
     "caso_id": "ALUC_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Programación",
@@ -137,7 +137,7 @@
   {
     "caso_id": "ALUC_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D2_control_alucinaciones",
     "categoria": "02_deteccion_alucinaciones",
     "materia": "Geografía",
@@ -164,7 +164,7 @@
   {
     "caso_id": "CLAR_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Informática",
@@ -191,7 +191,7 @@
   {
     "caso_id": "CLAR_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Física",
@@ -218,7 +218,7 @@
   {
     "caso_id": "CLAR_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Economía",
@@ -245,7 +245,7 @@
   {
     "caso_id": "CLAR_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Matemáticas",
@@ -272,7 +272,7 @@
   {
     "caso_id": "CLAR_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Química",
@@ -299,7 +299,7 @@
   {
     "caso_id": "CLAR_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D3_claridad_didactica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Biología",
@@ -326,7 +326,7 @@
   {
     "caso_id": "FACT_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Matemáticas",
@@ -353,7 +353,7 @@
   {
     "caso_id": "FACT_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Física",
@@ -380,7 +380,7 @@
   {
     "caso_id": "FACT_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Biología",
@@ -407,7 +407,7 @@
   {
     "caso_id": "FACT_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Historia",
@@ -434,7 +434,7 @@
   {
     "caso_id": "FACT_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Informática",
@@ -461,7 +461,7 @@
   {
     "caso_id": "FACT_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D1_correccion_factual",
     "categoria": "01_correccion_factual",
     "materia": "Química",
@@ -488,7 +488,7 @@
   {
     "caso_id": "FEED_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Programación Python",
@@ -515,7 +515,7 @@
   {
     "caso_id": "FEED_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Matemáticas",
@@ -542,7 +542,7 @@
   {
     "caso_id": "FEED_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Química",
@@ -569,7 +569,7 @@
   {
     "caso_id": "FEED_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Física",
@@ -596,7 +596,7 @@
   {
     "caso_id": "FEED_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Algoritmos",
@@ -623,7 +623,7 @@
   {
     "caso_id": "FEED_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D4_utilidad_pedagogica",
     "categoria": "03_claridad_y_pedagogia",
     "materia": "Gramática Española",
@@ -650,7 +650,7 @@
   {
     "caso_id": "INST_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Física",
@@ -677,7 +677,7 @@
   {
     "caso_id": "INST_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Historia",
@@ -704,7 +704,7 @@
   {
     "caso_id": "INST_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Lengua y Literatura",
@@ -731,7 +731,7 @@
   {
     "caso_id": "INST_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Informática / Datos",
@@ -758,7 +758,7 @@
   {
     "caso_id": "INST_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Matemáticas / Idiomas",
@@ -785,7 +785,7 @@
   {
     "caso_id": "INST_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D7_seguimiento_instrucciones",
     "categoria": "06_seguimiento_instrucciones",
     "materia": "Biología",
@@ -812,7 +812,7 @@
   {
     "caso_id": "NIV_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Biología",
@@ -839,7 +839,7 @@
   {
     "caso_id": "NIV_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Biología",
@@ -866,7 +866,7 @@
   {
     "caso_id": "NIV_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Física",
@@ -893,7 +893,7 @@
   {
     "caso_id": "NIV_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Física",
@@ -920,7 +920,7 @@
   {
     "caso_id": "NIV_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Economía",
@@ -947,7 +947,7 @@
   {
     "caso_id": "NIV_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D6_adaptacion_nivel",
     "categoria": "05_adaptacion_nivel",
     "materia": "Matemáticas",
@@ -974,7 +974,7 @@
   {
     "caso_id": "SEC_001",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Seguridad / Ética",
@@ -1001,7 +1001,7 @@
   {
     "caso_id": "SEC_002",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Integridad Académica",
@@ -1028,7 +1028,7 @@
   {
     "caso_id": "SEC_003",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Integridad Académica",
@@ -1055,7 +1055,7 @@
   {
     "caso_id": "SEC_004",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Química / Seguridad",
@@ -1082,7 +1082,7 @@
   {
     "caso_id": "SEC_005",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Seguridad / Inyección Indirecta",
@@ -1109,7 +1109,7 @@
   {
     "caso_id": "SEC_006",
     "perfil": "tutor_directo",
-    "evaluador_id": "evaluador_1",
+    "evaluador_id": "gold_standard",
     "dimension_principal": "D5_robustez_seguridad",
     "categoria": "04_robustez_y_seguridad",
     "materia": "Convivencia / Acoso",

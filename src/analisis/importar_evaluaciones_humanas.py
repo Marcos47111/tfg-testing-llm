@@ -109,8 +109,28 @@ def ejecutar_importacion_y_normalizacion():
                 if not item["nivel_educativo"]:
                     item["nivel_educativo"] = p_info["nivel_educativo"]
                     
-    # 3. Guardar JSONs canónicos
+    # 3. Construir Dataset Unificado Gold Standard
+    eval_gold_standard = []
+    for item in eval_1:
+        gold_item = {
+            "caso_id": item["caso_id"],
+            "perfil": item["perfil"],
+            "evaluador_id": "gold_standard",
+            "dimension_principal": item["dimension_principal"],
+            "categoria": item["categoria"],
+            "materia": item["materia"],
+            "nivel_educativo": item["nivel_educativo"],
+            "puntuaciones": dict(item["puntuaciones"]),
+            "justificaciones": dict(item["justificaciones"])
+        }
+        eval_gold_standard.append(gold_item)
+
+    # 4. Guardar JSONs canónicos
     EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    with open(EVAL_DIR / "evaluacion_gold_standard.json", "w", encoding="utf-8") as f:
+        json.dump(eval_gold_standard, f, indent=2, ensure_ascii=False)
+    print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_gold_standard.json'} (126 registros - Gold Standard Canónico)")
+
     with open(EVAL_DIR / "evaluacion_evaluador_1.json", "w", encoding="utf-8") as f:
         json.dump(eval_1, f, indent=2, ensure_ascii=False)
     print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_evaluador_1.json'} (126 registros)")
@@ -119,15 +139,42 @@ def ejecutar_importacion_y_normalizacion():
         json.dump(eval_2, f, indent=2, ensure_ascii=False)
     print(f"  [+] Exportado: {EVAL_DIR / 'evaluacion_evaluador_2.json'} (126 registros)")
     
-    # 4. Particiones por perfil (Evaluador 1 como referencia)
+    # 5. Exportar CSV raw del Gold Standard
+    gold_csv = RAW_DIR / "anotaciones_gold_standard_raw.csv"
+    with open(gold_csv, "w", encoding="utf-8", newline="") as f:
+        fieldnames = ["caso_id", "perfil", "evaluador_id", "dimension_principal", "categoria", "materia", "nivel_educativo"]
+        for d in DIMENSIONES:
+            fieldnames.append(d)
+        for d in DIMENSIONES:
+            fieldnames.append(f"justificacion_{d}")
+            
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for g in eval_gold_standard:
+            row = {
+                "caso_id": g["caso_id"],
+                "perfil": g["perfil"],
+                "evaluador_id": "gold_standard",
+                "dimension_principal": g["dimension_principal"],
+                "categoria": g["categoria"],
+                "materia": g["materia"],
+                "nivel_educativo": g["nivel_educativo"],
+            }
+            for d in DIMENSIONES:
+                row[d] = g["puntuaciones"][d]
+                row[f"justificacion_{d}"] = g["justificaciones"][d]
+            writer.writerow(row)
+    print(f"  [+] Exportado: {gold_csv} (126 registros)")
+
+    # 6. Particiones por perfil (derivadas formalmente del Gold Standard)
     for perfil in PERFILES:
-        items_perfil = [item for item in eval_1 if item["perfil"] == perfil]
+        items_perfil = [item for item in eval_gold_standard if item["perfil"] == perfil]
         with open(EVAL_DIR / f"evaluacion_{perfil}.json", "w", encoding="utf-8") as f:
             json.dump(items_perfil, f, indent=2, ensure_ascii=False)
-        print(f"  [+] Exportado: {EVAL_DIR / f'evaluacion_{perfil}.json'} ({len(items_perfil)} casos)")
+        print(f"  [+] Exportado: {EVAL_DIR / f'evaluacion_{perfil}.json'} ({len(items_perfil)} casos desde Gold Standard)")
         
     print("-" * 65)
-    print("  Importacion y normalizacion completada con exito.")
+    print("  Importacion y consolidacion del Gold Standard completada con exito.")
     print("=" * 65)
 
 

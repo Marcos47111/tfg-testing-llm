@@ -41,7 +41,7 @@ Total de ensayos analizados & 126 interacciones (42 por cada uno de los 3 perfil
 
 El protocolo comprendió la ejecución de los 42 casos de prueba formalizados en la Sección \ref{sec:casos_prueba} sobre cada uno de los tres perfiles. Esto generó un conjunto de 126 interacciones registradas en ficheros JSON dentro del directorio \texttt{data/respuestas\_obtenidas/raw/}. Cada registro almacena el identificador del caso, la dimensión evaluada, el prompt de entrada, la respuesta íntegra del modelo y los parámetros empleados.
 
-Posteriormente, cada respuesta fue evaluada de forma independiente aplicando la rúbrica de cuatro niveles ($0$ a $3$) definida en la Sección \ref{sec:rubrica_escalas}. El Evaluador 1 (autor del trabajo) se estableció como evaluador de referencia para el cálculo de las métricas principales de la Tabla \ref{TB:RESULTADOS} por ser el responsable del diseño y operacionalización de la rúbrica, mientras que el Evaluador 2 se reservó para estimar de forma independiente la consistencia de aplicación del instrumento mediante el cálculo de concordancia inter-evaluador ($\kappa$) sobre las 126 respuestas (882 juicios emparejados). Las puntuaciones asignadas fueron procesadas por el software de análisis (\texttt{src/analisis/analizador\_experimentos.py}) para calcular las métricas dimensionales, las tasas de fallo y el índice global $IQE$.
+Posteriormente, cada respuesta fue evaluada siguiendo el protocolo en dos fases formalizado en la Sección \ref{sec:diseno_evaluacion}: una Fase 1 de doble anotación independiente a ciegas por parte de los dos evaluadores humanos ($E_1$ y $E_2$) para estimar la fiabilidad inter-evaluador ($\kappa = 0{,}974$, $\kappa_{\text{lineal}} = 0{,}981$), y una Fase 2 de revisión y consolidación del conjunto canónico de referencia (\textit{Gold Standard}, formalizado en \path{data/evaluaciones/evaluacion_gold_standard.json}). Las puntuaciones consolidadas del \textit{Gold Standard} fueron procesadas por el software de análisis (\texttt{src/analisis/analizador\_experimentos.py}) para calcular las métricas dimensionales, las tasas de fallo y el índice global $IQE$.
 
 \section{Resultados obtenidos y análisis cuantitativo}
 \label{sec:resultados_cuantitativos}
@@ -171,11 +171,11 @@ La inferencia se configura con parámetros de baja variabilidad orientados a fav
 
 La ejecución del protocolo sobre las 126 respuestas reales mediante \texttt{Qwen2.5-14B-Instruct} generó un total de 882 asignaciones discretas pareadas. La Tabla~\ref{TB:CONCORDANCIA_JUDGE} recoge los coeficientes de concordancia ($\kappa$), acuerdos observados ($P_o$), acuerdos esperados ($P_e$) y errores absolutos medios ($\text{MAE}$) desglosados por dimensión y a nivel global frente a los evaluadores humanos de referencia. Asimismo, la Figura~\ref{FIG:CONCORDANCIA_JUDGE} ilustra la distribución del acuerdo dimensional.
 
-\begin{table}[Concordancia inter-evaluador LLM Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y los Evaluadores Humanos ($E_1$ y $E_2$).}
+\begin{table}[Concordancia inter-evaluador LLM Judge]{TB:CONCORDANCIA_JUDGE}{Concordancia inter-evaluador entre el Juez Automático (LLM-as-a-Judge) y el Gold Standard Humano Consolidado (así como $E_1$ y $E_2$).}
 \centering
 \begin{tabular}{l c c c c c c l}
 \hline
-\textbf{Dimensión} & \textbf{$\kappa$ (Juez-$E_1$)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
+\textbf{Dimensión} & \textbf{$\kappa$ (Juez-Gold)} & \textbf{$P_o$} & \textbf{$P_e$} & \textbf{MAE} & \textbf{$\kappa$ (Juez-$E_2$)} & \textbf{$\kappa$ ($E_1$-$E_2$)} & \textbf{Acuerdo} \\
 \hline \hline
 D1: Factualidad & 0,235 & 0,5635 & 0,4291 & 0,571 & 0,220 & 0,854 & Aceptable \\
 D2: Alucinaciones & 0,327 & 0,8889 & 0,8350 & 0,262 & 0,326 & 1,000 & Aceptable \\
@@ -190,7 +190,7 @@ D7: Directrices & 0,086 & 0,6825 & 0,6527 & 0,532 & 0,086 & 1,000 & Leve \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[Concordancia dimensional del Juez Automático]{FIG:CONCORDANCIA_JUDGE}{Comparativa de concordancia observada ($P_o$), acuerdo esperado ($P_e$) y coeficiente $\kappa$ entre el Juez Automático y el Evaluador 1 ($E_1$).}
+\begin{figure}[Concordancia dimensional del Juez Automático]{FIG:CONCORDANCIA_JUDGE}{Comparativa de concordancia observada ($P_o$), acuerdo esperado ($P_e$) y coeficiente $\kappa$ entre el Juez Automático y el Gold Standard Humano Consolidado.}
   \image{9.2cm}{}{concordancia_llm_judge}
 \end{figure}
 

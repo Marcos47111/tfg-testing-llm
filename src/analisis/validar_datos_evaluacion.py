@@ -86,8 +86,12 @@ def validar_dataset_evaluacion(items: List[Dict[str, Any]], nombre_archivo: str,
         if perfil not in PERFILES_ESPERADOS:
             errores.append(f"{prefijo} 'perfil' '{perfil}' no es uno de los {len(PERFILES_ESPERADOS)} perfiles válidos.")
             
-        if evaluador_esperado and ev_id != evaluador_esperado:
-            errores.append(f"{prefijo} 'evaluador_id' esperado '{evaluador_esperado}', encontrado '{ev_id}'.")
+        if evaluador_esperado:
+            if isinstance(evaluador_esperado, (list, tuple, set)):
+                if ev_id not in evaluador_esperado:
+                    errores.append(f"{prefijo} 'evaluador_id' esperado en {evaluador_esperado}, encontrado '{ev_id}'.")
+            elif ev_id != evaluador_esperado:
+                errores.append(f"{prefijo} 'evaluador_id' esperado '{evaluador_esperado}', encontrado '{ev_id}'.")
             
         # 2. Validación de dimensiones y puntuaciones
         puntuaciones = item.get("puntuaciones", {})
@@ -364,16 +368,22 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
 
     # 2. Validar Fase 2: Datasets Consolidados (raw CSV)
     print("  [2/5] Validando Fase 2: Ficheros CSV raw consolidados...")
-    for ev_id, fname in [("evaluador_1", "anotaciones_evaluador_1_raw.csv"), ("evaluador_2", "anotaciones_evaluador_2_raw.csv")]:
+    ficheros_csv_fase2 = [
+        ("evaluador_1", "anotaciones_evaluador_1_raw.csv"),
+        ("evaluador_2", "anotaciones_evaluador_2_raw.csv"),
+        ("gold_standard", "anotaciones_gold_standard_raw.csv")
+    ]
+    for ev_id, fname in ficheros_csv_fase2:
         csv_path = RAW_DIR / fname
         errs = validar_csv_raw(csv_path, ev_id, total_evaluaciones_esperadas)
         total_errores.extend(errs)
         if not errs:
             print(f"    [+] {fname}: {total_evaluaciones_esperadas} anotaciones consolidadas validadas ({ev_id}).")
             
-    # 3. Validar Fase 2: Datasets JSON Consolidados (Evaluador 1 y 2)
-    print("  [3/5] Validando Fase 2: Datasets normalizados JSON (Evaluador 1 y 2)...")
+    # 3. Validar Fase 2: Datasets JSON Consolidados (Gold Standard, Evaluador 1 y 2)
+    print("  [3/5] Validando Fase 2: Datasets normalizados JSON (Gold Standard, Evaluador 1 y 2)...")
     archivos_evaluador = {
+        "evaluacion_gold_standard.json": ("gold_standard", total_evaluaciones_esperadas),
         "evaluacion_evaluador_1.json": ("evaluador_1", total_evaluaciones_esperadas),
         "evaluacion_evaluador_2.json": ("evaluador_2", total_evaluaciones_esperadas),
     }
@@ -393,6 +403,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
             
     # Comparación exacta campo a campo raw CSV <-> normalizado JSON
     comparaciones = [
+        ("anotaciones_gold_standard_raw.csv", "evaluacion_gold_standard.json"),
         ("anotaciones_evaluador_1_raw.csv", "evaluacion_evaluador_1.json"),
         ("anotaciones_evaluador_2_raw.csv", "evaluacion_evaluador_2.json")
     ]
@@ -402,8 +413,8 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         if not errs_comp:
             print(f"    [+] {csv_name} <-> {json_name}: correspondencia exacta {total_evaluaciones_esperadas}/{total_evaluaciones_esperadas} (0 discrepancias).")
             
-    # 4. Validar particiones por perfil (Evaluador 1 / Gold Standard)
-    print("  [4/5] Validando particiones por perfil...")
+    # 4. Validar particiones por perfil (derivadas del Gold Standard)
+    print("  [4/5] Validando particiones por perfil (derivadas del Gold Standard)...")
     for perfil in PERFILES_ESPERADOS:
         fname = f"evaluacion_{perfil}.json"
         fpath = EVAL_DIR / fname
@@ -414,7 +425,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         with open(fpath, "r", encoding="utf-8") as f:
             datos_perfil = json.load(f)
             
-        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="evaluador_1", total_casos_esperado=total_prompts)
+        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado=["gold_standard", "evaluador_1"], total_casos_esperado=total_prompts)
         total_errores.extend(errs)
         if not errs:
             print(f"    [+] {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")
