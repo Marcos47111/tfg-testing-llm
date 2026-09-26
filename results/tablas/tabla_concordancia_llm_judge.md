@@ -2,15 +2,15 @@
 
 **Kappa Global Juez vs E1 ($\kappa$):** 0.1858 (Po = 0.6304, Pe = 0.5461, MAE = 0.498) - *Acuerdo leve*
 **Kappa Global Juez vs E2 ($\kappa$):** 0.1814 (Po = 0.6281, Pe = 0.5457, MAE = 0.502)
-**Referencia Humana E1 vs E2 ($\kappa$):** 0.9822
+**Referencia Humana E1 vs E2 ($\kappa$):** 0.9742
 **Total juicios emparejados:** 882 pares.
 
 | Dimensión | Kappa (Juez vs E1) | Kappa Lineal | Kappa Cuadrático | P_o | P_e | MAE | Kappa (Juez vs E2) | Kappa (E1 vs E2) | Media E1 | Media Juez | Sesgo | Nivel de Acuerdo |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| D1: Factualidad | 0.2354 | 0.4096 | 0.5436 | 0.5635 | 0.4291 | 0.571 | 0.2201 | 0.9821 | 2.452 | 2.23 | -0.222 | Acuerdo aceptable |
-| D2: Alucinaciones | 0.3265 | 0.3816 | 0.413 | 0.8889 | 0.835 | 0.262 | 0.3262 | 0.9132 | 2.865 | 2.683 | -0.182 | Acuerdo aceptable |
-| D3: Claridad | 0.0758 | 0.0777 | 0.0701 | 0.5159 | 0.4762 | 0.587 | 0.0473 | 0.8937 | 2.881 | 2.405 | -0.476 | Acuerdo leve |
-| D4: Feedback Pedagógico | 0.0863 | 0.1534 | 0.2382 | 0.4048 | 0.3486 | 0.73 | 0.0885 | 0.9848 | 2.206 | 2.206 | 0.0 | Acuerdo leve |
+| D1: Factualidad | 0.2354 | 0.4096 | 0.5436 | 0.5635 | 0.4291 | 0.571 | 0.2201 | 0.8542 | 2.452 | 2.23 | -0.222 | Acuerdo aceptable |
+| D2: Alucinaciones | 0.3265 | 0.3816 | 0.413 | 0.8889 | 0.835 | 0.262 | 0.3262 | 1.0 | 2.865 | 2.683 | -0.182 | Acuerdo aceptable |
+| D3: Claridad | 0.0758 | 0.0777 | 0.0701 | 0.5159 | 0.4762 | 0.587 | 0.0473 | 0.9291 | 2.881 | 2.405 | -0.476 | Acuerdo leve |
+| D4: Feedback Pedagógico | 0.0863 | 0.1534 | 0.2382 | 0.4048 | 0.3486 | 0.73 | 0.0885 | 0.9533 | 2.206 | 2.206 | 0.0 | Acuerdo leve |
 | D5: Seguridad | 0.4207 | 0.5719 | 0.6456 | 0.9048 | 0.8356 | 0.159 | 0.4207 | 1.0 | 2.817 | 2.786 | -0.031 | Acuerdo moderado |
-| D6: Adaptación al Nivel | -0.0636 | -0.0387 | -0.0145 | 0.4524 | 0.4851 | 0.643 | -0.0526 | 0.9824 | 2.651 | 2.437 | -0.214 | Sin acuerdo (discrepancia sistemática) |
+| D6: Adaptación al Nivel | -0.0636 | -0.0387 | -0.0145 | 0.4524 | 0.4851 | 0.643 | -0.0526 | 0.9822 | 2.651 | 2.437 | -0.214 | Sin acuerdo (discrepancia sistemática) |
 | D7: Directrices | 0.086 | 0.164 | 0.2214 | 0.6825 | 0.6527 | 0.532 | 0.086 | 1.0 | 2.762 | 2.516 | -0.246 | Acuerdo leve |

@@ -30,15 +30,17 @@ jobs:
           python3 -m unittest discover -s src/analisis -p "test_*.py"
           python3 -m unittest discover -s src/utils -p "test_*.py"
 
-      - name: Validar integridad de evaluaciones humanas
+      - name: Validar integridad de evaluaciones humanas y LLM-as-a-Judge
         run: |
-          python3 src/analisis/validar_datos_evaluacion.py
+          python3 src/analisis/validar_datos_evaluacion.py --incluir-judge
 
       - name: Validar pipeline analítico y cálculo de métricas
         run: |
           python3 src/analisis/analizador_experimentos.py
           python3 src/analisis/calcular_concordancia_evaluadores.py
+          python3 src/analisis/analizar_concordancia_llm_judge.py
           python3 src/visualizacion/generar_graficos.py
+          python3 src/visualizacion/generar_graficos_llm_judge.py
 
   compile-latex:
     name: Compilación Estricta de la Memoria (LaTeX)

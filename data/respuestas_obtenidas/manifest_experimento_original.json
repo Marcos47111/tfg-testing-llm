@@ -35,10 +35,10 @@
   "evaluacion_humana": {
     "evaluadores": ["evaluador_1", "evaluador_2"],
     "total_juicios_pareados": 882,
-    "concordancia_fase1_independiente_kappa_no_ponderado": 0.9742,
-    "concordancia_fase1_independiente_kappa_lineal": 0.9807,
-    "concordancia_fase1_independiente_kappa_cuadratico": 0.9884,
-    "concordancia_fase2_consenso_kappa": 0.9822,
-    "acuerdo_observado_fase1_porcentaje": 99.55
+    "fiabilidad_fase1_independiente_kappa_no_ponderado": 0.9742,
+    "fiabilidad_fase1_independiente_kappa_lineal": 0.9807,
+    "fiabilidad_fase1_independiente_kappa_cuadratico": 0.9884,
+    "acuerdo_observado_fase1_porcentaje": 99.55,
+    "fase2_gold_standard_consolidado": true
   }
 }

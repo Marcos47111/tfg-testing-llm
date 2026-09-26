@@ -111,7 +111,8 @@ TFG/
 │   ├── configuraciones_chatbot/            # System prompts y parámetros de inferencia de los perfiles
 │   ├── respuestas_obtenidas/raw/           # 126 trazas de respuesta conversacional completas
 │   └── evaluaciones/                       # Datasets de evaluación normalizados y anotaciones raw
-│       ├── raw/                            # Hojas originales de anotación de Evaluador 1 y 2 (CSV)
+│       ├── raw_independientes/             # Anotaciones independientes Fase 1 (reconstruidas con SHA de commit)
+│       ├── raw/                            # Hojas de anotaciones consolidadas Fase 2 - Gold Standard (CSV)
 │       ├── llm_judge/                      # Extensión experimental LLM-as-a-Judge
 │       │   ├── raw/                        # Trazas de inferencia raw del juez automático (JSON)
 │       │   └── ...                         # Datasets normalizados del juez pareados (JSON)
@@ -124,7 +125,7 @@ TFG/
 │   ├── analisis/                           # Módulos de cálculo métrico, agregación, Kappa y validación
 │   │   ├── metricas_tfg.py                 # Fórmulas de IQE, CFR, HR y Cohen's Kappa
 │   │   ├── analizador_experimentos.py      # Agregación global comparativa
-│   │   ├── calcular_concordancia_evaluadores.py # Concordancia humana E1 vs E2 (κ = 0.982)
+│   │   ├── calcular_concordancia_evaluadores.py # Concordancia humana E1 vs E2 (Fase 1: κ = 0.974, κ_w = 0.981)
 │   │   ├── analizar_concordancia_llm_judge.py  # Concordancia Humano-IA (Judge vs E1/E2)
 │   │   └── validar_datos_evaluacion.py     # Validador exhaustivo de integridad y esquemas
 │   ├── utils/                              # Loader de casos y exportadores de tablas
@@ -143,7 +144,7 @@ TFG/
 ## Resumen de Resultados Experimentales
 
 ### 1. Evaluación Principal (Evaluadores Humanos de Referencia $E_1$ y $E_2$)
-Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B-Instruct** (`Q4_0`, `num_ctx=2048`, `seed=42`, $N_\kappa=882$, $\kappa_{\text{humano}} = 0{,}982$):
+Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B-Instruct** (`Q4_0`, `num_ctx=2048`, `seed=42`, $N_\kappa=882$, $\kappa_{\text{humano}} = 0{,}974$):
 
 | Perfil de Chatbot | IQE (0--100) | CFR (%) | HR (%) | D1 (Factual) | D2 (Aluc.) | D3 (Claridad) | D4 (Feedback) | D5 (Seguridad) | D6 (Nivel) | D7 (Directriz) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -153,7 +154,7 @@ Evaluación sistemática de 42 casos de prueba sobre el modelo **Meta-Llama-3-8B
 
 * **Protocolo de Evaluación Humana en Dos Fases:**
   * **Fase 1 (Doble evaluación independiente y a ciegas):** $\kappa_{\text{no-ponderado}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$, $\kappa_{\text{cuadrático}} = 0{,}9884$ ($P_o = 99{,}55\%$, 878 / 882 coincidencias exactas, 4 discrepancias menores de un nivel, 0 severas).
-  * **Fase 2 (Adjudicación colegiada / Gold Standard):** $\kappa = 0{,}9822$ ($P_o = 0{,}9932, P_e = 0{,}6174$).
+  * **Fase 2 (Revisión, calibración y consolidación del Gold Standard):** Consolidación del conjunto canónico de referencia en `data/evaluaciones/` tras la auditoría técnica frente a rúbricas formales y soluciones canónicas.
 * **Análisis de Sensibilidad (Efecto Techo):** En Seguridad ($D_5$), la media transversal del Asistente Base es $2{,}76$ frente a $1{,}33$ en su subbatería primaria de tensión ($\Delta = +1{,}43$). En Feedback ($D_4$), el Tutor Socrático alcanza $2{,}81$ transversal frente a $1{,}67$ en casos de fallo discente ($\Delta = +1{,}14$).
 
 ### 2. Extensión Exploratoria LLM-as-a-Judge (Resultados Experimentales con Qwen2.5-14B-Instruct)

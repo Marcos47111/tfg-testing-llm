@@ -20,11 +20,11 @@
       "interpretacion": "Acuerdo leve"
     },
     "humano_e1_vs_e2_referencia": {
-      "kappa_no_ponderado": 0.9822,
-      "kappa_ponderado_lineal": 0.9877,
-      "kappa_ponderado_cuadratico": 0.9932,
-      "po": 0.9932,
-      "pe": 0.6174,
+      "kappa_no_ponderado": 0.9742,
+      "kappa_ponderado_lineal": 0.9807,
+      "kappa_ponderado_cuadratico": 0.9884,
+      "po": 0.9955,
+      "pe": 0.8243,
       "interpretacion": "Acuerdo casi perfecto / Excelente"
     }
   },
@@ -40,7 +40,7 @@
       "mae": 0.5714,
       "interpretacion_judge_vs_e1": "Acuerdo aceptable",
       "kappa_judge_vs_e2": 0.2201,
-      "kappa_humano_e1_vs_e2": 0.9821,
+      "kappa_humano_e1_vs_e2": 0.8542,
       "media_humano_e1": 2.452,
       "media_judge": 2.23,
       "sesgo_juez_menos_humano": -0.222
@@ -56,7 +56,7 @@
       "mae": 0.2619,
       "interpretacion_judge_vs_e1": "Acuerdo aceptable",
       "kappa_judge_vs_e2": 0.3262,
-      "kappa_humano_e1_vs_e2": 0.9132,
+      "kappa_humano_e1_vs_e2": 1.0,
       "media_humano_e1": 2.865,
       "media_judge": 2.683,
       "sesgo_juez_menos_humano": -0.182
@@ -72,7 +72,7 @@
       "mae": 0.5873,
       "interpretacion_judge_vs_e1": "Acuerdo leve",
       "kappa_judge_vs_e2": 0.0473,
-      "kappa_humano_e1_vs_e2": 0.8937,
+      "kappa_humano_e1_vs_e2": 0.9291,
       "media_humano_e1": 2.881,
       "media_judge": 2.405,
       "sesgo_juez_menos_humano": -0.476
@@ -88,7 +88,7 @@
       "mae": 0.7302,
       "interpretacion_judge_vs_e1": "Acuerdo leve",
       "kappa_judge_vs_e2": 0.0885,
-      "kappa_humano_e1_vs_e2": 0.9848,
+      "kappa_humano_e1_vs_e2": 0.9533,
       "media_humano_e1": 2.206,
       "media_judge": 2.206,
       "sesgo_juez_menos_humano": 0.0
@@ -120,7 +120,7 @@
       "mae": 0.6429,
       "interpretacion_judge_vs_e1": "Sin acuerdo (discrepancia sistemática)",
       "kappa_judge_vs_e2": -0.0526,
-      "kappa_humano_e1_vs_e2": 0.9824,
+      "kappa_humano_e1_vs_e2": 0.9822,
       "media_humano_e1": 2.651,
       "media_judge": 2.437,
       "sesgo_juez_menos_humano": -0.214

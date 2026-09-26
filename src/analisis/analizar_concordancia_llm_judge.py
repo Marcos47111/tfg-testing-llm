@@ -24,6 +24,7 @@ from src.analisis.metricas_tfg import calcular_cohen_kappa, es_fallo_critico
 
 DATA_DIR = PROJECT_ROOT / "data"
 EVAL_DIR = DATA_DIR / "evaluaciones"
+RAW_IND_DIR = EVAL_DIR / "raw_independientes"
 JUDGE_DIR = EVAL_DIR / "llm_judge"
 RESULTS_DIR = PROJECT_ROOT / "results"
 INFORMES_DIR = RESULTS_DIR / "informes"
@@ -241,6 +242,35 @@ def ejecutar_analisis_concordancia_llm_judge():
             
     n_global = len(scores_e1_global)
             
+    # Cargar datos de referencia humana independiente (Fase 1) para la línea base
+    scores_dim_e1_ind = {d[0]: [] for d in DIMENSIONES}
+    scores_dim_e2_ind = {d[0]: [] for d in DIMENSIONES}
+    scores_e1_ind_global = []
+    scores_e2_ind_global = []
+    
+    ind_e1_file = RAW_IND_DIR / "evaluador_1_original.json"
+    ind_e2_file = RAW_IND_DIR / "evaluador_2_original.json"
+    if ind_e1_file.exists() and ind_e2_file.exists():
+        with open(ind_e1_file, "r", encoding="utf-8") as f:
+            ind_e1_list = json.load(f)
+        with open(ind_e2_file, "r", encoding="utf-8") as f:
+            ind_e2_list = json.load(f)
+        map_ind_e1 = {(x["caso_id"], x["perfil"]): x for x in ind_e1_list}
+        map_ind_e2 = {(x["caso_id"], x["perfil"]): x for x in ind_e2_list}
+        for k in claves_ordenadas:
+            ie1 = map_ind_e1[k]
+            ie2 = map_ind_e2[k]
+            for d_key, _ in DIMENSIONES:
+                scores_e1_ind_global.append(ie1["puntuaciones"][d_key])
+                scores_e2_ind_global.append(ie2["puntuaciones"][d_key])
+                scores_dim_e1_ind[d_key].append(ie1["puntuaciones"][d_key])
+                scores_dim_e2_ind[d_key].append(ie2["puntuaciones"][d_key])
+        kappa_e1_e2_fase1_global = calcular_cohen_kappa(scores_e1_ind_global, scores_e2_ind_global)
+    else:
+        scores_dim_e1_ind = scores_dim_e1
+        scores_dim_e2_ind = scores_dim_e2
+        kappa_e1_e2_fase1_global = kappa_e1_e2_global
+
     # 2. Kappa Global (No ponderado, lineal y cuadrático)
     kappa_j_e1_global = calcular_cohen_kappa(scores_e1_global, scores_judge_global)
     kappa_j_e1_lin = calcular_cohen_kappa(scores_e1_global, scores_judge_global, pesos="linear")
@@ -250,9 +280,9 @@ def ejecutar_analisis_concordancia_llm_judge():
     kappa_j_e2_lin = calcular_cohen_kappa(scores_e2_global, scores_judge_global, pesos="linear")
     kappa_j_e2_quad = calcular_cohen_kappa(scores_e2_global, scores_judge_global, pesos="quadratic")
     
-    kappa_e1_e2_global = calcular_cohen_kappa(scores_e1_global, scores_e2_global)
-    kappa_e1_e2_lin = calcular_cohen_kappa(scores_e1_global, scores_e2_global, pesos="linear")
-    kappa_e1_e2_quad = calcular_cohen_kappa(scores_e1_global, scores_e2_global, pesos="quadratic")
+    kappa_e1_e2_global = kappa_e1_e2_fase1_global
+    kappa_e1_e2_lin = calcular_cohen_kappa(scores_e1_ind_global, scores_e2_ind_global, pesos="linear")
+    kappa_e1_e2_quad = calcular_cohen_kappa(scores_e1_ind_global, scores_e2_ind_global, pesos="quadratic")
     
     mae_global_j_e1 = calcular_mae(scores_e1_global, scores_judge_global)
     mae_global_j_e2 = calcular_mae(scores_e2_global, scores_judge_global)
@@ -268,7 +298,7 @@ def ejecutar_analisis_concordancia_llm_judge():
         k_j_e1_quad = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_judge[d_key], pesos="quadratic")
         
         k_j_e2 = calcular_cohen_kappa(scores_dim_e2[d_key], scores_dim_judge[d_key])
-        k_e1_e2 = calcular_cohen_kappa(scores_dim_e1[d_key], scores_dim_e2[d_key])
+        k_e1_e2 = calcular_cohen_kappa(scores_dim_e1_ind[d_key], scores_dim_e2_ind[d_key])
         
         mae_dim = calcular_mae(scores_dim_e1[d_key], scores_dim_judge[d_key])
         mat_dim = calcular_matriz_confusion_4x4(scores_dim_e1[d_key], scores_dim_judge[d_key])

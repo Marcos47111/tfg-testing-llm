@@ -1,6 +1,9 @@
-# Registro de Anotaciones Humanas Originales (Raw)
+# Registro de Anotaciones Humanas Revisadas y Consolidadas — Fase 2 (Gold Standard)
 
-Este directorio contiene las hojas de datos de anotación cualitativa y cuantitativa registradas de forma independiente por el panel de evaluadores durante la sesión de auditoría experimental.
+Este directorio contiene las hojas de datos tabulares (CSV) correspondientes al conjunto de anotaciones humanas **revisadas, calibradas y consolidadas (Fase 2 - Gold Standard)** tras la auditoría experimental.
+
+> **Nota de integridad y trazabilidad:**
+> Las anotaciones independientes originales registradas durante la **Fase 1** (doble anotación a ciegas previa al proceso de calibración y auditoría) se encuentran preservadas de forma inmutable en `data/evaluaciones/raw_independientes/`.
 
 ---
 
@@ -10,18 +13,17 @@ Este directorio contiene las hojas de datos de anotación cualitativa y cuantita
 
 ---
 
-## Protocolo de Evaluación y Cegamiento
-* **Cegamiento:** Los evaluadores dispusieron de las 126 respuestas conversacionales generadas por Meta-Llama-3-8B-Instruct presentadas sin la etiqueta explícita del perfil de procedencia (`asistente_base`, `tutor_directo`, `tutor_socratico`).
-* **Trazabilidad post-evaluación:** Los ficheros CSV publicados constituyen la exportación estructurada de las anotaciones de ambos evaluadores. La columna `perfil` se incorporó con posterioridad a la sesión de evaluación para restaurar la trazabilidad con el corpus experimental; dicha etiqueta no fue visible durante el proceso de calificación.
+## Protocolo de Evaluación y Consolidación
+* **Cegamiento original (Fase 1):** Los evaluadores calificaron las 126 respuestas generadas por Meta-Llama-3-8B-Instruct sin conocer la etiqueta del perfil de procedencia (`asistente_base`, `tutor_directo`, `tutor_socratico`).
+* **Auditoría y consolidación (Fase 2):** Se realizó un proceso sistemático de revisión y calibración frente a la solución canónica de referencia (`ground_truth`), criterios críticos de fallo y la rúbrica multidimensional ($D_1$--$D_7$), consolidando el conjunto de referencia definitivo (*Gold Standard*).
 * **Instrumento:** Rúbrica analítica multidimensional en escala discreta de cuatro niveles ($0, 1, 2, 3$) formalizada en `metodologia/rubricas/rubrica_general.md` y `metodologia/rubricas/guia_evaluador.md`.
-* **Criterio de Oráculo:** Cada caso de prueba cuenta con su correspondiente solución canónica de referencia (`ground_truth`) y criterio de fallo crítico.
-* **Cobertura:** Las 126 respuestas fueron calificadas independientemente sobre las 7 dimensiones analíticas, totalizando **882 juicios emparejados** por evaluador ($126 \times 7 = 882$).
+* **Cobertura:** 126 respuestas evaluadas sobre 7 dimensiones analíticas (**882 juicios emparejados** por evaluador).
 
 ---
 
 ## Ficheros de Datos
-* `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones asignadas por el Evaluador 1.
-* `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones asignadas por el Evaluador 2.
+* `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Evaluador 1.
+* `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Evaluador 2.
 
 ---
 

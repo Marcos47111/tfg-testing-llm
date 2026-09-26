@@ -353,27 +353,25 @@ El cegamiento no puede considerarse absoluto: el estilo de ciertas respuestas po
 
 ---
 
-## 14. Decisión sobre Kappa de Cohen
+## 14. Decisión sobre Kappa de Cohen y Protocolo en Dos Fases
 
-Se utilizó **Kappa de Cohen no ponderado** para evaluar acuerdo exacto.
+Se evaluó la concordancia inter-evaluador mediante un protocolo formal en dos fases:
 
-$N_\kappa = 126 \times 7 = 882$
+1. **Fase 1 (Doble evaluación independiente a ciegas):**
+   - $N_\kappa = 126 \text{ respuestas} \times 7 \text{ dimensiones} = 882 \text{ juicios pareados}$.
+   - $P_o = 0{,}9955$ ($878 / 882$ acuerdos exactos, solo 4 discrepancias de 1 nivel).
+   - $P_e = 0{,}8243$.
+   - **$\kappa_{\text{no-ponderado}} = 0{,}9742$** (*Acuerdo casi perfecto / Excelente* según Landis y Koch).
+   - **$\kappa_{\text{lineal}} = 0{,}9807$** y **$\kappa_{\text{cuadrático}} = 0{,}9884$** (ponderación ordinal de Cohen).
 
-### ¿Por qué no ponderado si la escala 0–3 es ordinal?
+2. **Fase 2 (Revisión, calibración y consolidación del Gold Standard):**
+   - Tras la doble evaluación independiente, se realizó una exhaustiva auditoría y calibración técnica contrastando cada caso con las rúbricas formales y soluciones canónicas, consolidando un único conjunto canónico de referencia (*Gold Standard*) sobre el que se calculan las métricas oficiales ($IQE$, $CFR$, $HR$) y se evalúa el juez automático.
 
-Porque se decidió penalizar por igual cualquier discrepancia categorial y medir acuerdo exacto entre evaluadores.
+### Interpretación metodológica
 
-Se reconoce que un Kappa ponderado podría aprovechar la naturaleza ordinal de la escala y se propone como extensión futura.
+La interpretación correcta es **alta consistencia y reproducibilidad operativa de aplicación de la rúbrica en esta muestra**.
 
-### Resultado
-
-- $P_o = 0,9932$
-- $P_e = 0,6260$
-- $\kappa = 0,982$
-
-La interpretación correcta es **alta consistencia de aplicación de la rúbrica en esta muestra**.
-
-No significa que las puntuaciones sean necesariamente verdaderas desde el punto de vista disciplinar: dos evaluadores podrían coincidir en un mismo error.
+No significa que las puntuaciones sean necesariamente verdaderas desde el punto de vista disciplinar: dos evaluadores podrían coincidir en un mismo error disciplinar.
 
 ---
 
