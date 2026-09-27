@@ -8,7 +8,7 @@ Este directorio contiene las hojas de datos tabulares (CSV) correspondientes al 
 ---
 
 ## Panel de Evaluadores
-1. **Evaluador 1 (Anotador de Referencia / Autor):** Marcos Tomás Jiménez Meléndez.
+1. **Evaluador 1 (Autor):** Marcos Tomás Jiménez Meléndez.
 2. **Evaluador 2 (Anotador Independiente):** Graduado en Ingeniería Informática ajeno al diseño de las directivas de sistema (*system prompts*).
 
 ---
@@ -22,23 +22,33 @@ Este directorio contiene las hojas de datos tabulares (CSV) correspondientes al 
 ---
 
 ## Ficheros de Datos
-* `anotaciones_gold_standard_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Gold Standard canónico.
-* `anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 1.
-* `anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 2.
-* `adjudicaciones_gold_standard.csv`: Registro formal de las 6 discrepancias post-revisión adjudicadas para constituir el Gold Standard definitivo.
-* `adjudicaciones_fase1_independiente.csv`: Registro formal de las 4 discrepancias de la Fase 1 independiente.
+* `data/evaluaciones/raw/anotaciones_gold_standard_raw.csv`: 126 filas con las puntuaciones y justificaciones consolidadas del Gold Standard canónico.
+* `data/evaluaciones/raw/anotaciones_evaluador_1_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 1.
+* `data/evaluaciones/raw/anotaciones_evaluador_2_raw.csv`: 126 filas con las puntuaciones y justificaciones revisadas del Evaluador 2.
+* `data/evaluaciones/adjudicaciones_gold_standard.csv`: Registro formal de las 6 discrepancias residuales post-revisión adjudicadas para constituir el Gold Standard definitivo.
+* `data/evaluaciones/adjudicaciones_fase1_independiente.csv`: Registro formal de las 4 discrepancias de la Fase 1 independiente.
 
 ---
 
-## Flujo de Trazabilidad
-El pipeline de ingestión y análisis procesa estos datos de la siguiente manera:
+## Flujo de Trazabilidad y Procesamiento
+
+El pipeline analítico desacopla el cálculo de fiabilidad inter-evaluador (Fase 1) y el cómputo de métricas oficiales (Fase 2):
+
+### 1. Fase 1: Fiabilidad Inter-Evaluador (Anotaciones Independientes)
+```
+data/evaluaciones/raw_independientes/*.csv
+  └──> src/analisis/calcular_concordancia_evaluadores.py
+         └──> results/informes/concordancia_evaluadores.json (Kappa κ = 0.974, κ_lineal = 0.981)
+```
+
+### 2. Fase 2: Consolidación del Gold Standard y Métricas Oficiales
 ```
 data/evaluaciones/raw/*.csv
   └──> src/analisis/importar_evaluaciones_humanas.py
          ├──> data/evaluaciones/evaluacion_evaluador_1.json
          ├──> data/evaluaciones/evaluacion_evaluador_2.json
-         └──> data/evaluaciones/evaluacion_<perfil>.json
-                ├──> src/analisis/validar_datos_evaluacion.py (Auditoría cruzada raw <-> JSON)
-                ├──> src/analisis/analizador_experimentos.py (IQE, CFR, HR, S_d)
-                └──> src/analisis/calcular_concordancia_evaluadores.py (Cohen's Kappa κ)
+         └──> data/evaluaciones/evaluacion_gold_standard.json (Fuente canónica oficial)
+                ├──> data/evaluaciones/evaluacion_<perfil>.json (Particiones por perfil)
+                ├──> src/analisis/validar_datos_evaluacion.py (Auditoría de esquemas e integridad)
+                └──> src/analisis/analizador_experimentos.py (Métricas oficiales: IQE, CFR, HR, S_d)
 ```

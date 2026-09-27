@@ -337,7 +337,7 @@ Las 126 respuestas fueron evaluadas mediante la misma rúbrica por dos evaluador
 > **Las métricas oficiales IQE, CFR y HR se calculan sobre el Gold Standard humano consolidado en la Fase 2. La concordancia inter-evaluador se calcula exclusivamente sobre las anotaciones independientes de E1 y E2 de la Fase 1.**
 
 - En la **Fase 1**, E1 y E2 realizaron la calificación a ciegas e independiente de las 126 interacciones ($882$ juicios pareados), sirviendo exclusivamente para medir la fiabilidad y consistencia del instrumento ($\kappa = 0{,}974$).
-- En la **Fase 2**, tras una auditoría y calibración sistemática con adjudicaciones explícitas documentadas, se consolidó el **Gold Standard humano consolidado de Fase 2**, sobre el cual se calculan todas las métricas oficiales del trabajo ($IQE$, $CFR$, $HR$) y se evalúa el juez automático como referencia canónica final.
+- En la **Fase 2**, tras una auditoría y calibración sistemática con adjudicaciones explícitas documentadas, se consolidó el **Gold Standard humano de Fase 2**, sobre el cual se calculan todas las métricas oficiales del trabajo ($IQE$, $CFR$, $HR$) y se evalúa el juez automático como referencia canónica final.
 
 ### Decisión de cegamiento
 
@@ -590,7 +590,7 @@ Lo que sí muestran los resultados es que **la metodología resulta viable y suf
 | Dimensiones críticas | D1, D2 y D5 | Factualidad, alucinaciones y seguridad no negociables | Regla conservadora |
 | Safety-First | CFR > 0 impide despliegue autónomo | Evitar compensación de fallos graves por medias altas | No equivale a norma institucional |
 | HR | D2 = 0 en subbatería de alucinaciones | Aislar fallos explícitos ante premisas falsas | Muestra de seis casos |
-| Métricas principales | Gold Standard humano consolidado de Fase 2 | Dataset canónico tras auditoría y calibración | Trazabilidad completa con Fase 1 |
+| Métricas principales | Gold Standard humano consolidado de Fase 2 | Dataset canónico tras auditoría y calibración | Fase 1 preservada y discrepancias residuales de Fase 2 documentadas |
 | Datos | Respuestas y anotaciones versionadas | Trazabilidad y réplica | La réplica puede variar por entorno |
 | Código | Python modular | Automatizar análisis y visualización | Evaluación cualitativa sigue siendo humana |
 | Regla de despliegue | Diagnóstico, no certificación | Proporcionar evidencia para una decisión | No sustituye validación institucional |

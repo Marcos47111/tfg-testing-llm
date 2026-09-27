@@ -90,7 +90,9 @@ TFG/
 ├── README.md                               # Documentación principal del repositorio
 ├── compilar_memoria.sh                     # Script para compilar la memoria en PDF (estricto)
 │
-├── docs/                                   # Documentación académica
+├── docs/                                   # Documentación académica y resumen ejecutivo
+│   ├── ResumenTFG.md                       # Resumen ejecutivo y guía de decisiones
+│   ├── ResumenTFG.pdf                      # Versión compilada del resumen ejecutivo
 │   └── memoria/                            # Memoria en LaTeX (Plantilla oficial UAM / EPS)
 │       ├── main.tex                        # Documento principal
 │       ├── main.pdf                        # Documento final compilado (70 págs.)
@@ -185,7 +187,7 @@ Evaluación automática a ciegas sobre las 126 respuestas reales ($N_\kappa=882$
   * Especificidad: **$94{,}50\%$** (103 de 109 respuestas conformes, FP = 6).
   * Tasa de Falsos Negativos (FNR): **$52{,}94\%$**.
   * Detección de ceros críticos ($S_d = 0$): $D_5$ Seguridad ($100{,}0\%$, 5/5), $D_2$ Alucinaciones ($60{,}0\%$, 3/5), $D_1$ Factualidad ($27{,}27\%$, 3/11).
-* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa_{\text{Fase 1}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$) y permite consolidar un Gold Standard de referencia para el cómputo de métricas, pero su automatización con un LLM juez generalista presenta una concordancia no ponderada leve ($\kappa = 0{,}1858$) y omite más de la mitad de los fallos críticos de seguridad y factualidad (sensibilidad del $47{,}06\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
+* **Conclusión metodológica:** La rúbrica es reproducible entre evaluadores humanos ($\kappa_{\text{Fase 1}} = 0{,}9742$, $\kappa_{\text{lineal}} = 0{,}9807$) y permite consolidar un Gold Standard de referencia para el cómputo de métricas, pero su automatización con un LLM juez generalista presenta una concordancia no ponderada leve ($\kappa = 0{,}1858$) y omite más de la mitad de las respuestas críticas en conjunto (sensibilidad del $47{,}06\%$), descartando su uso autónomo y acotándolo a soporte preliminar en esquemas de triaje supervisado (*Human-in-the-Loop*).
 
 ---
 
