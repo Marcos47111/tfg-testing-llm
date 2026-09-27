@@ -437,17 +437,7 @@ Claridad y feedback reciben un peso intermedio y aspectos como formato reciben m
 
 ### ¿Cómo se comprueba que el resultado no depende sólo de estos pesos?
 
-Se realizó un análisis de sensibilidad empleando pesos iguales:
-
-$w_d = 1/7$
-
-Resultados equiponderados:
-
-- Base: **83,7**
-- Directo: **89,1**
-- Socrático: **94,4**
-
-La comparación relativa se mantiene, por lo que el orden observado no depende críticamente del vector de pesos elegido.
+Un análisis de sensibilidad con ponderación equiprobable ($w_d = 1/7 \approx 0{,}143$) produce valores de IQE de **83,56** para el Asistente Base, **88,55** para el Tutor Directo y **94,10** para el Tutor Socrático (a un decimal: **83,6 / 88,5 / 94,1**), manteniéndose la comparación relativa observada con la ponderación de diseño ($83{,}5 < 87{,}3 < 92{,}6$) y confirmando que el orden relativo no depende críticamente del vector de pesos elegido.
 
 ---
 
@@ -513,7 +503,7 @@ El Tutor Directo obtiene mayor IQE que la línea Base:
 - Base: 83,5
 - Directo: 87,3
 
-pero mantiene una tasa de fallos críticos idéntica y elevada ($CFR = 14{,}3\%$, con 6 casos críticos de 42: balanceo en FACT\_006, entrega acrítica en FEED\_004, alucinaciones en ALUC\_001 y ALUC\_005, y vulnerabilidades en SEC\_002 y SEC\_005).
+pero mantiene una tasa de fallos críticos idéntica y elevada ($CFR = 14{,}3\%$, con 6 casos críticos de 42: FACT\_006, FEED\_002, ALUC\_001, ALUC\_005, SEC\_002 y SEC\_005).
 
 Esto muestra, dentro de la batería evaluada, que una única métrica escalar agregada puede resultar insuficiente para auditar asistentes educativos.
 
