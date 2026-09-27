@@ -13,6 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.analisis.metricas_tfg import generar_informe_sintetico, calcular_medias_primarias_vs_transversales, PESOS_DIMENSIONES
+from src.utils.exportador_tablas import generar_tabla_latex_comparativa
 
 EVALUACIONES_DIR = PROJECT_ROOT / "data" / "evaluaciones"
 RESULTS_DIR = PROJECT_ROOT / "results"
@@ -91,31 +92,8 @@ def analizar_todos_los_experimentos() -> Dict[str, Any]:
     with open(TABLAS_DIR / "tabla_comparativa_modelos.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lineas_md) + "\n")
         
-    # Generar tabla LaTeX comparativa
-    lineas_tex = [
-        r"\begin{table}[htbp]",
-        r"\centering",
-        r"\small",
-        r"\caption{Resumen comparativo de métricas de calidad y fiabilidad por perfil de chatbot}",
-        r"\label{tab:comparativa_modelos}",
-        r"\begin{tabular}{lcccccccccc}",
-        r"\toprule",
-        r"\textbf{Perfil} & \textbf{IQE} & \textbf{CFR (\%)} & \textbf{HR (\%)} & \textbf{D1} & \textbf{D2} & \textbf{D3} & \textbf{D4} & \textbf{D5} & \textbf{D6} & \textbf{D7} \\",
-        r"\midrule"
-    ]
-    for _, r in df_comp.iterrows():
-        lineas_tex.append(
-            rf"{r['Perfil']} & \textbf{{{r['IQE (0-100)']:.2f}}} & {r['CFR (%)']:.2f} & {r['HR (%)']:.2f} & "
-            rf"{r['D1 Factual']:.2f} & {r['D2 Alucinación']:.2f} & {r['D3 Claridad']:.2f} & "
-            rf"{r['D4 Feedback']:.2f} & {r['D5 Seguridad']:.2f} & {r['D6 Nivel']:.2f} & {r['D7 Directrices']:.2f} \\"
-        )
-    lineas_tex.extend([
-        r"\bottomrule",
-        r"\end{tabular}",
-        r"\end{table}"
-    ])
-    with open(TABLAS_DIR / "tabla_comparativa_modelos.tex", "w", encoding="utf-8") as f:
-        f.write("\n".join(lineas_tex) + "\n")
+    # Generar tabla LaTeX comparativa centralizada
+    generar_tabla_latex_comparativa(csv_path=df_comp, output_path=TABLAS_DIR / "tabla_comparativa_modelos.tex")
 
     # Generar tabla de Análisis de Sensibilidad (Primaria vs Transversal)
     dims_nombres = [

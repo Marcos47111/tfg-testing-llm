@@ -195,17 +195,9 @@ def ejecutar_analisis_concordancia_llm_judge():
         print("    python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0")
         return None
 
-    # 1. Cargar datasets y alinear por clave canónica (caso_id, perfil)
-    judge_file = JUDGE_DIR / "evaluacion_llm_judge.json"
-    if not judge_file.exists():
-        print(f"[-] Error: No se encontró el dataset del juez en {judge_file}.")
-        print("    Para generarlo mediante inferencia real con Qwen2.5-14B-Instruct, ejecuta:")
-        print("    python3 src/evaluador/evaluador_llm_judge.py --mode ollama --model qwen2.5:14b-instruct --temperature 0")
-        return None
-
     gold_file = EVAL_DIR / "evaluacion_gold_standard.json"
     if not gold_file.exists():
-        gold_file = EVAL_DIR / "evaluacion_evaluador_1.json"
+        raise FileNotFoundError(f"No se encontró el dataset oficial Gold Standard en {gold_file}.")
 
     with open(gold_file, "r", encoding="utf-8") as f:
         evals_gold_list = json.load(f)

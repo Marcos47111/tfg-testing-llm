@@ -388,6 +388,16 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
                     clave_d = (cid, perf, d)
                     if clave_d not in map_f1:
                         total_errores.append(f"[adjudicacion_fase1] Discrepancia independiente no registrada en {adj_fase1_csv.name}: {clave_d}")
+        
+        # Verificación inversa: cada fila del CSV debe corresponder a una discrepancia real
+        for clave_adj in map_f1.keys():
+            cid, perf, d = clave_adj
+            k = (cid, perf)
+            if k not in ind1_data or k not in ind2_data:
+                total_errores.append(f"[adjudicacion_fase1] Clave inexistente en datasets independientes: {clave_adj}")
+            elif ind1_data[k][d] == ind2_data[k][d]:
+                total_errores.append(f"[adjudicacion_fase1] Registro espurio en {adj_fase1_csv.name}: {clave_adj} no es una discrepancia (ambos puntuaron {ind1_data[k][d]}).")
+                
         print(f"    [+] {adj_fase1_csv.name}: {len(r_f1)} discrepancias independientes documentadas sobre {f1_disc_count} detectadas (Po = 99.55%, kappa = 0.9742).")
     else:
         total_errores.append(f"Archivo de trazabilidad Fase 1 no encontrado: {adj_fase1_csv}")
@@ -470,6 +480,16 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
                 else:
                     if pg[d] != p1[d]:
                         total_errores.append(f"[adjudicacion_gold] En caso de acuerdo unánime {k}/{d}, Gold Standard difiere de evaluadores: Gold={pg[d]} vs E1/E2={p1[d]}")
+                        
+        # Verificación inversa: cada fila del CSV debe corresponder a una discrepancia real
+        for clave_adj in map_adj.keys():
+            cid, perf, d = clave_adj
+            k = (cid, perf)
+            if k not in e1_data or k not in e2_data:
+                total_errores.append(f"[adjudicacion_gold] Clave inexistente en datasets consolidados: {clave_adj}")
+            elif e1_data[k][d] == e2_data[k][d]:
+                total_errores.append(f"[adjudicacion_gold] Registro espurio en {adj_csv.name}: {clave_adj} no es una discrepancia (ambos puntuaron {e1_data[k][d]}).")
+                
         print(f"    [+] {adj_csv.name}: {len(r_adj)} adjudicaciones explícitas auditadas sobre {discrepancias_detectadas} discrepancias inter-evaluador.")
     else:
         total_errores.append(f"Archivo crítico no encontrado: {adj_csv}")
@@ -486,7 +506,7 @@ def ejecutar_auditoria_completa_evaluaciones(incluir_judge: bool = False):
         with open(fpath, "r", encoding="utf-8") as f:
             datos_perfil = json.load(f)
             
-        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado=["gold_standard", "evaluador_1"], total_casos_esperado=total_prompts)
+        errs = validar_dataset_evaluacion(datos_perfil, fname, evaluador_esperado="gold_standard", total_casos_esperado=total_prompts)
         total_errores.extend(errs)
         if not errs:
             print(f"    [+] {fname}: {len(datos_perfil)} casos del perfil '{perfil}' validados.")

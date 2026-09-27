@@ -26,8 +26,8 @@ class TestUtilsTFG(unittest.TestCase):
             self.assertTrue(claves_requeridas.issubset(p.keys()), f"Faltan claves en el caso {p.get('id')}")
 
     def test_generar_tabla_latex(self):
-        """Verifica la generación del archivo LaTeX de la tabla comparativa."""
-        tex = generar_tabla_latex_comparativa()
+        """Verifica la generación del archivo LaTeX de la tabla comparativa sin efectos colaterales en disco."""
+        tex = generar_tabla_latex_comparativa(output_path=False)
         self.assertIn("\\begin{table}", tex)
         self.assertIn("\\end{table}", tex)
         self.assertTrue("Asistente Base" in tex or "asistente\\_base" in tex)

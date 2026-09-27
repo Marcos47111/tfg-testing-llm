@@ -1,6 +1,7 @@
 """
-Script para importar, validar y normalizar las anotaciones humanas originales (raw CSV)
-de Evaluador 1 y Evaluador 2 hacia los datasets JSON del pipeline analítico del TFG.
+Script para importar, validar y normalizar las anotaciones humanas revisadas de la Fase 2 (raw CSV)
+de Evaluador 1 y Evaluador 2 hacia los datasets JSON del pipeline analítico del TFG, consolidando
+el Gold Standard a partir de las adjudicaciones explícitas.
 """
 
 import csv
@@ -87,7 +88,7 @@ def ejecutar_importacion_y_normalizacion():
     # 1. Cargar metadatos de prompts
     prompts = {c["id"]: c for c in cargar_todos_los_prompts()}
     
-    # 2. Importar CSVs originales
+    # 2. Importar CSVs revisados de Fase 2
     e1_csv = RAW_DIR / "anotaciones_evaluador_1_raw.csv"
     e2_csv = RAW_DIR / "anotaciones_evaluador_2_raw.csv"
     

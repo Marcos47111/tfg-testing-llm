@@ -130,7 +130,11 @@ def calcular_acuerdo_inter_evaluadores():
         json.dump(informe_completo, f, indent=2, ensure_ascii=False)
 
     # Generar tabla Markdown basada en Fase 1 (Evaluación Independiente Original)
-    ref = informe_fase1 if informe_fase1 else informe_fase2
+    if informe_fase1 is None:
+        raise FileNotFoundError(
+            "No están disponibles las anotaciones independientes de la Fase 1 en data/evaluaciones/raw_independientes/."
+        )
+    ref = informe_fase1
     lineas_md = [
         "# Concordancia Inter-Evaluador Original (Cohen's Kappa - Fase 1 Independiente)",
         "",
