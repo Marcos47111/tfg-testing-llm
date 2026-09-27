@@ -52,7 +52,7 @@ fi
 
 # 6. Limpieza automática de ficheros auxiliares temporales
 echo "[+] Limpiando ficheros auxiliares temporales..."
-rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy pdflatex_pass1.log bibtex.log pdflatex_pass2.log pdflatex_pass3.log
+rm -f main.aux main.bbl main.blg main.log main.out main.toc main.lof main.lot main.loa main.loe main.lol main.ltb main.mw main.glo main.idx main.ist main.acn main.xdy main.fls main.fdb_latexmk main.ilg main.ind main.synctex.gz pdflatex_pass1.log bibtex.log pdflatex_pass2.log pdflatex_pass3.log
 
 echo "=============================================="
 echo "[+] Memoria compilada con éxito:"
