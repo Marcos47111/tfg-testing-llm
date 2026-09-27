@@ -152,7 +152,7 @@ Para recibir D1 = 3 en casos conceptuales no basta con “no decir nada incorrec
 
 Cada caso se representa mediante:
 
-$C_i = \langle id, dimensión\_ppal, materia, nivel, prompt, ground\_truth, criterio\_crítico \rangle$
+$C_i = \langle \text{id}, \text{dimensión\_ppal}, \text{materia}, \text{nivel}, \text{prompt}, \text{ground\_truth}, \text{criterio\_crítico} \rangle$
 
 La batería contiene **42 casos**, distribuidos de forma equilibrada:
 
@@ -325,18 +325,19 @@ Se obtuvieron:
 
 ## 13. Decisiones sobre la evaluación humana
 
-### Dos evaluadores
+### Dos evaluadores y protocolo en dos fases
 
-Las 126 respuestas fueron evaluadas mediante la misma rúbrica por dos evaluadores.
+Las 126 respuestas fueron evaluadas mediante la misma rúbrica por dos evaluadores:
 
-- **Evaluador 1:** autor del trabajo y evaluador de referencia.
-- **Evaluador 2:** segundo evaluador independiente con formación técnica en Informática.
+- **Evaluador 1 (E1):** autor del trabajo (evaluador en la Fase 1 independiente y participante en la revisión de Fase 2).
+- **Evaluador 2 (E2):** segundo evaluador independiente con formación técnica en Informática (Fase 1).
 
-### Protocolo de evaluación y referencia experimental
+### ¿Cómo se calculan las métricas oficiales y la concordancia?
 
-En la **Fase 1**, E1 (autor del trabajo) y E2 (segundo evaluador independiente con formación en Informática) realizaron la calificación a ciegas e independiente de las 126 interacciones ($882$ juicios pareados), sirviendo exclusivamente para medir la fiabilidad y consistencia del instrumento ($\kappa = 0{,}974$).
+> **Las métricas oficiales IQE, CFR y HR se calculan sobre el Gold Standard humano consolidado en la Fase 2. La concordancia inter-evaluador se calcula exclusivamente sobre las anotaciones independientes de E1 y E2 de la Fase 1.**
 
-En la **Fase 2**, tras una auditoría y calibración sistemática con adjudicaciones explícitas documentadas, se consolidó el **Gold Standard humano único**, sobre el cual se calculan todas las métricas oficiales del trabajo ($IQE$, $CFR$, $HR$) y se evalúa el juez automático.
+- En la **Fase 1**, E1 y E2 realizaron la calificación a ciegas e independiente de las 126 interacciones ($882$ juicios pareados), sirviendo exclusivamente para medir la fiabilidad y consistencia del instrumento ($\kappa = 0{,}974$).
+- En la **Fase 2**, tras una auditoría y calibración sistemática con adjudicaciones explícitas documentadas, se consolidó el **Gold Standard humano consolidado de Fase 2**, sobre el cual se calculan todas las métricas oficiales del trabajo ($IQE$, $CFR$, $HR$) y se evalúa el juez automático como referencia canónica final.
 
 ### Decisión de cegamiento
 
@@ -528,7 +529,7 @@ Por ello tampoco supera Safety-First.
 
 ---
 
-## 20. Qué NO demuestran los resultados del experimento
+## 20. Qué NO muestran los resultados del experimento
 
 Es importante no sobreinterpretar los resultados.
 
@@ -599,7 +600,7 @@ Lo que sí muestran los resultados es que **la metodología resulta viable y suf
 | Dimensiones críticas | D1, D2 y D5 | Factualidad, alucinaciones y seguridad no negociables | Regla conservadora |
 | Safety-First | CFR > 0 impide despliegue autónomo | Evitar compensación de fallos graves por medias altas | No equivale a norma institucional |
 | HR | D2 = 0 en subbatería de alucinaciones | Aislar fallos explícitos ante premisas falsas | Muestra de seis casos |
-| Métricas principales | Gold Standard humano consolidado (Fase 2) | Dataset canónico tras auditoría y calibración | Trazabilidad completa con Fase 1 |
+| Métricas principales | Gold Standard humano consolidado de Fase 2 | Dataset canónico tras auditoría y calibración | Trazabilidad completa con Fase 1 |
 | Datos | Respuestas y anotaciones versionadas | Trazabilidad y réplica | La réplica puede variar por entorno |
 | Código | Python modular | Automatizar análisis y visualización | Evaluación cualitativa sigue siendo humana |
 | Regla de despliegue | Diagnóstico, no certificación | Proporcionar evidencia para una decisión | No sustituye validación institucional |
@@ -639,7 +640,7 @@ En el marco principal del TFG, la generación de respuestas, almacenamiento y c�
 4. **Modelo juez independiente**: Se establece como modelo de referencia `Qwen2.5-14B-Instruct` (configuración de baja variabilidad, $T=0.0$, top-p=0.9, seed=42) para evitar autopreferencia con el evaluado `Meta-Llama-3-8B-Instruct`.
 
 ### Pipeline de análisis de concordancia Humano--IA
-- **Pipeline de concordancia principal ($N_\kappa=882$):** Cálculo de $\kappa(\text{Juez}, \text{Gold Standard})$ como referencia canónica ($\kappa = 0{,}186$, $\kappa_{\text{lineal}} = 0{,}280$, $\kappa_{\text{cuadrático}} = 0{,}368$), complementado con diagnósticos frente a $E_1$ y $E_2$, acuerdo observado ($P_o$), acuerdo esperado ($P_e$) y $\text{MAE}$ por dimensión.
+- **Comparación principal (Juez vs. Gold Standard, $N_\kappa=882$):** La evaluación canónica de fiabilidad del LLM Judge se realiza formalmente contra el **Gold Standard humano consolidado de Fase 2** ($\kappa = 0{,}186$, $\kappa_{\text{lineal}} = 0{,}280$, $\kappa_{\text{cuadrático}} = 0{,}368$). Las comparaciones frente a $E_1$ y $E_2$ se calculan como análisis diagnósticos complementarios de consistencia.
 - **Análisis de granularidad:** Desglose de distribución de deltas ($|\Delta| \in \{0, 1, 2, 3\}$), matrices de confusión $4 \times 4$ y análisis de discrepancias direccionales frente al Gold Standard.
 - **Control de fallos críticos (Safety-First):** Cálculo de sensibilidad, especificidad y tasa de falsos negativos en $D_1$, $D_2$ y $D_5$ para verificar que el juez no apruebe respuestas con alucinaciones o vulneraciones de seguridad ética.
 

@@ -31,6 +31,8 @@ ENV/
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*.ilg
+*.ind
 
 # OS
 .DS_Store
