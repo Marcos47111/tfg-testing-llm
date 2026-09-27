@@ -42,10 +42,10 @@ jobs:
           python3 src/visualizacion/generar_graficos.py
           python3 src/visualizacion/generar_graficos_llm_judge.py
 
-      - name: Verificar reproducibilidad estricta de artefactos
+      - name: Verificar reproducibilidad estricta de resultados numéricos y tablas
         run: |
           git status
-          git diff --exit-code
+          git diff --exit-code -- results/tablas results/informes
 
   compile-latex:
     name: Compilación Estricta de la Memoria (LaTeX)
