@@ -45,9 +45,9 @@ El trabajo aporta:
 6. **Un estudio experimental real** sobre Meta-Llama-3-8B-Instruct con tres perfiles conversacionales distintos.
 7. **Un paquete de software en Python** que automatiza la carga de casos, ejecución, agregación, cálculo de métricas, concordancia y visualización.
 8. **Un conjunto de datos abierto y trazable**, con los 126 registros de inferencia, evaluaciones y resultados consolidados.
-9. **Una demostración empírica de una idea importante de testing:** mejorar la calidad media de una respuesta no implica necesariamente reducir los fallos críticos.
+9. **Evidencia empírica de una idea importante de testing:** mejorar la calidad media de una respuesta no implica necesariamente reducir los fallos críticos.
 
-La aportación central no es afirmar que el Tutor Socrático sea “el mejor chatbot educativo” de forma universal. La aportación consiste en demostrar que el marco permite **detectar diferencias, fortalezas y riesgos que quedarían ocultos si únicamente se utilizara una puntuación global**.
+La aportación central no es afirmar que el Tutor Socrático sea “el mejor chatbot educativo” de forma universal. La aportación consiste en mostrar que el marco permite **detectar diferencias, fortalezas y riesgos que quedarían ocultos si únicamente se utilizara una puntuación global**.
 
 ---
 
@@ -332,11 +332,11 @@ Las 126 respuestas fueron evaluadas mediante la misma rúbrica por dos evaluador
 - **Evaluador 1:** autor del trabajo y evaluador de referencia.
 - **Evaluador 2:** segundo evaluador independiente con formación técnica en Informática.
 
-### ¿Por qué se utilizan las puntuaciones de E1 para las métricas principales?
+### Protocolo de evaluación y referencia experimental
 
-E1 se estableció como evaluador de referencia porque fue el responsable del diseño y operacionalización de la rúbrica.
+En la **Fase 1**, E1 (autor del trabajo) y E2 (segundo evaluador independiente con formación en Informática) realizaron la calificación a ciegas e independiente de las 126 interacciones ($882$ juicios pareados), sirviendo exclusivamente para medir la fiabilidad y consistencia del instrumento ($\kappa = 0{,}974$).
 
-E2 se utilizó para comprobar si otra persona podía aplicar el instrumento de forma suficientemente consistente.
+En la **Fase 2**, tras una auditoría y calibración sistemática con adjudicaciones explícitas documentadas, se consolidó el **Gold Standard humano único**, sobre el cual se calculan todas las métricas oficiales del trabajo ($IQE$, $CFR$, $HR$) y se evalúa el juez automático.
 
 ### Decisión de cegamiento
 
@@ -492,7 +492,7 @@ El Socrático obtiene la mayor media de feedback formativo, si bien polariza su 
 
 ---
 
-## 19. Qué demuestran realmente los resultados
+## 19. Qué muestran realmente los resultados
 
 ### 19.1. El System Prompt modifica el comportamiento
 
@@ -514,7 +514,7 @@ El Tutor Directo obtiene mayor IQE que la línea Base:
 
 pero mantiene una tasa de fallos críticos idéntica y elevada ($CFR = 14{,}3\%$, con 6 casos críticos de 42: balanceo en FACT\_006, entrega acrítica en FEED\_004, alucinaciones en ALUC\_001 y ALUC\_005, y vulnerabilidades en SEC\_002 y SEC\_005).
 
-Esto demuestra que una única métrica agregada no es suficiente.
+Esto muestra, dentro de la batería evaluada, que una única métrica escalar agregada puede resultar insuficiente para auditar asistentes educativos.
 
 ### 19.3. El Socrático tampoco es “seguro” por defecto
 
@@ -528,11 +528,11 @@ Por ello tampoco supera Safety-First.
 
 ---
 
-## 20. Qué NO demuestra el experimento
+## 20. Qué NO demuestran los resultados del experimento
 
 Es importante no sobreinterpretar los resultados.
 
-El trabajo **no demuestra** que:
+El trabajo **no concluye de forma general** que:
 
 - Llama 3 tenga una probabilidad universal de alucinación del 16,7 % o 33,3 %;
 - el Tutor Socrático sea universalmente superior en todos los contextos;
@@ -543,7 +543,7 @@ El trabajo **no demuestra** que:
 - los resultados se generalicen automáticamente a otros modelos;
 - la metodología sustituya una evaluación pedagógica con estudiantes reales.
 
-Lo que sí demuestra es que **la metodología resulta viable y suficientemente sensible para identificar diferencias relevantes entre configuraciones en esta validación preliminar**.
+Lo que sí muestran los resultados es que **la metodología resulta viable y suficientemente sensible para identificar diferencias relevantes entre configuraciones en esta validación preliminar**.
 
 ---
 
@@ -589,7 +589,7 @@ Lo que sí demuestra es que **la metodología resulta viable y suficientemente s
 | seed | 42 | Comparabilidad | No estudia variabilidad estocástica |
 | num_ctx | 2048 | Suficiente para todos los casos | No explota la ventana máxima |
 | Nº de ejecuciones | 1 por caso y perfil | Experimento controlado y manejable | HR no es probabilidad universal |
-| Evaluador de referencia | E1 | Responsable del diseño de la rúbrica | Posible sesgo del investigador |
+| Fiabilidad humana (Fase 1) | Doble evaluación independiente E1/E2 | Evaluar consistencia y reproducibilidad del instrumento | Panel de 2 evaluadores |
 | Segundo evaluador | E2 para consistencia | Estimar reproducibilidad de aplicación | Panel reducido |
 | Cegamiento | Etiqueta explícita del perfil oculta | Reducir sesgo de expectativa | El estilo podía delatar perfil |
 | Kappa | Cohen no ponderado | Medir acuerdo exacto | No aprovecha distancia ordinal |
@@ -599,7 +599,7 @@ Lo que sí demuestra es que **la metodología resulta viable y suficientemente s
 | Dimensiones críticas | D1, D2 y D5 | Factualidad, alucinaciones y seguridad no negociables | Regla conservadora |
 | Safety-First | CFR > 0 impide despliegue autónomo | Evitar compensación de fallos graves por medias altas | No equivale a norma institucional |
 | HR | D2 = 0 en subbatería de alucinaciones | Aislar fallos explícitos ante premisas falsas | Muestra de seis casos |
-| Métricas principales | Puntuaciones de E1 | Evaluador de referencia | Se contrasta con Kappa de E2 |
+| Métricas principales | Gold Standard humano consolidado (Fase 2) | Dataset canónico tras auditoría y calibración | Trazabilidad completa con Fase 1 |
 | Datos | Respuestas y anotaciones versionadas | Trazabilidad y réplica | La réplica puede variar por entorno |
 | Código | Python modular | Automatizar análisis y visualización | Evaluación cualitativa sigue siendo humana |
 | Regla de despliegue | Diagnóstico, no certificación | Proporcionar evidencia para una decisión | No sustituye validación institucional |
@@ -639,9 +639,9 @@ En el marco principal del TFG, la generación de respuestas, almacenamiento y c�
 4. **Modelo juez independiente**: Se establece como modelo de referencia `Qwen2.5-14B-Instruct` (configuración de baja variabilidad, $T=0.0$, top-p=0.9, seed=42) para evitar autopreferencia con el evaluado `Meta-Llama-3-8B-Instruct`.
 
 ### Pipeline de análisis de concordancia Humano--IA
-- **Pipeline de concordancia ($N_\kappa=882$):** Cálculo de $\kappa(\text{Juez}, E_1)$ y $\kappa(\text{Juez}, E_2)$, acuerdo observado ($P_o$), acuerdo esperado ($P_e$) y $\text{MAE}$ por dimensión.
-- **Análisis de granularidad:** Desglose de distribución de deltas ($|\Delta| \in \{0, 1, 2, 3\}$), matrices de confusión $4 \times 4$ y análisis de discrepancias direccionales.
-- **Control de fallos críticos (Safety-First):** Cálculo de la tasa de falsos negativos en $D_1$, $D_2$ y $D_5$ para verificar que el juez no apruebe respuestas con alucinaciones o vulneraciones de seguridad ética.
+- **Pipeline de concordancia principal ($N_\kappa=882$):** Cálculo de $\kappa(\text{Juez}, \text{Gold Standard})$ como referencia canónica ($\kappa = 0{,}186$, $\kappa_{\text{lineal}} = 0{,}280$, $\kappa_{\text{cuadrático}} = 0{,}368$), complementado con diagnósticos frente a $E_1$ y $E_2$, acuerdo observado ($P_o$), acuerdo esperado ($P_e$) y $\text{MAE}$ por dimensión.
+- **Análisis de granularidad:** Desglose de distribución de deltas ($|\Delta| \in \{0, 1, 2, 3\}$), matrices de confusión $4 \times 4$ y análisis de discrepancias direccionales frente al Gold Standard.
+- **Control de fallos críticos (Safety-First):** Cálculo de sensibilidad, especificidad y tasa de falsos negativos en $D_1$, $D_2$ y $D_5$ para verificar que el juez no apruebe respuestas con alucinaciones o vulneraciones de seguridad ética.
 
 ### Propuesta futura: Sistema híbrido Humano-in-the-Loop
 El juez automático no reemplaza la supervisión humana, sino que actúa como **filtro de triaje masivo de primer nivel**:
@@ -711,7 +711,7 @@ Se ha evaluado experimentalmente la viabilidad de automatizar la rúbrica analí
 1. **Error numérico medio:** $\text{MAE} = 0{,}498$ puntos en escala $0$--$3$, con un $63{,}04\%$ de acuerdo exacto ($556/882$) y un $91{,}04\%$ en tolerancia $\pm 1$ nivel ($803/882$).
 2. **Concordancia diferenciada por dimensión:** Mayor convergencia en Seguridad ($D_5$, $\kappa = 0{,}421$, $90{,}48\%$ exacto) y Alucinaciones ($D_2$, $\kappa = 0{,}327$, $88{,}89\%$ exacto), frente a concordancia leve en dimensiones pedagógicas y estilísticas ($D_3$, $D_4$, $D_6$). Al incorporar distancia ordinal, el coeficiente asciende a $\kappa_{\text{lineal}} = 0{,}280$ y $\kappa_{\text{cuadrático}} = 0{,}368$.
 3. **Sensibilidad Safety-First insuficiente:** Aunque la exactitud global alcanzó el $88{,}10\%$ (111/126), la sensibilidad para detectar respuestas con fallos críticos fue del $47{,}06\%$ (detectando 8 de las 17 respuestas críticas, $\text{FNR} = 52{,}94\%$). Detectó el $100{,}0\%$ de los fallos de seguridad ($D_5$, 5/5), el $60{,}0\%$ de alucinaciones ($D_2$, 3/5) y el $27{,}27\%$ de errores factuales ($D_1$, 3/11).
-4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia no ponderada moderada/leve ($\kappa = 0{,}186$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
+4. **Conclusión metodológica:** La aplicación automatizada de la rúbrica es técnicamente viable, pero su concordancia no ponderada leve ($\kappa = 0{,}186$ global) y su baja sensibilidad ante fallos críticos impiden su uso como evaluador autónomo, restringiéndolo a soporte de triaje bajo supervisión humana (*Human-in-the-Loop*). Viabilidad técnica $\neq$ fiabilidad evaluativa.
 
 ---
 
@@ -727,7 +727,7 @@ Se ha evaluado experimentalmente la viabilidad de automatizar la rúbrica analí
 
 ### Hallazgo que conviene recordar
 
-> **El Tutor Directo mejora el IQE respecto al Asistente Base, pero empeora la tasa de fallos críticos; por tanto, mejorar la calidad global no implica necesariamente reducir el riesgo.**
+> **El Tutor Directo mejora el IQE respecto al Asistente Base, pero mantiene la misma tasa de fallos críticos (14,3 %); por tanto, una mejora de la calidad global no implica necesariamente una reducción del riesgo crítico.**
 
 ---
 
