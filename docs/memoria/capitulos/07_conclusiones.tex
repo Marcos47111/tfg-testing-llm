@@ -1,0 +1,62 @@
+\section{Conclusiones principales}
+\label{sec:conclusiones_principales}
+
+Este Trabajo de Fin de Grado presenta una metodología de testing orientada a evaluar sistemas conversacionales basados en modelos de lenguaje (LLMs) cuando se utilizan como apoyo al aprendizaje. La propuesta parte de un problema concreto de la ingeniería del software: las pruebas deterministas tradicionales basadas en aserciones booleanas no permiten valorar adecuadamente respuestas abiertas y no deterministas en lenguaje natural.
+
+A partir del desarrollo metodológico y de los resultados experimentales obtenidos, se extraen las siguientes conclusiones:
+
+La primera conclusión es que la ausencia de un oráculo determinista clásico puede abordarse mediante rúbricas analíticas estructuradas. En lugar de exigir una coincidencia exacta de texto, la descomposición de la calidad en siete dimensiones observables permite evaluar de forma independiente aspectos como el rigor conceptual, la claridad didáctica, el andamiaje formativo y la seguridad.
+
+La segunda conclusión concierne a la influencia del diseño de directivas de sistema (\textit{system prompts}). En los ensayos realizados, la configuración de directrices pedagógicas basadas en el andamiaje socrático modificó el comportamiento observado del modelo: mientras que el Asistente Base registró una tasa de alucinaciones ($HR$) del $33{,}3$\,\% en la subbatería específica de alucinaciones y solucionismo directo, en varios de los casos diseñados para evaluar feedback y detección de errores, el Tutor Socrático aplicó preguntas orientadoras sin proporcionar directamente la solución, aunque mostró fallos de diagnóstico en determinados escenarios matemáticos, algorítmicos y gramaticales.
+
+La tercera conclusión pone de manifiesto la utilidad de incorporar métricas específicas de riesgo. La interpretación conjunta del Índice de Calidad Educativa ($IQE$), la Tasa de Fallos Críticos ($CFR$) y la Tasa de Alucinaciones ($HR$), bajo el criterio Safety-First, evita que una puntuación global elevada o una redacción sintácticamente atractiva oculten errores conceptuales o respuestas de riesgo.
+
+Por último, la evaluación automática mediante un modelo juez independiente (\textit{LLM-as-a-Judge}, evaluado empíricamente con Qwen2.5-14B-Instruct) mostró una concordancia no ponderada limitada con el Gold Standard humano consolidado ($\kappa = 0{,}186$, elevándose a $\kappa_{\text{lineal}} = 0{,}280$ y $\kappa_{\text{cuadrático}} = 0{,}368$), especialmente en dimensiones pedagógicas. Además, aunque la clasificación \textit{Safety-First} alcanzó un $88{,}10\%$ de exactitud global, la sensibilidad para detectar respuestas críticas fue del $47{,}06\%$. Estos resultados indican que, con la configuración evaluada, el juez automático no resulta adecuado como mecanismo autónomo de decisión y debe considerarse únicamente como apoyo dentro de esquemas de triaje supervisado (\textit{Human-in-the-Loop}).
+
+\section{Grado de cumplimiento de objetivos}
+\label{sec:cumplimiento_objetivos}
+
+Los cinco objetivos específicos planteados en la Sección \ref{sec:objetivos} han sido alcanzados satisfactoriamente a lo largo del proyecto:
+
+\begin{enumerate}
+    \item \textbf{Analizar las diferencias metodológicas y operacionales entre el testing de software determinista y la evaluación de modelos generativos, formalizando el impacto del problema del oráculo:} Cumplido en los Capítulos \ref{CAP:ESTADODELARTE} y \ref{CAP:TESTINGLLMS}, donde se contrastan las aserciones booleanas deterministas con la naturaleza estocástica de los modelos de lenguaje, formalizando el problema del oráculo y analizando las limitaciones de las métricas sintácticas y benchmarks estáticos.
+    \item \textbf{Definir un conjunto de dimensiones de calidad de software educativo inspiradas en el estándar ISO/IEC 25010 y la literatura pedagógica:} Cumplido en la Sección \ref{sec:dimensiones_evaluacion}, donde se formalizan y justifican las siete dimensiones analíticas ($D_1$ a $D_7$) integrando características de calidad de software (adecuación funcional, interacción, fiabilidad y seguridad) y constructos pedagógicos consolidados (ZDP, andamiaje tutorial y taxonomía de Bloom).
+    \item \textbf{Diseñar una matriz de rúbricas analíticas en escala discreta de cuatro niveles ($0$ a $3$) para reducir el recurso al punto medio neutro y estandarizar la evaluación:} Cumplido en la Sección \ref{sec:rubrica_escalas} y en el Anexo \ref{anexo:rubrica}, estableciendo descriptores conductuales explícitos para cada nivel y dimensión, cuya consistencia de aplicación quedó respaldada por un coeficiente inter-evaluador independiente de $\kappa = 0{,}974$ ($\kappa_{\text{lineal}} = 0{,}981$).
+    \item \textbf{Formular métricas cuantitativas agregadas y un Índice Global de Calidad Educativa ($IQE$), complementado por un criterio de seguridad prioritaria (\textit{Safety-First}):} Cumplido en la Sección \ref{sec:metricas_agregacion}, formalizando analíticamente las medias $\bar{S}_d$, tasas $CR_d$, $CFR$, $HR$ y el índice ponderado $IQE$, complementado con la regla de decisión \textit{Safety-First} y su verificación mediante análisis de sensibilidad.
+    \item \textbf{Construir una batería estructurada de casos de prueba, aplicarla experimentalmente sobre tres perfiles de chatbot y realizar el análisis comparativo para contrastar la sensibilidad del marco:} Cumplido en el Capítulo \ref{CAP:EXPERIMENTACION} y el Anexo \ref{anexo:casos_prueba}, mediante el diseño de 42 casos estructurados por tipologías y su ejecución sobre tres perfiles conversacionales con Meta-Llama-3-8B-Instruct (126 ensayos registrados), mostrando la capacidad discriminativa del marco en esta validación preliminar.
+\end{enumerate}
+
+\section{Aportaciones del trabajo}
+\label{sec:aportaciones}
+
+Las principales aportaciones derivadas de este Trabajo de Fin de Grado son:
+
+Una metodología de evaluación estructurada y reproducible para auditar la calidad, seguridad y utilidad pedagógica de asistentes conversacionales basados en LLMs.
+
+Un banco estructurado de 42 casos de prueba (prompts de prueba) que cubre escenarios curriculares, preguntas trampa para detección de alucinaciones y vectores de ataque adversario.
+
+Un paquete de software en Python de código abierto (\texttt{src/}) que automatiza la ingesta de respuestas en formato JSON, el cálculo de las métricas dimensionales y de riesgo, la computación del índice $IQE$ y la generación de gráficos vectoriales (radar y barras).
+
+Un módulo experimental de evaluación automática mediante \textit{LLM-as-a-Judge} a ciegas sobre las 7 dimensiones analíticas, acompañado de su suite de análisis de concordancia inter-evaluador Humano--IA y evaluación empírica real.
+
+Un conjunto de datos experimentales abiertos con las 126 trazas de inferencia registradas, las calificaciones de ambos evaluadores humanos independientes y las 126 evaluaciones del juez automático, junto con sus trazas y metadatos de ejecución.
+
+\section{Líneas de trabajo futuro}
+\label{sec:trabajo_futuro}
+
+A partir de la metodología desarrollada, se identifican las siguientes líneas de trabajo futuro:
+
+\paragraph{Sistemas híbridos de triaje Humano--IA (\textit{Human-in-the-Loop}):}
+Implementar flujos de auditoría continua donde el juez automático realice una evaluación masiva preliminar de primer nivel y derive automáticamente hacia paneles docentes humanos aquellos casos que presenten fallos críticos ($S_d = 0$), métricas de baja certidumbre probabilística o discrepancias inter-modelo.
+
+\paragraph{Comités y ensambles de jueces con especialización dimensional:}
+Explorar arquitecturas de evaluación basadas en múltiples modelos juez (\textit{LLM Judge Ensembles}) y asignación de jueces especializados por dimensión (por ejemplo, modelos optimizados en razonamiento formal y código para $D_1$, clasificadores de seguridad dedicados para $D_5$ y modelos con alineamiento pedagógico para $D_4$ y $D_6$).
+
+\paragraph{Paneles de evaluación multidisciplinares:}
+Conformación de paneles de evaluación con especialistas docentes en cada disciplina curricular, fortaleciendo la validez de contenido y minimizando el riesgo de errores disciplinarios compartidos.
+
+\paragraph{Esquemas de aplicabilidad condicional y pesos dinámicos:}
+Formalizar esquemas de aplicabilidad condicional o ponderaciones dinámicas por dimensión ($D_k$) según la naturaleza de cada caso de prueba, evitando la saturación de puntuaciones en dimensiones no directamente estresadas.
+
+\paragraph{Extensión a sistemas RAG y soporte multimodal:}
+Extensión del marco hacia sistemas de Generación Aumentada por Recuperación (\textit{Retrieval-Augmented Generation}, RAG) y soporte multimodal para auditar interacciones que incluyan diagramas técnicos, gráficas estadísticas o fórmulas manuscritas.

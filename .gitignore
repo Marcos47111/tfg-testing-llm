@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+env/
+venv/
+ENV/
+
+# LaTeX auxiliary files (keep main.pdf)
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.loa
+*.loe
+*.lol
+*.ltb
+*.mw
+*.glo
+*.idx
+*.ist
+*.acn
+*.xdy
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.ilg
+*.ind
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Demo / local runs
+results/demo_simulada/
+.checkpoint_*.json
+*.checkpoint_*.json
